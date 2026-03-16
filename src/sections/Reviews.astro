@@ -1,0 +1,210 @@
+---
+import content from "../data/data.json";
+import Arrow from "../icons/arrow.svg";
+
+const reviewBorders = [
+  "border-l-neon-cyan",
+  "border-l-neon-magenta",
+  "border-l-neon-orange",
+] as const;
+
+const highlightReviewText = (text: string, highlight: string): string =>
+  text.replace(
+    highlight,
+    `<span class="text-neon-cyan font-bold not-italic">${highlight}</span>`,
+  );
+
+const brandPrimary = content.brand.primary ?? "ITCode";
+const brandAccent = content.brand.accent ?? "Craft";
+const brandPrefix = brandPrimary.startsWith("IT")
+  ? "IT"
+  : brandPrimary.slice(0, 2);
+const brandBase = brandPrimary.slice(brandPrefix.length);
+---
+
+<section
+  id="reviews"
+  class="py-24 bg-paper border-t border-slate-200/70 relative overflow-hidden"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class=" mb-16">
+      <h2 class="text-xl  md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {content.reviewsSection.titlePrefix}
+        <span class=""
+          >
+          <span class="ic-name">
+            <span class="ic-name-prefix ">{brandPrefix}</span
+            ><span class="ic-name-base ">{brandBase}</span><span
+              class="ic-name-accent">{brandAccent}</span
+            >
+          </span>
+        </span>
+      </h2>
+    </div>
+
+    <div class="swiper reviews__slider grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="swiper-wrapper">
+        {
+          content.reviewsSection.reviews.map((review, index) => (
+            <article
+              class:list={[
+                "swiper-slide bg-surface min-h-[500px] relative p-8 rounded-sm border-l-4  group hover:bg-surface-light transition-colors duration-300 flex flex-col h-full",
+                reviewBorders[index % reviewBorders.length],
+              ]}
+            >
+              <div class="mt-auto border-b pb-3 border-slate-200/70 pt-4 absolute top-6 ">
+                <div class="flex  justify-between items-start">
+                  <div class="flex items-center gap-2">
+                    <div class="">
+                      <img
+                        src={`./assets/reviews/${review.img}.webp`}
+                        alt={review.name}
+                        width="40"
+                        height="40"
+                      />
+                    </div>
+                    <div>
+                      <p class="text-ink font-bold font-display">
+                        {review.name}
+                      </p>
+                      <p class="text-sm text-slate-500">{review.role}</p>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-xs ml-12 text-gray-500 mt-2 uppercase tracking-wider font-mono">
+                  {review.course}
+                </p>
+              </div>
+              <div
+                class="absolute top-6 right-6 text-ink/10 text-4xl"
+                aria-hidden="true"
+              >
+                "
+              </div>
+
+              <p
+                class="text-slate-600 mb-6 absolute top-[140px] mr-10 leading-relaxed   z-10"
+                set:html={`"${highlightReviewText(review.text, review.highlight)}"`}
+              />
+            </article>
+          ))
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div
+        class="hidden xl:flex xl:items-center xl:flex-row-reverse xl:gap-4 xl:absolute xl:-top-20 xl:right-0"
+      >
+        <div class="swiper-button-next">
+          <Arrow />
+        </div>
+        <div class="swiper-button-prev">
+          <Arrow />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews__slider {
+    overflow: visible;
+  }
+
+</style>
+
+<script>
+  import Swiper from "swiper";
+  import { Navigation, Pagination } from "swiper/modules";
+
+  Swiper.use([Navigation, Pagination]);
+
+  const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
+
+  const styleBullets = () => {
+    const bullets = document.querySelectorAll(
+      "#reviews .swiper-pagination-bullet",
+    );
+    bullets.forEach((bullet, index) => {
+      (bullet as HTMLElement).style.background =
+        bulletColors[index % bulletColors.length];
+    });
+  };
+
+  const reviewsSwiper = new Swiper(".reviews__slider", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    modules: [Navigation, Pagination],
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    spaceBetween: 16,
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 16,
+      },
+      1280: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+      },
+    },
+
+    mousewheel: true,
+    keyboard: true,
+    on: {
+      init() {
+        requestAnimationFrame(() => styleBullets());
+      },
+    },
+  });
+
+  const updateMode = () => {
+    if (reviewsSwiper) {
+      reviewsSwiper.update();
+      requestAnimationFrame(() => styleBullets());
+    }
+  };
+
+  const debounce = (fn: () => void, ms: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(fn, ms);
+    };
+  };
+  window.addEventListener("resize", debounce(updateMode, 150));
+</script>
+
+<style>
+  .ic-logo {
+    --ic-cyan: var(--color-neon-cyan, #22d3ee);
+    --ic-text: var(--color-ink, #e6eef9);
+    --ic-name-size: 26px;
+  }
+
+  .ic-name {
+    font-family: "Outfit", "Inter", sans-serif;
+    font-size: var(--ic-name-size);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .ic-name-prefix {
+    color: var(--ic-cyan);
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+    color: #22d3ee;
+  }
+
+  .ic-name-base {
+    color: var(--ic-text);
+  }
+
+  .ic-name-accent {
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+</style>

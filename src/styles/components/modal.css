@@ -1,0 +1,28 @@
+.modal {
+  form {
+    @apply xl:grid-cols-1 xl:gap-8;
+  }
+}
+
+.modal-overlay {
+  background: var(--theme-modal-overlay, rgba(7, 13, 24, 0.45));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.modal-panel {
+  background-image: var(
+    --theme-modal-surface-gradient,
+    linear-gradient(160deg, rgba(14, 23, 43, 0.97), rgba(7, 13, 24, 0.97))
+  );
+  box-shadow: var(
+    --theme-modal-shadow,
+    0 24px 64px rgba(0, 0, 0, 0.48),
+    0 0 26px rgba(34, 211, 238, 0.2)
+  );
+}
+
+html.is-scroll-locked,
+body.is-scroll-locked {
+  overflow: hidden;
+}

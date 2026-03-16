@@ -1,0 +1,109 @@
+---
+import content from "../data/data.json";
+import { Icon } from "astro-icon/components";
+
+const benefitBorders = [
+  "border-neon-cyan/30",
+  "border-neon-magenta/30",
+  "border-neon-lime/30",
+  "border-neon-orange/30",
+] as const;
+const benefitBadges = [
+  "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30",
+  "bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30",
+  "bg-neon-lime/10 text-neon-lime border-neon-lime/30",
+  "bg-neon-orange/10 text-neon-orange border-neon-orange/30",
+] as const;
+
+const brandPrimary = content.brand.primary ?? "ITCode";
+const brandAccent = content.brand.accent ?? "Craft";
+const brandPrefix = brandPrimary.startsWith("IT")
+  ? "IT"
+  : brandPrimary.slice(0, 2);
+const brandBase = brandPrimary.slice(brandPrefix.length);
+---
+
+<section id="why-us" class="py-24 bg-paper relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class=" mb-16">
+      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {content.whySection.titlePrefix}
+        <!-- <span class="text-neon-lime">{content.whySection.titleHighlight}</span> -->
+        <span class="ic-name">
+          <span class="ic-name-prefix">{brandPrefix}</span><span
+            class="ic-name-base">{brandBase}</span
+          ><span class="ic-name-accent">{brandAccent}</span>
+        </span>
+      </h2>
+      <p class="text-slate-500 max-w-2xl text-sm md:text-base xl:text-lg">
+        {content.whySection.description}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+      {
+        content.whySection.benefits.map((benefit, index) => (
+          <article class="why-benefit-card bg-surface border xl:px-4 border-slate-200/70 p-8 rounded-sm hover:border-slate-200 transition-all duration-300 group relative overflow-hidden">
+            <div class="absolute top-2 right-2 flex gap-1">
+              <div class="w-2 h-2 rounded-full bg-white/70" />
+              <div class="w-2 h-2 rounded-full bg-white/70" />
+            </div>
+            <div
+              class:list={[
+                "w-16 h-16 mb-6 rounded-sm border flex items-center justify-center group-hover:scale-110 transition-transform duration-300",
+                benefitBorders[index % benefitBorders.length],
+                benefitBadges[index % benefitBadges.length],
+              ]}
+            >
+              <span class="text-3xl" aria-hidden="true">
+                {/* {benefit.icon} */}
+                <Icon name={benefit.icon} class="size-10" />
+              </span>
+            </div>
+
+            <h3 class="text-lg xl:tracking-[-0.7px] font-bold font-display text-ink mb-3">
+              {benefit.title}
+            </h3>
+            <p class="text-slate-500 leading-relaxed text-sm">
+              {benefit.description}
+            </p>
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-neon-cyan to-transparent opacity-50" />
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+
+<style>
+  .ic-logo {
+    --ic-cyan: var(--color-neon-cyan, #22d3ee);
+    --ic-text: var(--color-ink, #e6eef9);
+    --ic-name-size: 26px;
+  }
+
+  .ic-name {
+    font-family: "Outfit", "Inter", sans-serif;
+    font-size: var(--ic-name-size);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .ic-name-prefix {
+    color: var(--ic-cyan);
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+    color: #22d3ee;
+  }
+
+  .ic-name-base {
+    color: var(--ic-text);
+  }
+
+  .ic-name-accent {
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+</style>

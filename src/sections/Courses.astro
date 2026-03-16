@@ -1,0 +1,204 @@
+---
+import content from "../data/data.json";
+import Arrow from "../icons/arrow.svg";
+
+const courseBorders = [
+  "border-neon-lime",
+  "border-neon-magenta",
+
+  "border-neon-cyan",
+] as const;
+const courseTextColors = [
+  "text-neon-lime",
+  "text-neon-magenta",
+
+  "text-neon-cyan",
+] as const;
+const courseButtonBackgrounds = [
+  "bg-neon-lime",
+  "bg-neon-magenta",
+
+  "bg-neon-cyan",
+] as const;
+---
+
+<section id="courses" class="py-24 bg-paper relative overflow-hidden">
+  <div
+    class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+  >
+  </div>
+  <div
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  >
+    <div class="mb-16">
+      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {content.coursesSection.titlePrefix}
+        <br class="md:hidden" />
+        <span class="text-neon-cyan"
+          >{content.coursesSection.titleHighlight}</span
+        >
+      </h2>
+      <p class="text-slate-500 max-w-[335px] text-sm md:text-base md:max-w-full xl:text-lg">
+        {content.coursesSection.description}
+      </p>
+    </div>
+
+    <div class="courses__slider swiper overflow-visible!">
+      <div class="swiper-wrapper">
+        {
+          content.coursesSection.courses.map((course, index) => (
+            <article
+              class:list={[
+                "swiper-slide group relative min-h-[580px] bg-surface border xl:min-h-[580px] max-w-[440px] xl:max-w-[600px] p-8 rounded-sm transition-all duration-300 flex flex-col  h-full hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
+                courseBorders[index % courseBorders.length],
+              ]}
+            >
+              <div class="relative h-[180px] w-full overflow-hidden">
+                <img
+                  src={`./assets/courses/${course.image}.webp`}
+                  alt={course.alt}
+                  width="277"
+                  height="180"
+                  loading="lazy"
+                  decoding="async"
+                  class="front-image absolute inset-0 h-full w-full object-cover transition-opacity duration-300 "
+                />
+              </div>
+
+              <div class="mb-4 flex mt-5 justify-between items-center">
+                <h3 class="text-2xl font-bold font-display text-ink">
+                  {course.title}
+                </h3>
+
+                <span
+                  class:list={[
+                    "text-xs font-bold px-2 py-1 rounded  border border-slate-200",
+                    courseTextColors[index % courseTextColors.length],
+                  ]}
+                >
+                  {course.age}
+                </span>
+              </div>
+
+              <p class="text-slate-500 mb-6 leading-relaxed text-sm md:text-base ">
+                {course.description}
+              </p>
+
+              <button
+                type="button"
+                data-modal-open
+                data-product-name={course.title}
+                data-product-color={courseTextColors[index % courseTextColors.length]}
+                class:list={[
+                  "flex items-center absolute bottom-8 w-[calc(100%-56px)] left-1/2 -translate-x-1/2 justify-center gap-2  py-3 rounded-sm font-bold text-white opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                  courseButtonBackgrounds[
+                    index % courseButtonBackgrounds.length
+                  ],
+                ]}
+              >
+                {content.coursesSection.enrollLabel}{" "}
+              </button>
+            </article>
+          ))
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div
+        class="hidden xl:flex xl:items-center xl:flex-row-reverse xl:gap-4 xl:absolute xl:-top-20 xl:right-0"
+      >
+        <div class="swiper-button-next">
+          <Arrow />
+        </div>
+        <div class="swiper-button-prev">
+          <Arrow />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import Swiper from "swiper";
+  import { Navigation, Pagination } from "swiper/modules";
+
+  Swiper.use([Navigation, Pagination]);
+
+  const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
+
+  const styleBullets = () => {
+    const bullets = document.querySelectorAll(
+      "#courses .swiper-pagination-bullet",
+    );
+    bullets.forEach((bullet, index) => {
+      (bullet as HTMLElement).style.background =
+        bulletColors[index % bulletColors.length];
+    });
+  };
+
+  const coursesSwiper = new Swiper(".courses__slider", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    modules: [Navigation, Pagination],
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    spaceBetween: 16,
+    breakpoints: {
+      768: {
+        slidesPerView: 1.5,
+        spaceBetween: 16,
+      },
+      1280: {
+        slidesPerView: 2.7,
+        spaceBetween: 24,
+      },
+    },
+
+    mousewheel: true,
+    keyboard: true,
+    on: {
+      init() {
+        requestAnimationFrame(() => styleBullets());
+      },
+    },
+  });
+
+  const updateMode = () => {
+    if (coursesSwiper) {
+      coursesSwiper.update();
+      requestAnimationFrame(() => styleBullets());
+    }
+  };
+
+  const debounce = (fn: () => void, ms: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(fn, ms);
+    };
+  };
+  window.addEventListener("resize", debounce(updateMode, 150));
+</script>
+
+<style>
+  @media (min-width: 1200px) {
+    #courses.courses-grid .courses {
+      max-width: none;
+    }
+    #courses.courses-grid .swiper-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      transform: none !important;
+    }
+    #courses.courses-grid .swiper-slide {
+      height: auto !important;
+      transform: none !important;
+    }
+    #courses.courses-grid .swiper-pagination {
+      display: none;
+    }
+  }
+</style>

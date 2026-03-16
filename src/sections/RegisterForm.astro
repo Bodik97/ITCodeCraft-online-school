@@ -1,0 +1,93 @@
+---
+import content from "../data/data.json";
+import UseForm from "../components/form/UseForm.astro";
+
+---
+
+<section
+  id="register"
+  class="py-24 bg-paper relative overflow-x-clip [overflow-y:visible]"
+>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <h2 class="text-xl md:text-2xl font-bold  text-ink mb-4 xl:text-4xl">
+      {content.registerSection.titlePrefix}
+     
+      <span class="text-neon-cyan text-glow-cyan">{content.registerSection.titleHighlight}</span>
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center xl:gap-10 xl:items-end">
+      <div>
+
+
+      
+
+        <p class="text-sm text-slate-600 mb-8 md:text-base xl:text-lg">{content.registerSection.description}</p>
+
+        <div class="bg-surface/50 border border-slate-200/70 rounded-lg p-6 mb-8 xl:mb-0">
+          <p class="text-ink font-bold mb-4 flex items-center gap-2">
+            <span class="text-neon-lime">📅</span> {content.registerSection.socialProof}
+          </p>
+          <ul class="space-y-4">
+            {
+              content.registerSection.features.map((feature) => (
+                <li class="flex items-center gap-3 text-slate-600">
+                  <span class="text-neon-lime" aria-hidden="true">
+                    ✔
+                  </span>
+                  <span>{feature}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+      </div>
+      <div class="relative ">
+        <div
+          class="bg-surface min-h-[368px] md:min-h-[384px] xl:min-h-[230px] border border-slate-200 p-8 md:p-10 rounded-sm shadow-2xl relative animate-neon-pulse"
+        >
+          <div
+            class="absolute -top-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+          >
+          </div>
+          <div
+            class="absolute -top-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+          >
+          </div>
+          <div
+            class="absolute -bottom-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+          >
+          </div>
+          <div
+            class="absolute -bottom-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+          >
+          </div>
+      
+          <div id="register-success" class="hidden text-center py-12">
+            <div
+              class="w-24 h-24 bg-neon-lime/20 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <span class="text-neon-lime text-4xl" aria-hidden="true">✔</span>
+            </div>
+            <h3 class="text-3xl font-bold text-ink mb-4">
+              {content.registerSection.success.title}
+            </h3>
+            <p class="text-slate-600 mb-6">
+              {content.registerSection.success.description}
+            </p>
+            <div
+              class="bg-white/60 p-4 rounded border border-slate-200 text-sm text-slate-500"
+            >
+              {content.registerSection.success.note}
+            </div>
+          </div>
+      
+          <div id="register-form-body ">
+            <UseForm />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

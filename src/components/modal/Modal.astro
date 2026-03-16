@@ -1,0 +1,164 @@
+---
+import data from "../../data/data.json";
+// import FormComponent from "../form/FormComponent.astro";
+// import Form from "../form/Form";
+import UseForm from "../form/UseForm.astro";
+const modal = data.modal;
+---
+
+<div
+  class="modal modal-overlay fixed inset-0 z-80 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out"
+  data-modal-root
+  aria-hidden="true"
+  inert
+>
+  <div
+    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-slate-200/35 px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[580px]"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    data-modal-content
+  >
+    <button
+      type="button"
+      class="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/35 bg-paper/90 text-[1.2rem] md:text-2xl leading-none text-ink transition hover:scale-105 hover:border-neon-cyan/75 hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40 sm:size-10"
+      data-modal-close
+      aria-label="Закрити модальне вікно"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <h2
+      id="modal-title"
+      data-modal-title
+      data-modal-default-title={modal.title}
+      class="mb-5 text-left pr-10 text-[clamp(1rem,1.2rem+1vw,2.25rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(34,211,238,0.3)]"
+    >
+      {modal.title}
+    </h2>
+    <div class="mt-8 min-h-[302px] xl:min-h-[326px]">
+      <UseForm isModalForm={true} />
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const modalRoot = document.querySelector("[data-modal-root]");
+  const modalContent = document.querySelector("[data-modal-content]");
+  const modalTitle = document.querySelector("[data-modal-title]");
+  const closeModalButton = document.querySelector("[data-modal-close]");
+  const modalOpenButtons = document.querySelectorAll(
+    "#modal-open, [data-modal-open]",
+  );
+
+  if (modalRoot instanceof HTMLElement) {
+    const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
+    const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
+    const body = document.body;
+    const docEl = document.documentElement;
+    const lockClass = "is-scroll-locked";
+    let scrollLockedByModal = false;
+
+    const isModalClosed = () =>
+      hiddenModalClasses.every((className) =>
+        modalRoot.classList.contains(className),
+      );
+
+    let cachedScrollbarWidth = -1;
+    const getScrollbarWidth = () => {
+      if (cachedScrollbarWidth < 0) {
+        cachedScrollbarWidth =
+          window.innerWidth - document.documentElement.clientWidth;
+      }
+      return cachedScrollbarWidth;
+    };
+
+    const setModalTitle = (productName, colorClass = "text-neon-cyan") => {
+      if (!(modalTitle instanceof HTMLElement)) return;
+      const defaultTitle = modalTitle.dataset.modalDefaultTitle || "";
+      const normalizedProductName =
+        typeof productName === "string" ? productName.trim() : "";
+      if (!normalizedProductName) {
+        modalTitle.textContent = defaultTitle;
+        return;
+      }
+      modalTitle.textContent = "Запис на безоплатний урок ";
+      const accent = document.createElement("span");
+      accent.className = colorClass;
+      accent.textContent = normalizedProductName;
+      modalTitle.append(accent);
+    };
+
+    const openModal = (openerElement) => {
+      if (!isModalClosed()) return;
+      const el =
+        openerElement && openerElement instanceof HTMLElement
+          ? openerElement
+          : null;
+      const colorClass =
+        el?.getAttribute("data-product-color") || "text-neon-cyan";
+      const productName = el ? el.getAttribute("data-product-name") : null;
+      if (typeof productName === "string") {
+        window.productName = productName;
+      }
+      setModalTitle(productName, colorClass);
+      modalRoot.removeAttribute("inert");
+      modalRoot.setAttribute("aria-hidden", "false");
+      modalRoot.classList.remove("pointer-events-none");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        modalRoot.classList.remove("opacity-0");
+        modalContent?.classList.remove(...hiddenContentClasses);
+      });
+    };
+
+    const closeModal = () => {
+      if (isModalClosed()) return;
+      delete window.productName;
+      setModalTitle(null);
+      modalRoot.classList.add(...hiddenModalClasses);
+      modalContent?.classList.add(...hiddenContentClasses);
+      modalRoot.setAttribute("aria-hidden", "true");
+      modalRoot.setAttribute("inert", "");
+      document.body.style.overflow = "";
+    };
+
+    modalRoot.classList.add(...hiddenModalClasses);
+    modalContent?.classList.add(...hiddenContentClasses);
+    modalRoot.setAttribute("aria-hidden", "true");
+    modalRoot.setAttribute("inert", "");
+
+    modalOpenButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        if (button instanceof HTMLAnchorElement) event.preventDefault();
+        openModal(event.currentTarget);
+      });
+    });
+
+    closeModalButton?.addEventListener("click", closeModal);
+
+    modalRoot.addEventListener("click", (event) => {
+      if (event.target === modalRoot) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+  }
+</script>

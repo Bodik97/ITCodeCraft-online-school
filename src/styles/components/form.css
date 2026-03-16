@@ -1,0 +1,190 @@
+/* Спиннер під час відправки форми — у стилі проєкту (neon-cyan, surface) */
+.form-submit-spinner {
+  min-height: 120px;
+}
+
+.form-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-surface-light, #16233d);
+  border-top-color: var(--color-neon-cyan, #22d3ee);
+  border-radius: 50%;
+  animation: form-spinner-rotate 0.8s linear infinite;
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+}
+
+@keyframes form-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.leeloo {
+  @apply mx-auto overflow-hidden;
+}
+
+.leeloo iframe {
+  @apply mx-auto block;
+}
+
+.leeloo > div {
+  width: 100%;
+}
+
+.leeloo > div .leeloo-lgt-form-wrapper .leeloo-lgt-form {
+  width: 100% !important;
+}
+
+.leeloo .leeloo-lgt-form-wrapper {
+  @apply block;
+}
+
+.leeloo .leeloo-lgt-form {
+  width: 100% !important;
+}
+
+.input-label {
+  @apply relative [&_.input-label-title]:has-[:focus]:text-[#653CD9] [&_.input-label-title.input-label-title--error]:text-[#e53935] [&_.input-label-title.input-label-title--error]:has-[:focus]:text-[#e53935];
+}
+
+.input-label .input-label-title {
+  @apply relative pl-4 text-xs font-medium text-[#6e6e6e] md:text-sm xl:text-base;
+}
+
+.input-label .input-label-title .input-label-title--error {
+  @apply text-[#e53935];
+}
+
+.input-label .input-wrapper {
+  @apply relative block;
+}
+
+.input-label .input-field {
+  @apply w-full bg-paper border border-slate-200 rounded-sm px-4 py-4 text-base text-ink placeholder-gray-600 focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_10px_rgba(0,245,255,0.3)] transition-all duration-300;
+}
+
+/* .input-label .input-field::placeholder {
+  @apply   font-normal text-[#999999] transition-colors duration-150 md:text-base;
+} */
+
+/* .input-label .input-field:focus {
+  @apply border border-slate-200 bg-paper outline-none;
+} */
+
+.input-label .input-field.input-field--error {
+  @apply border border-[#e53935];
+}
+
+.input-label .input-field[type="tel"] {
+  @apply pl-14;
+}
+
+.input-label .input-field[data-selected="false"] {
+  @apply text-[#999999];
+}
+
+.input-label .input-field[data-selected="true"] {
+  @apply text-[#1a1a1a];
+}
+
+.input-label .input-field .chevron-icon {
+  @apply size-6 text-[#999999] transition-transform duration-150 md:size-7 xl:size-8;
+}
+
+.input-label .input-field .chevron-icon.chevron-icon--error {
+  @apply text-[#e53935];
+}
+
+.input-label .input-clear-button {
+  @apply absolute top-1/2 right-3 z-10 size-5 -translate-y-1/2 fill-[#999999] transition-colors duration-150 hover:fill-indigo-500 md:size-6 xl:right-4 xl:size-7;
+}
+
+.input-label .input-clear-button--error {
+  @apply fill-[#e53935];
+}
+
+.input-label .input-clear-icon {
+  @apply size-5 md:size-6 xl:size-7;
+}
+
+.input-error-message {
+  @apply absolute top-full left-4 text-xs font-normal text-[#e53935];
+}
+
+/* checkbox */
+.checkbox-label {
+  @apply relative cursor-pointer text-xs leading-snug font-normal text-[#474747] md:text-sm xl:text-base;
+}
+
+.checkbox-label .is-invalid {
+  @apply border border-[#e53935];
+}
+
+.checkbox-label .checkbox-wrapper {
+  @apply flex items-start gap-2;
+}
+
+.checkbox-label:hover .checkbox {
+  @apply border-indigo-500 bg-[#ebe6fa];
+}
+
+.checkbox-label [type="checkbox"]:focus ~ .checkbox {
+  @apply ring-2 ring-[#fec830];
+}
+
+.checkbox-label [type="checkbox"]:checked + .checkbox {
+  @apply border-indigo-600 bg-indigo-600;
+}
+
+.checkbox-label [type="checkbox"]:checked + .checkbox .check-icon {
+  @apply scale-100 opacity-100;
+}
+
+.checkbox-label .checkbox {
+  @apply flex size-5 min-w-5 items-center justify-center rounded border border-[#d6d6d6] bg-white transition-all xl:size-8 xl:min-w-8 xl:rounded-lg;
+}
+
+.checkbox-label .checkbox .check-icon {
+  @apply h-full w-full scale-0 stroke-white opacity-0 transition-all;
+}
+
+/* radio group */
+.radio-wrapper {
+  @apply relative;
+}
+
+.radio-wrapper .radio-title {
+  @apply text-sm font-medium text-[#1a1a1a] md:text-base xl:text-xl;
+}
+
+.radio-wrapper .radio-group {
+  @apply flex flex-wrap items-center gap-4;
+}
+
+.radio-wrapper .radio-label {
+  @apply flex cursor-pointer items-center gap-[6px] text-sm text-[#474747] transition duration-150 hover:text-[#1a1a1a] has-[:checked]:text-[#1a1a1a] md:gap-2 md:text-base xl:gap-3 xl:text-xl;
+}
+
+.radio-wrapper .radio-label:hover .radio {
+  @apply border border-indigo-500 bg-[#ebe6fa];
+}
+
+.radio-wrapper .radio {
+  @apply flex size-5 min-w-5 items-center justify-center rounded-full border border-[#d6d6d6] bg-white transition duration-150 ease-linear md:size-6 md:min-w-6 xl:size-8 xl:min-w-8;
+  transition:
+    border-width 0.15s,
+    border-color 0.15s;
+}
+
+.radio-wrapper .radio .check-icon {
+  @apply h-auto w-full scale-0 opacity-0 transition ease-linear;
+}
+
+.radio-wrapper [type="radio"]:checked ~ .radio {
+  @apply border-4 border-indigo-500 bg-[#ebe6fa] md:border-[6px] xl:border-8;
+}
+
+.radio-wrapper [type="radio"]:focus ~ .radio {
+  @apply ring-2 ring-[#fec830];
+}
+

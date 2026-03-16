@@ -1,0 +1,335 @@
+---
+import content from "../data/data.json";
+import HeroBg from "../components/HeroBg.astro";
+import UseForm from "../components/form/UseForm.astro";
+import { Icon } from "astro-icon/components";
+
+const heroTypingStyles = [
+  "text-neon-lime text-glow-lime",
+  "text-neon-cyan text-glow-cyan",
+  "text-neon-orange text-glow-orange",
+] as const;
+
+const heroStatColors = [
+  "text-neon-magenta",
+  "text-neon-lime",
+  "text-neon-orange",
+] as const;
+
+const section = content.hero;
+const registerSection = content.registerSection;
+const getInitialCounterValue = (rawValue: string): string => {
+  const suffix = rawValue.replace(/[\d.]/g, "");
+  return `0${suffix}`;
+};
+---
+
+<section
+  id="hero-section"
+  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper pt-[160px] pb-20"
+>
+  <HeroBg />
+
+  <div
+    class="hero-parallax relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-full lg:w-full xl:max-w-7xl"
+    data-parallax="0.05"
+  >
+    <h1
+      class="hero-reveal text-4xl font-bold md:text-5xl max-w-[400px] xl:text-6xl font-display text-ink mb-6 leading-tight xl:max-w-[1150px] md:max-w-[630px] lg:max-w-600px hero-title-shimmer"
+      style="transition-delay: 0.1s"
+    >
+      {content.hero.liveBadgePrefix}
+    </h1>
+    <div
+      class="lg:grid lg:grid-cols-[550px_1fr] lg:gap-8 xl:grid-cols-[1fr_1fr] xl:items-end"
+    >
+      <div>
+        <p
+          set:html={content.hero.subtitle}
+          class="hero-reveal hidden md:block text-sm max-w-[460px] md:text-lg text-slate-600 mb-4 md:max-w-[500px] lg:max-w-[600px]"
+          style="transition-delay: 0.25s"
+        />
+        <h2
+          class="hero-reveal text-lg md:text-2xl lg:text-4xl font-semibold font-display text-ink mb-10 leading-tight max-w-[460px] md:max-w-[430px] lg:max-w-[600px]"
+          style="transition-delay: 0.4s"
+        >
+          <div
+            id="hero-typing"
+            aria-live="polite"
+            class="h-[3.3em] text-base md:text-lg relative overflow-hidden md:h-[3.4em]"
+          >
+            {
+              content.hero.typingTexts.map((text, index) => (
+                <div
+                  class:list={[
+                    "hero-typing-item text-lg absolute w-full left-0 right-0 md:text-2xl",
+                    heroTypingStyles[index % heroTypingStyles.length],
+                    index === 0 && "is-active",
+                  ]}
+                >
+                  {text}
+                </div>
+              ))
+            }
+          </div>
+        </h2>
+
+        <div
+          class="hero-reveal flex items-center gap-2 mb-8 flex-wrap lg:mb-0"
+          style="transition-delay: 0.55s"
+        >
+          {
+            section.options.map((option) => (
+              <div class="text-sm font-medium text-slate-600 tracking-wide bg-neon-cyan/10 border border-neon-cyan/20 rounded-full px-4 py-2">
+                {option}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="hero-reveal" style="transition-delay: 0.5s">
+        <div class="relative">
+          <div
+            class="bg-surface min-h-[368px] md:min-h-[384px] xl:min-h-[230px] border border-slate-200 p-8 md:p-10 rounded-sm shadow-2xl relative animate-neon-pulse"
+          >
+            <div
+              class="absolute -top-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+            >
+            </div>
+            <div
+              class="absolute -top-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+            >
+            </div>
+            <div
+              class="absolute -bottom-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+            >
+            </div>
+            <div
+              class="absolute -bottom-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
+            >
+            </div>
+
+            <div id="register-success" class="hidden text-center py-12">
+              <div
+                class="w-24 h-24 bg-neon-lime/20 rounded-full flex items-center justify-center mx-auto mb-6"
+              >
+                <span class="text-neon-lime text-4xl" aria-hidden="true">✔</span
+                >
+              </div>
+              <h3 class="text-3xl font-bold text-ink mb-4">
+                {registerSection.success.title}
+              </h3>
+              <p class="text-slate-600 mb-6">
+                {registerSection.success.description}
+              </p>
+            </div>
+
+            <div id="register-form-body">
+              <UseForm client:load />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="hero-reveal hero-stats-border mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-slate-700 pt-8 max-w-4xl mx-auto"
+      style="transition-delay: 0.7s"
+    >
+      {
+        content.hero.stats.map((stat, index) => (
+          <div class="flex flex-col items-center">
+            <div
+              class:list={[
+                "flex items-center gap-2 mb-2",
+                heroStatColors[index % heroStatColors.length],
+              ]}
+            >
+              <span class="text-xl" aria-hidden="true">
+                {/* {stat.icon} */}
+                <Icon name={stat.icon} class="size-8" />
+              </span>
+              <span
+                class="text-3xl font-bold font-display hero-counter"
+                data-target={stat.value}
+              >
+                {getInitialCounterValue(stat.value)}
+              </span>
+            </div>
+            <span class="text-slate-500 text-sm">{stat.label}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="hero-reveal mt-16 max-w-3xl mx-auto text-center md:text-left lg:text-center"
+      style="transition-delay: 0.85s"
+    >
+      <p class="text-slate-500 leading-relaxed text-lg">
+        <strong class="text-ink"
+          >{content.brand.primary}{content.brand.accent}</strong
+        >
+        {content.hero.seoLead}
+        <span class="text-neon-lime"> {content.hero.seoMinecraft}</span>, {
+          content.hero.seoMiddle
+        }
+        <span class="text-neon-cyan"> {content.hero.seoRoblox}</span>, {
+          content.hero.seoTail
+        }
+        <span class="text-neon-orange"> {content.hero.seoWebsites}.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      transform 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+      opacity 0.6s ease;
+  }
+
+  .hero-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-reveal:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .hero-reveal:nth-child(2) {
+    transition-delay: 0.25s;
+  }
+  .hero-reveal:nth-child(3) {
+    transition-delay: 0.4s;
+  }
+</style>
+
+<script>
+  const heroSection = document.getElementById("hero-section");
+
+  if (heroSection) {
+    // --- Parallax ---
+    const layers = [
+      ...heroSection.querySelectorAll<HTMLElement>(".hero-parallax"),
+    ].map((el) => ({
+      el,
+      speed: parseFloat(el.dataset.parallax || "0"),
+    }));
+
+    let sectionTop = 0;
+
+    let ticking = false;
+    let lastScrollY = 0;
+
+    const updateSectionTop = () => {
+      // sectionTop = heroSection.getBoundingClientRect().top + window.scrollY;
+      sectionTop = heroSection.offsetTop;
+    };
+
+    const applyParallax = () => {
+      const scrolled = lastScrollY - sectionTop;
+
+      for (const layer of layers) {
+        layer.el.style.transform = `translate3d(0, ${scrolled * layer.speed}px, 0)`;
+      }
+
+      ticking = false;
+    };
+    const onScroll = () => {
+      lastScrollY = window.scrollY;
+
+      if (!ticking) {
+        requestAnimationFrame(applyParallax);
+        ticking = true;
+      }
+    };
+
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    if (!mediaQuery.matches) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    requestAnimationFrame(() => {
+      updateSectionTop();
+      applyParallax();
+    });
+
+    // --- Staggered reveal on load ---
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReduced) {
+      heroSection
+        .querySelectorAll(".hero-reveal")
+        .forEach((el) => el.classList.add("is-visible"));
+    } else {
+      requestAnimationFrame(() => {
+        heroSection
+          .querySelectorAll(".hero-reveal")
+          .forEach((el) => el.classList.add("is-visible"));
+      });
+    }
+
+    // --- Animated counters ---
+    const counters = heroSection.querySelectorAll<HTMLElement>(".hero-counter");
+    const DURATION = 1800;
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const animateCounter = (el: HTMLElement) => {
+      const raw = el.dataset.target || "";
+      const suffix = raw.replace(/[\d.]/g, "");
+      const target = parseFloat(raw);
+      if (isNaN(target)) return;
+
+      const isFloat = raw.includes(".");
+      const decimals = isFloat
+        ? raw.split(".")[1]?.replace(/[^\d]/g, "").length || 1
+        : 0;
+      const start = performance.now();
+
+      el.textContent = isFloat ? (0).toFixed(decimals) + suffix : "0" + suffix;
+
+      const step = (now: number) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / DURATION, 1);
+        const current = target * easeOutCubic(progress);
+
+        el.textContent =
+          (isFloat
+            ? current.toFixed(decimals)
+            : Math.floor(current).toString()) + suffix;
+
+        if (progress < 1) requestAnimationFrame(step);
+      };
+
+      requestAnimationFrame(step);
+    };
+
+    if (prefersReduced) {
+      counters.forEach((el) => {
+        el.textContent = el.dataset.target || "";
+      });
+    } else {
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setTimeout(
+                () => animateCounter(entry.target as HTMLElement),
+                800,
+              );
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 },
+      );
+      counters.forEach((el) => counterObserver.observe(el));
+    }
+  }
+</script>

@@ -1,0 +1,56 @@
+---
+import content from "../data/data.json";
+import { Icon } from "astro-icon/components";
+---
+
+<section id="faq" class="py-24 bg-paper relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-16">
+      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {content.faqSection.titlePrefix}
+      </h2>
+    </div>
+
+    <div class="space-y-4 mb-16">
+      {
+        content.faqSection.items.map((faq) => (
+          <article class="faq-item bg-surface border border-slate-200/70 rounded-sm overflow-hidden transition-all duration-300">
+            <button
+              type="button"
+              data-faq-trigger
+              aria-expanded="false"
+              class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+            >
+              <span class="font-bold font-display text-lg text-ink">
+                {faq.question}
+              </span>
+              <span class="ml-4" aria-hidden="true">
+                <Icon
+                  name="plus-icon"
+                  class="faq-indicator size-8 text-white stroke-white active:text-neon-orange active:stroke-neon-orange focus:text-neon-orange focus:stroke-neon-orange transition-all duration-300 hover:text-neon-orange hover:stroke-neon-orange"
+                />
+              </span>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-6 text-slate-500 leading-relaxed border-t border-slate-200/70 pt-4">
+                {faq.answer}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const faqItems = Array.from(document.querySelectorAll(".faq-item"));
+  faqItems.forEach((item) => {
+    const trigger = item.querySelector("[data-faq-trigger]");
+    trigger?.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+      item.classList.toggle("is-open", !isOpen);
+      trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+    });
+  });
+</script>

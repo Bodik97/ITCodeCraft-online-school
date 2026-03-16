@@ -1,0 +1,150 @@
+---
+import data from "../../data/data.json";
+
+const success = data.registerSection.success;
+---
+
+<div
+  class="modal-overlay fixed inset-0 z-90 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out"
+  data-modal-success-root
+  aria-hidden="true"
+  inert
+>
+  <div
+    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-slate-200/35 px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="success-modal-title"
+    data-modal-success-content
+  >
+    <button
+      type="button"
+      class="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/35 bg-paper/90 text-[1.2rem] md:text-2xl leading-none text-ink transition hover:scale-105 hover:border-neon-cyan/75 hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40 sm:size-10"
+      data-modal-success-close
+      aria-label="Закрити модальне вікно успіху"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div
+      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-neon-lime/50 bg-neon-lime/20 shadow-[0_0_25px_rgba(163,230,53,0.25)]"
+    >
+      <span class="text-3xl text-neon-lime" aria-hidden="true">✔</span>
+    </div>
+
+    <h2
+      id="success-modal-title"
+      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(34,211,238,0.25)]"
+    >
+      {success.title}
+    </h2>
+    <p
+      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-slate-100 sm:text-base"
+    >
+      {success.description}
+    </p>
+
+    <button
+      type="button"
+      class="mt-6 w-full rounded-xl bg-neon-cyan px-4 py-3 text-sm font-bold text-white shadow-neon-cyan transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40"
+      data-modal-success-close
+    >
+      Супер, дякую!
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  const successModalRoot = document.querySelector("[data-modal-success-root]");
+  const successModalContent = document.querySelector(
+    "[data-modal-success-content]",
+  );
+  const successModalCloseButtons = document.querySelectorAll(
+    "[data-modal-success-close]",
+  );
+
+  if (successModalRoot instanceof HTMLElement) {
+    const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
+    const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
+    const body = document.body;
+    const docEl = document.documentElement;
+    const lockClass = "is-scroll-locked";
+    let scrollLockedBySuccessModal = false;
+
+    const isModalClosed = () =>
+      hiddenModalClasses.every((className) =>
+        successModalRoot.classList.contains(className),
+      );
+
+    let cachedScrollbarWidth = -1;
+    const getScrollbarWidth = () => {
+      if (cachedScrollbarWidth < 0) {
+        cachedScrollbarWidth =
+          window.innerWidth - document.documentElement.clientWidth;
+      }
+      return cachedScrollbarWidth;
+    };
+
+
+
+    const openModal = () => {
+      if (!isModalClosed()) return;
+      successModalRoot.removeAttribute("inert");
+      successModalRoot.setAttribute("aria-hidden", "false");
+      successModalRoot.classList.remove("pointer-events-none");
+      requestAnimationFrame(() => {
+        successModalRoot.classList.remove("opacity-0");
+        successModalContent?.classList.remove(...hiddenContentClasses);
+      });
+      // lockScroll();
+    };
+
+    const closeModal = () => {
+      if (isModalClosed()) return;
+      delete window.productName;
+      successModalRoot.classList.add(...hiddenModalClasses);
+      successModalContent?.classList.add(...hiddenContentClasses);
+      successModalRoot.setAttribute("aria-hidden", "true");
+      successModalRoot.setAttribute("inert", "");
+      document.body.style.overflow = "";
+      // unlockScroll();
+    };
+
+    successModalRoot.classList.add(...hiddenModalClasses);
+    successModalContent?.classList.add(...hiddenContentClasses);
+    successModalRoot.setAttribute("aria-hidden", "true");
+    successModalRoot.setAttribute("inert", "");
+    // unlockScroll();
+
+    successModalCloseButtons.forEach((button) => {
+      button.addEventListener("click", closeModal);
+    });
+
+    successModalRoot.addEventListener("click", (event) => {
+      if (event.target === successModalRoot) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("itcc:form-success", openModal);
+  }
+</script>

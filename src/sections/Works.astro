@@ -1,0 +1,319 @@
+---
+import content from "../data/data.json";
+
+const workBorders = [
+  "border-neon-cyan/40",
+  "border-neon-magenta/40",
+  "border-neon-lime/40",
+] as const;
+const workBackgrounds = [
+  "bg-neon-cyan/10",
+  "bg-neon-magenta/10",
+  "bg-neon-lime/10",
+] as const;
+const workAccents = [
+  "text-neon-cyan",
+  "text-neon-magenta",
+  "text-neon-lime",
+] as const;
+---
+
+<section id="works" class="py-24 bg-paper relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class=" mb-16">
+      <h2 class="text-xl  md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {content.worksSection.titlePrefix}
+        <span class="text-neon-magenta"
+          >{content.worksSection.titleHighlight}</span
+        >
+      </h2>
+      <p class="text-sm  text-slate-600 max-w-2xl md:text-base xl:text-lg">
+        {content.worksSection.description}
+      </p>
+    </div>
+
+    <div class="cards grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <!-- <div class="swiper-wrapper"> -->
+      {
+        content.worksSection.cards.map((work, index) => (
+          <article class="group relative">
+            <div
+              data-work-card
+              data-youtube-id={work.youtubeId ?? ""}
+              class:list={[
+                "relative h-72 rounded-sm overflow-hidden border-2 transition-all duration-300 bg-surface shadow-lg hover:shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-pointer",
+                workBorders[index % workBorders.length],
+              ]}
+            >
+              {work.video && (
+                <div class="relative">
+                  <img
+                    src={`./assets/projects/${work.video}.webp`}
+                    alt={work.title}
+                    class="w-full h-full object-cover"
+                    width="300"
+                    height="300"
+                  />
+                </div>
+              )}
+              <div
+                data-work-shade
+                class:list={[
+                  "absolute inset-0 opacity-60 group-hover:opacity-80 transition-opacity duration-300 hover-glitch pointer-events-none",
+                  workBackgrounds[index % workBackgrounds.length],
+                ]}
+              />
+
+              <div
+                data-work-play-overlay
+                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 pointer-events-none"
+              >
+                <button
+                  type="button"
+                  data-work-play
+                  class="w-14 h-14 rounded-full bg-white/70 border border-white/30 flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.2)] pointer-events-auto"
+                  aria-label={`Відтворити відео: ${work.title}`}
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    class="w-10 h-10 text-ink"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                data-work-info
+                class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent transition-opacity duration-300"
+              >
+                <h3 class="text-xl font-bold text-ink font-display mb-1">
+                  {work.title}
+                </h3>
+
+                <div class="flex justify-between items-end">
+                  <p class="text-sm text-slate-600">{work.student}</p>
+                  <span
+                    class:list={[
+                      "text-xs font-mono px-2 py-1 rounded border",
+                      workAccents[index % workAccents.length],
+                      workBackgrounds[index % workBackgrounds.length],
+                    ]}
+                  >
+                    {work.time}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <div
+    id="work-video-modal"
+    id="work-video-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 work-video-modal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="work-video-modal-title"
+  >
+    <div class="relative w-full max-w-4xl">
+      <h2 id="work-video-modal-title" class="sr-only">Відео проєкту</h2>
+      <button
+        type="button"
+        id="work-video-close"
+        class="absolute -top-10 right-0 text-white/90 hover:text-white p-1 rounded focus:outline-none focus:ring-2 focus:ring-neon-cyan"
+        aria-label="Закрити відео"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="aspect-video w-full overflow-hidden rounded-sm bg-black">
+        <iframe
+          id="work-video-iframe"
+          class="w-full h-full"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cards {
+    overflow: visible;
+  }
+  .swiper-pagination {
+    bottom: -40px;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: transparent;
+    background-color: #1f2937;
+    border-radius: 10%;
+    position: static;
+    margin: 0;
+    transition: background-color 0.1s ease;
+  }
+
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover,
+  .swiper-button-next:active,
+  .swiper-button-prev:active {
+    background-color: #273549;
+  }
+  .swiper-button-next:focus,
+  .swiper-button-prev:focus {
+    outline: 2px solid #273549;
+  }
+  .swiper-button-next {
+    transform: rotate(180deg);
+  }
+  #works :global(.swiper-pagination-bullet) {
+    border-radius: 0;
+    opacity: 1;
+    width: 4px;
+    height: 4px;
+    transition:
+      opacity 0.3s ease,
+      width 0.3s ease;
+  }
+
+  #works :global(.swiper-pagination-bullet-active) {
+    width: 8px;
+    height: 8px;
+    opacity: 1;
+  }
+
+  #works
+    :global(.swiper-pagination-bullet:not(.swiper-pagination-bullet-active)) {
+    opacity: 0.5;
+  }
+
+  .work-video-modal[aria-hidden="true"] {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const modal = document.getElementById("work-video-modal");
+    const iframe = document.getElementById("work-video-iframe");
+    const closeBtn = document.getElementById("work-video-close");
+
+    if (!modal || !iframe) return;
+
+    const openModal = (youtubeId) => {
+      if (!youtubeId) return;
+      iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeBtn?.focus();
+    };
+
+    const closeModal = () => {
+      iframe.src = "";
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    closeBtn?.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.getAttribute("aria-hidden") !== "true") closeModal();
+    });
+
+    const worksSection = document.querySelector("#works");
+    if (!worksSection) return;
+
+    worksSection.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-work-card]");
+      if (!card || e.target.closest("#work-video-close")) return;
+      const youtubeId = card.getAttribute("data-youtube-id")?.trim();
+      if (youtubeId) {
+        e.preventDefault();
+        openModal(youtubeId);
+      }
+    });
+  })();
+</script>
+
+<!-- <script>
+  import Swiper from "swiper";
+  import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+
+  const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
+
+  const styleBullets = () => {
+    const bullets = document.querySelectorAll(
+      "#works .swiper-pagination-bullet",
+    );
+    bullets.forEach((bullet, index) => {
+      (bullet as HTMLElement).style.background =
+        bulletColors[index % bulletColors.length];
+    });
+  };
+
+  Swiper.use([Navigation, Pagination, Mousewheel, Keyboard]);
+
+ const worksSwiper = new Swiper(".cards", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    modules: [Navigation, Pagination, Mousewheel, Keyboard],
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    loop: true,
+    spaceBetween: 16,
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 16,
+      },
+      1280: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+      },
+
+    },
+    mousewheel: true,
+    keyboard: true,
+    on: {
+      init() {
+        requestAnimationFrame(() => styleBullets());
+      },
+    },
+  });
+  
+  const updateMode = () => {
+    if (worksSwiper) {
+      worksSwiper.update();
+      requestAnimationFrame(() => styleBullets());
+    }
+  };
+
+  const debounce = (fn: () => void, ms: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(fn, ms);
+    };
+  };
+  window.addEventListener("resize", debounce(updateMode, 150));
+</script> -->

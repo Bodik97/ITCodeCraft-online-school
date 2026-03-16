@@ -1,0 +1,124 @@
+---
+import content from "../data/data.json";
+import Logo from "../components/Logo.astro";
+import { Icon } from "astro-icon/components";
+
+const footerSocialTextColors = ["hover:text-neon-cyan", "hover:text-neon-magenta", "hover:text-neon-lime"] as const;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-[#131322] border-t border-slate-200/70 pb-8">
+
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <div>
+        <Logo href="#" size="sm" className="mb-6" />
+        <p class="text-slate-500 text-sm leading-relaxed mb-6">{content.footerSection.aboutText}</p>
+        <div class="flex gap-4">
+          {
+            content.footerSection.socialLinks.map((link, index) => (
+              <a
+                href={link.url}
+                aria-label={link.label}
+                class:list={["w-10 h-10 rounded-sm bg-surface flex items-center justify-center text-slate-500 hover:border transition-all", footerSocialTextColors[index % footerSocialTextColors.length]]}
+              >
+                {link.label.slice(0, 2).toUpperCase()}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-ink font-bold font-display mb-6 tracking-wide">{content.footerSection.navigationTitle}</h3>
+        <ul class="space-y-3">
+          {
+            content.footerSection.navigationLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-slate-500 hover:text-neon-cyan transition-colors text-sm">
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-ink font-bold font-display mb-6 tracking-wide">{content.footerSection.contactsTitle}</h3>
+        <ul class="space-y-4">
+          <li class="flex items-center gap-3 text-slate-500 text-sm">
+            <span class="text-neon-cyan mt-0.5" aria-hidden="true">
+              <Icon name="email" class="size-6"/>
+            </span>
+            <a
+              href={`mailto:${content.footerSection.email}`}
+              data-email-link
+              data-email-address={content.footerSection.email}
+              class="transition-colors duration-200 hover:text-neon-cyan  underline-offset-2"
+            >
+              {content.footerSection.email}
+            </a>
+          </li>
+          <li class="flex items-center gap-3 text-slate-500 text-sm">
+            <span class="text-neon-cyan mt-0.5" aria-hidden="true">
+              <Icon name="phone" class="size-5"/>
+            </span>
+            <a
+              href={`${content.footerSection.linkPhone}`}
+              class="transition-colors duration-200 hover:text-neon-cyan  underline-offset-2"
+            >
+              {content.footerSection.phone}
+            </a>
+          </li>
+          <li class="text-gray-500 text-xs mt-4">{content.footerSection.workHours}</li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="border-t border-slate-200/70 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-600 text-xs">© {currentYear} {content.footerSection.copyrightSuffix}</p>
+      <div class="flex gap-6">
+        <a href="#" class="text-gray-600 hover:text-ink text-xs transition-colors">
+          {content.footerSection.privacyPolicy}
+        </a>
+        <a href="#" class="text-gray-600 hover:text-ink text-xs transition-colors">
+          {content.footerSection.offerAgreement}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+  const emailLink = document.querySelector("[data-email-link]");
+  if (emailLink instanceof HTMLAnchorElement) {
+    emailLink.addEventListener("click", (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      const email = emailLink.dataset.emailAddress || "";
+      const mailtoUrl = `mailto:${email}`;
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
+
+      window.location.href = mailtoUrl;
+      window.setTimeout(() => {
+        if (document.hasFocus()) {
+          window.location.href = gmailUrl;
+        }
+      }, 700);
+    });
+  }
+</script>

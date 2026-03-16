@@ -1,0 +1,22 @@
+---
+interface Props {
+  initialAvatar?: string;
+}
+
+const { initialAvatar = "" } = Astro.props;
+---
+
+<div id="signup-notification" class="notification-toast is-hidden fixed bottom-4 left-4 z-50 max-w-sm w-full sm:w-auto" aria-live="polite">
+  <div class="bg-surface/90 backdrop-blur-md border-l-4 border-neon-cyan p-4 rounded-r-sm shadow-2xl flex items-center gap-4">
+    <div id="notification-avatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-neon-cyan to-blue-600 flex items-center justify-center text-ink font-bold text-sm">
+      {initialAvatar}
+    </div>
+    <div>
+      <p id="notification-name" class="text-sm font-bold text-ink"></p>
+      <p id="notification-action" class="text-xs text-slate-600"></p>
+      <p id="notification-time" class="text-[10px] text-neon-cyan mt-1 flex items-center gap-1">
+        <span aria-hidden="true">✔</span>
+      </p>
+    </div>
+  </div>
+</div>

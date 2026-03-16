@@ -1,0 +1,298 @@
+---
+// import "../index.css";
+import "@/styles/global.css";
+type NotificationItem = {
+  name: string;
+  action: string;
+  time: string;
+};
+
+type RuntimeData = {
+  notifications: NotificationItem[];
+  timer: {
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
+  onlineCount: number;
+  openMenuLabel: string;
+  closeMenuLabel: string;
+  defaultAvatar: string;
+};
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+  runtimeData: RuntimeData;
+}
+
+const { lang, title, description, runtimeData } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="./assets/OGP/Facebook.jpg" />
+    <meta property="twitter:image" content="./assets/OGP/X.jpg" />
+    <meta property="og:url" content="https://itcodecraft.com" />
+    <meta property="og:type" content="website" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./assets/favicon/site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      />
+    </noscript>
+  </head>
+  <body
+    class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"
+  >
+    <slot />
+
+    <script
+      is:inline
+      id="dynamic-data"
+      type="application/json"
+      set:html={JSON.stringify(runtimeData)}
+    />
+
+    <script is:inline>
+      const dynamicDataNode = document.getElementById("dynamic-data");
+      const dynamicData = dynamicDataNode
+        ? JSON.parse(dynamicDataNode.textContent || "{}")
+        : {};
+
+      const header = document.getElementById("site-header");
+      const headerScrolledClass = "is-scrolled";
+      const syncHeader = () => {
+        if (!header) return;
+        if (window.scrollY > 50) {
+          header.classList.add(headerScrolledClass);
+        } else {
+          header.classList.remove(headerScrolledClass);
+        }
+      };
+      syncHeader();
+      window.addEventListener("scroll", syncHeader, { passive: true });
+
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileToggle = document.getElementById("mobile-menu-toggle");
+      const menuIconOpen = document.getElementById("menu-icon-open");
+      const menuIconClose = document.getElementById("menu-icon-close");
+      const closeMobileMenu = () => {
+        if (!mobileMenu || !mobileToggle) return;
+        mobileMenu.classList.remove("is-open");
+        mobileToggle.setAttribute("aria-expanded", "false");
+        mobileToggle.setAttribute(
+          "aria-label",
+          dynamicData.openMenuLabel || "",
+        );
+        menuIconOpen?.classList.remove("hidden");
+        menuIconClose?.classList.add("hidden");
+      };
+
+      mobileToggle?.addEventListener("click", () => {
+        if (!mobileMenu || !mobileToggle) return;
+        const shouldOpen = !mobileMenu.classList.contains("is-open");
+        if (shouldOpen) {
+          mobileMenu.classList.add("is-open");
+          mobileToggle.setAttribute("aria-expanded", "true");
+          mobileToggle.setAttribute(
+            "aria-label",
+            dynamicData.closeMenuLabel || "",
+          );
+          menuIconOpen?.classList.add("hidden");
+          menuIconClose?.classList.remove("hidden");
+        } else {
+          closeMobileMenu();
+        }
+      });
+
+      mobileMenu?.querySelectorAll("a").forEach((node) => {
+        node.addEventListener("click", closeMobileMenu);
+      });
+
+      document
+        .querySelector("[data-close-urgency]")
+        ?.addEventListener("click", () => {
+          document.getElementById("urgency-banner")?.remove();
+        });
+
+      const typingItems = Array.from(
+        document.querySelectorAll(".hero-typing-item"),
+      );
+      let typingIndex = 0;
+      if (typingItems.length > 1) {
+        window.setInterval(() => {
+          typingItems[typingIndex]?.classList.remove("is-active");
+          typingIndex = (typingIndex + 1) % typingItems.length;
+          typingItems[typingIndex]?.classList.add("is-active");
+        }, 2800);
+      }
+    </script>
+
+    <script is:inline>
+      (typeof requestIdleCallback === "function"
+        ? requestIdleCallback
+        : (fn) => setTimeout(fn, 200))(function () {
+        const dynamicDataNode = document.getElementById("dynamic-data");
+        const dynamicData = dynamicDataNode
+          ? JSON.parse(dynamicDataNode.textContent || "{}")
+          : {};
+
+        const timerHours = document.getElementById("timer-hours");
+        const timerMinutes = document.getElementById("timer-minutes");
+        const timerSeconds = document.getElementById("timer-seconds");
+        const timerState = {
+          hours: Number(dynamicData.timer?.hours || 0),
+          minutes: Number(dynamicData.timer?.minutes || 0),
+          seconds: Number(dynamicData.timer?.seconds || 0),
+        };
+
+        const drawTimer = () => {
+          if (timerHours)
+            timerHours.textContent = String(timerState.hours).padStart(2, "0");
+          if (timerMinutes)
+            timerMinutes.textContent = String(timerState.minutes).padStart(
+              2,
+              "0",
+            );
+          if (timerSeconds)
+            timerSeconds.textContent = String(timerState.seconds).padStart(
+              2,
+              "0",
+            );
+        };
+
+        drawTimer();
+        window.setInterval(() => {
+          if (timerState.seconds > 0) {
+            timerState.seconds -= 1;
+          } else if (timerState.minutes > 0) {
+            timerState.minutes -= 1;
+            timerState.seconds = 59;
+          } else if (timerState.hours > 0) {
+            timerState.hours -= 1;
+            timerState.minutes = 59;
+            timerState.seconds = 59;
+          }
+          drawTimer();
+        }, 1000);
+
+        const registerForm = document.getElementById("register-form");
+        const registerFormBody = document.getElementById("register-form-body");
+        const registerSuccess = document.getElementById("register-success");
+
+        registerForm?.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (
+            !registerFormBody ||
+            !registerSuccess ||
+            !(registerForm instanceof HTMLFormElement)
+          )
+            return;
+          registerFormBody.classList.add("hidden");
+          registerSuccess.classList.remove("hidden");
+          window.setTimeout(() => {
+            registerSuccess.classList.add("hidden");
+            registerFormBody.classList.remove("hidden");
+            registerForm.reset();
+          }, 5000);
+        });
+
+        const notifications = Array.isArray(dynamicData.notifications)
+          ? dynamicData.notifications
+          : [];
+        const notificationRoot = document.getElementById("signup-notification");
+        const notificationAvatar = document.getElementById(
+          "notification-avatar",
+        );
+        const notificationName = document.getElementById("notification-name");
+        const notificationAction = document.getElementById(
+          "notification-action",
+        );
+        const notificationTime = document.getElementById("notification-time");
+
+        const renderNotification = (item) => {
+          if (
+            !notificationRoot ||
+            !notificationName ||
+            !notificationAction ||
+            !notificationTime ||
+            !notificationAvatar
+          )
+            return;
+          notificationName.textContent = item.name || "";
+          notificationAction.textContent = item.action || "";
+          notificationTime.innerHTML = `<span aria-hidden="true">✔</span> ${item.time || ""}`;
+          notificationAvatar.textContent = (
+            item.name ||
+            dynamicData.defaultAvatar ||
+            ""
+          ).charAt(0);
+          notificationRoot.classList.remove("is-hidden");
+          notificationRoot.classList.add("is-visible");
+        };
+
+        const hideNotification = () => {
+          if (!notificationRoot) return;
+          notificationRoot.classList.remove("is-visible");
+          notificationRoot.classList.add("is-hidden");
+        };
+
+        const runNotifications = () => {
+          if (!notifications.length) return;
+          const item =
+            notifications[Math.floor(Math.random() * notifications.length)];
+          renderNotification(item);
+          window.setTimeout(() => {
+            hideNotification();
+            const nextDelay =
+              Math.floor(Math.random() * (5 * 60 * 1000 - 60 * 1000 + 1)) +
+              60 * 1000;
+            window.setTimeout(runNotifications, nextDelay);
+          }, 4000);
+        };
+
+        window.setTimeout(runNotifications, 5000);
+      });
+    </script>
+  </body>
+</html>

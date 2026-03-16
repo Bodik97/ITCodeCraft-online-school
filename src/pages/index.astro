@@ -1,0 +1,54 @@
+---
+import Layout from "../components/layouts/Layout.astro";
+import SignupNotification from "../components/SignupNotification.astro";
+import content from "../data/data.json";
+import Courses from "../sections/Courses.astro";
+import FAQ from "../sections/FAQ.astro";
+import Footer from "../sections/Footer.astro";
+import Header from "../sections/Header.astro";
+import Hero from "../sections/Hero.astro";
+
+import RegisterForm from "../sections/RegisterForm.astro";
+import Reviews from "../sections/Reviews.astro";
+import Modal from "../components/modal/Modal.astro";
+import ModalSuccess from "../components/modal/ModalSuccess.astro";
+import Why from "../sections/Why.astro";
+import Works from "../sections/Works.astro";
+
+const initialNotificationAvatar =
+  content.signupNotifications[0]?.name?.charAt(0) ?? "";
+
+const runtimeData = {
+  notifications: content.signupNotifications,
+  timer: content.registerSection.timer,
+  onlineCount: content.navigation.initialOnlineCount,
+  openMenuLabel: content.navigation.openMenuLabel,
+  closeMenuLabel: content.navigation.closeMenuLabel,
+  defaultAvatar: initialNotificationAvatar,
+};
+---
+
+<Layout
+  lang={content.meta.lang}
+  title={content.meta.title}
+  description={content.meta.description}
+  runtimeData={runtimeData}
+>
+  <Header />
+
+  <main>
+    <Hero />
+    <Why />
+    <Courses />
+
+    <Works />
+    <Reviews />
+    <FAQ />
+    <RegisterForm />
+  </main>
+
+  <Footer />
+  <SignupNotification initialAvatar={initialNotificationAvatar} />
+  <Modal />
+  <ModalSuccess />
+</Layout>

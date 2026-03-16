@@ -1,0 +1,17 @@
+---
+import Form from "./Form.tsx";
+import content from "../../data/data.json";
+
+const {isModalForm = false} = Astro.props;
+---
+
+<Form
+  client:idle
+  formFields={content.registerSection.forms.inputsFields}
+  crmParams={{
+    product_name: "product_name",
+    product_id: "product_id",
+    redirectUrl: "",
+    isModalForm,
+  }}
+/>

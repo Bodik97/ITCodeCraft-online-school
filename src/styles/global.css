@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #070d18;
+  --color-card: #0e1629;
+  --color-ink: #e6eef9;
+  --color-muted: #9fb0c7;
+  --color-line: #25324a;
+  --color-dark: #070d18;
+  --color-surface: #0e172b;
+  --color-surface-light: #16233d;
+
+  --color-slate-200: #2a3952;
+  --color-slate-300: #b7c8dc;
+  --color-slate-400: #a1b5cc;
+  --color-slate-500: #96a9be;
+  --color-slate-600: #c2d1e2;
+  --color-slate-700: #32445f;
+
+  --color-gray-500: #96a9be;
+  --color-gray-600: #b6c5d7;
+
+  --color-neon-cyan: #22d3ee;
+  --color-neon-magenta: #f43f5e;
+  --color-neon-lime: #84cc16;
+  --color-neon-orange: #f59e0b;
+
+  --background-image-grid-pattern:
+    linear-gradient(to right, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+
+  --shadow-neon-cyan:
+    0 0 10px rgba(0, 245, 255, 0.5),
+    0 0 20px rgba(0, 245, 255, 0.3);
+  --shadow-neon-magenta:
+    0 0 10px rgba(255, 45, 149, 0.5),
+    0 0 20px rgba(255, 45, 149, 0.3);
+  --shadow-neon-lime:
+    0 0 10px rgba(57, 255, 20, 0.5),
+    0 0 20px rgba(57, 255, 20, 0.3);
+  --shadow-neon-orange:
+    0 0 10px rgba(255, 107, 0, 0.5),
+    0 0 20px rgba(255, 107, 0, 0.3);
+}
+
+@import "./base/layouts.css";
+@import "./utils/intTelInput.css";
+@import "./components/form.css";
+@import "./components/modal.css";

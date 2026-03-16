@@ -1,0 +1,26 @@
+---
+import content from "../data/data.json";
+import Logo from "../components/Logo.astro";
+---
+
+<header
+  id="site-header"
+  class="header-shell py-6 fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between">
+      <Logo href="#" />
+
+      <div class="flex items-center gap-4 ml-2">
+
+        <button
+          id="modal-open"
+          type="button"
+          class="px-6 py-2 bg-neon-magenta text-white font-bold rounded-sm shadow-neon-magenta hover:scale-105 transition-transform duration-200 text-sm animate-neon-pulse"
+        >
+          {content.navigation.ctaLabel}
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

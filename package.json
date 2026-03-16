@@ -1,0 +1,46 @@
+{
+  "name": "magic-patterns-vite-template",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "lint": "astro check",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/node": "^9.5.4",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20.11.18",
+    "astro": "^5.17.2",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/vercel": "^9.0.4",
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-select": "^2.2.6",
+    "astro-icon": "^1.1.5",
+    "gsap": "^3.14.2",
+    "intl-tel-input": "^26.3.1",
+    "js-cookie": "^3.0.5",
+    "libphonenumber-js": "^1.12.36",
+    "lucide-react": "^0.564.0",
+    "path": "^0.12.7",
+    "react": "^19.2.4",
+    "react-hook-form": "^7.71.1",
+    "sweetalert2": "^11.26.18",
+    "sweetalert2-react-content": "^5.1.1",
+    "swiper": "^12.1.2",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.11"
+  }
+}
