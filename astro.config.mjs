@@ -8,7 +8,7 @@ import node from "@astrojs/node";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
-  site: 'http://itcodecraft.tech/',
+  site: 'https://itcodecraft.tech',
   integrations: [react(), icon()],
   build: {
     inlineStylesheets: "always",
