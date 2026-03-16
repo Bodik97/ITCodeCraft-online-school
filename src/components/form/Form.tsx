@@ -48,6 +48,8 @@ interface FormConfigProps {
     afterSendFunction?: (data: any) => Promise<void>;
 }
 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwueBHdSPupfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
+
 export default function FormComponent({
     formFields,
     crmParams,
@@ -111,19 +113,16 @@ export default function FormComponent({
         };
 
         try {
-            const response = await fetch('/api/google', {
+            await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(sendData),
+                keepalive: true,
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const responseData = await response.json();
 
             const mergedData = {
                 ...sendData,
-                ...responseData,
             };
 
             await pushGtmEvent('lead', {

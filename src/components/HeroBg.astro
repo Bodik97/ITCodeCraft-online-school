@@ -22,24 +22,6 @@ type CodeToken = {
   color: string;
 };
 
-type Particle = {
-  id: number;
-  layer: Layer;
-  x: number;
-  y: number;
-  hue: number;
-  text: string;
-  color: string;
-  driftX: number;
-  driftY: number;
-  spin: number;
-  duration: number;
-  delay: number;
-  scale: number;
-  opacity: number;
-  size: number;
-};
-
 const seeded = (index: number): number => {
   const value = Math.sin(index * 999) * 10000;
   return value - Math.floor(value);
@@ -145,49 +127,6 @@ const layerTwo = bricks.filter((brick) => brick.layer === 2);
 const layerThree = bricks.filter((brick) => brick.layer === 3);
 const MOBILE_VISIBLE_PER_LAYER = 3;
 
-const PARTICLES_PER_LAYER = 5;
-const MOBILE_VISIBLE_PARTICLES_PER_LAYER = 2;
-const particleRows = codeRows.map((row) => ({
-  text: row.map((token) => token.text).join(" "),
-  color: row[Math.floor(row.length / 2)]?.color ?? "rgba(186, 230, 253, 0.84)",
-}));
-
-const particles: Particle[] = Array.from(
-  { length: PARTICLES_PER_LAYER * 3 },
-  (_, index) => {
-    const layer: Layer =
-      index < PARTICLES_PER_LAYER ? 1 : index < PARTICLES_PER_LAYER * 2 ? 2 : 3;
-    const randomOne = seeded(index + 201);
-    const randomTwo = seeded(index + 211);
-    const randomThree = seeded(index + 221);
-    const randomFour = seeded(index + 231);
-    const randomFive = seeded(index + 241);
-    const row = particleRows[index % particleRows.length];
-
-    return {
-      id: index,
-      layer,
-      x: 6 + Math.floor(randomOne * 88),
-      y: 8 + Math.floor(randomTwo * 82),
-      hue: Math.floor(randomThree * 360),
-      text: row.text,
-      color: row.color,
-      driftX: 10 + Math.floor(randomThree * 22),
-      driftY: 8 + Math.floor(randomFour * 18),
-      spin: (randomFive > 0.5 ? 1 : -1) * (1 + Math.floor(randomFour * 3)),
-      duration: 7.5 + (index % 6) * 1.15,
-      delay: seeded(index + 251) * 2.4,
-      scale: 0.9 + randomFive * 0.32,
-      opacity: layer === 1 ? 0.7 : layer === 2 ? 0.56 : 0.44,
-      size: layer === 1 ? 12 : layer === 2 ? 11 : 10,
-    };
-  },
-);
-
-const particleLayerOne = particles.filter((particle) => particle.layer === 1);
-const particleLayerTwo = particles.filter((particle) => particle.layer === 2);
-const particleLayerThree = particles.filter((particle) => particle.layer === 3);
-
 const codeLineForBrick = (brick: Brick): CodeToken[] =>
   codeRows[brick.id % codeRows.length];
 const codeIndentForBrick = (brick: Brick): number =>
@@ -266,21 +205,6 @@ const layerThreeStyle = (brick: Brick): string =>
     "contain:layout style",
   ].join(";");
 
-const particleStyle = (particle: Particle): string =>
-  [
-    `left:${particle.x}%`,
-    `top:${particle.y}%`,
-    `opacity:${particle.opacity}`,
-    `font-size:${particle.size}px`,
-    "transform:translate(-50%,-50%)",
-    `color:${particle.color}`,
-    "font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
-    "white-space:nowrap",
-    "line-height:1",
-    `text-shadow:0 0 14px hsla(${particle.hue}, 100%, 72%, 0.28)`,
-    "will-change:transform,opacity",
-    "contain:layout style",
-  ].join(";");
 ---
 
 <div
@@ -679,9 +603,6 @@ const particleStyle = (particle: Particle): string =>
           ),
         );
 
-        glowX?.(pendingPointerX * pointerPower.glowX);
-        glowY?.(pendingPointerY * pointerPower.glowY);
-        glowOpacity?.(useLite ? 0.68 : 0.78);
       };
 
       const onPointerMove = (event: PointerEvent) => {

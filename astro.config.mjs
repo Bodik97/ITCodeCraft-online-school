@@ -3,9 +3,6 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
 import icon from 'astro-icon';
-import node from "@astrojs/node";
-
-import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   site: 'https://itcodecraft.tech',
@@ -13,8 +10,7 @@ export default defineConfig({
   build: {
     inlineStylesheets: "always",
   },
-  adapter: vercel(),
-  output: "server",
+  output: "static",
   vite: {
     plugins: [tailwindcss()],
     resolve: {
