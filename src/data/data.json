@@ -2,7 +2,7 @@
   "meta": {
     "lang": "uk",
     "title": "ITCodeCraft - Онлайн школа програмування для дітей",
-    "description": "Онлайн курси програмування для дітей 7-17 років: Python, Roblox, Minecraft, Web. Безкоштовний пробний урок та реальні проєкти вже з першого тижня."
+    "description": "Онлайн курси програмування для дітей 7-17 років: Python, Roblox, Minecraft, Web. Безоплатний пробний урок та реальні проєкти вже з першого тижня."
   },
   "brand": {
     "primary": "ITCode",
@@ -164,7 +164,7 @@
       {
         "title": "Blender",
         "age": "10+ років",
-        "description": "Blender — безкоштовний інструмент, яким користуються студії по всьому світу для створення 3D-графіки та анімації. Підлітки навчаться моделювати персонажів і об'єкти, працювати зі світлом і рендером — і зберуть портфоліо для роботи в геймдеві чи анімації.",
+        "description": "Blender — Безоплатний інструмент, яким користуються студії по всьому світу для створення 3D-графіки та анімації. Підлітки навчаться моделювати персонажів і об'єкти, працювати зі світлом і рендером — і зберуть портфоліо для роботи в геймдеві чи анімації.",
         "image": "blender",
         "alt": "Blender"
       },
@@ -320,7 +320,7 @@
   },
   "registerSection": {
     "titlePrefix": "Запишіть дитину на",
-    "titleHighlight": "безкоштовний урок",
+    "titleHighlight": "Безоплатний урок",
     "description": "Залишіть контакти - ми зателефонуємо за 15 хвилин і підберемо найкращий час.",
     "socialProof": " Записатись займе менше хвилини",
     "features": [
@@ -394,20 +394,18 @@
     "newsletterPlaceholder": "Ваш Email",
     "newsletterButton": "OK",
     "copyrightSuffix": "ITCodeCraft. Всі права захищені.",
-    "privacyPolicy": "Політика конфіденційності",
-    "offerAgreement": "Договір оферти",
+    "privacyPolicy": {
+      "text": "Політика конфіденційності",
+      "href": "https://drive.google.com/file/d/1YhAW3xyryVbJv1PccO0ZAtNAtBQz3G_Q/view"
+    },
+    "offerAgreement": {
+      "text": "Договір оферти",
+      "href": "https://drive.google.com/file/d/1TX4_G6PfD4T9AHz0Lqog7Mg33cQF6b-X/view?usp=drive_link"
+    },
     "socialLinks": [
       {
-        "label": "Instagram",
-        "url": "#"
-      },
-      {
-        "label": "Facebook",
-        "url": "#"
-      },
-      {
         "label": "Youtube",
-        "url": "#"
+        "url": "https://www.youtube.com/@CodeCraft-it-q4f"
       }
     ]
   },
