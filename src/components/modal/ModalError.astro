@@ -1,0 +1,123 @@
+<div
+  class="modal-overlay fixed inset-0 z-90 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out"
+  data-modal-error-root
+  aria-hidden="true"
+  inert
+>
+  <div
+    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-red-400/35 px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="error-modal-title"
+    data-modal-error-content
+  >
+    <button
+      type="button"
+      class="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/35 bg-paper/90 text-[1.2rem] md:text-2xl leading-none text-ink transition hover:scale-105 hover:border-red-500/75 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 sm:size-10"
+      data-modal-error-close
+      aria-label="Закрити модальне вікно помилки"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div
+      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 shadow-[0_0_25px_rgba(239,68,68,0.3)]"
+    >
+      <span class="text-3xl text-red-400" aria-hidden="true">!</span>
+    </div>
+
+    <h2
+      id="error-modal-title"
+      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(239,68,68,0.28)]"
+    >
+      Помилка відправлення
+    </h2>
+    <p
+      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-slate-100 sm:text-base"
+    >
+      Не вдалося надіслати форму. Спробуйте ще раз через кілька хвилин або
+      звʼяжіться з нами за телефоном.
+    </p>
+
+    <button
+      type="button"
+      class="mt-6 w-full rounded-xl bg-red-500 px-4 py-3 text-sm font-bold text-white transition hover:scale-[1.02] hover:bg-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+      data-modal-error-close
+    >
+      Зрозуміло
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  const errorModalRoot = document.querySelector("[data-modal-error-root]");
+  const errorModalContent = document.querySelector("[data-modal-error-content]");
+  const errorModalCloseButtons = document.querySelectorAll(
+    "[data-modal-error-close]",
+  );
+
+  if (errorModalRoot instanceof HTMLElement) {
+    const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
+    const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
+
+    const isModalClosed = () =>
+      hiddenModalClasses.every((className) =>
+        errorModalRoot.classList.contains(className),
+      );
+
+    const openModal = () => {
+      if (!isModalClosed()) return;
+      errorModalRoot.removeAttribute("inert");
+      errorModalRoot.setAttribute("aria-hidden", "false");
+      errorModalRoot.classList.remove("pointer-events-none");
+      requestAnimationFrame(() => {
+        errorModalRoot.classList.remove("opacity-0");
+        errorModalContent?.classList.remove(...hiddenContentClasses);
+      });
+    };
+
+    const closeModal = () => {
+      if (isModalClosed()) return;
+      errorModalRoot.classList.add(...hiddenModalClasses);
+      errorModalContent?.classList.add(...hiddenContentClasses);
+      errorModalRoot.setAttribute("aria-hidden", "true");
+      errorModalRoot.setAttribute("inert", "");
+    };
+
+    errorModalRoot.classList.add(...hiddenModalClasses);
+    errorModalContent?.classList.add(...hiddenContentClasses);
+    errorModalRoot.setAttribute("aria-hidden", "true");
+    errorModalRoot.setAttribute("inert", "");
+
+    errorModalCloseButtons.forEach((button) => {
+      button.addEventListener("click", closeModal);
+    });
+
+    errorModalRoot.addEventListener("click", (event) => {
+      if (event.target === errorModalRoot) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("itcc:form-error", openModal);
+  }
+</script>

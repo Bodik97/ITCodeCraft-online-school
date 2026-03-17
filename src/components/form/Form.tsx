@@ -15,8 +15,6 @@ import { useUserInfoStore } from '@/store/useUserInfoStore.ts';
 import { cn, getGoogleIdFromGACookie, pushGtmEvent, uid } from '@/lib/utils';
 
 
-import { useSweetAlert } from '@/lib/useSweetAlert';
-
 import { reportError } from '@/lib/reportError';
 
 import Inputs from './inputs/Inputs';
@@ -58,8 +56,6 @@ export default function FormComponent({
     const { userInfo } = useUserInfoStore();
     const [country, setCountry] = useState(userInfo.country_code);
     const [siteUrl, setSiteUrl] = useState('');
-    const { showError } = useSweetAlert();
-    const [successSendModal, setSuccessSendModal] = useState(false)
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -154,7 +150,6 @@ export default function FormComponent({
                     }
                 }
                 console.log('Succes modal');
-                setSuccessSendModal(true)
 
                 document.dispatchEvent(new CustomEvent('itcc:form-success'));
 
@@ -170,8 +165,7 @@ export default function FormComponent({
 
             console.error('Error submitting form:', error);
             reportError('Error submitting form:', formData);
-
-            showError('errorMessage');
+            document.dispatchEvent(new CustomEvent('itcc:form-error'));
 
         } finally {
             reset();
