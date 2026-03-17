@@ -15,7 +15,7 @@ const currentYear = new Date().getFullYear();
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:relative">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
       <div>
-        <Logo href="#" size="sm" className="mb-6" />
+        <Logo href="https://itcodecraft.tech/" size="sm" className="mb-6" />
         <p class="text-slate-500 text-sm leading-relaxed mb-6">
           {content.footerSection.aboutText}
         </p>
@@ -51,9 +51,11 @@ const currentYear = new Date().getFullYear();
             <a
               href={link.url}
               aria-label={link.label}
+              target="_blank"
+              rel="noopener noreferrer"
               class:list={[
                 "w-10 h-10 rounded-sm bg-surface flex items-center justify-center  text-red-500 border hover:border-red-500 border-gray-500  transition-all",
-                footerSocialTextColors[index % footerSocialTextColors.length],
+                ,
               ]}
             >
               <Icon name={link.label.toLowerCase()} class="size-6" />
