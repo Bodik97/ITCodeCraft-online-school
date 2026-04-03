@@ -48,6 +48,9 @@ interface FormConfigProps {
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwueBHdSPupfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
 
+// for testing
+// const GOOGLE_SCRIPT_URL = 'https://sfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
+
 export default function FormComponent({
     formFields,
     crmParams,
@@ -149,7 +152,6 @@ export default function FormComponent({
                         modal.classList.add('pointer-events-none');
                     }
                 }
-                console.log('Succes modal');
 
                 document.dispatchEvent(new CustomEvent('itcc:form-success'));
 
@@ -163,7 +165,6 @@ export default function FormComponent({
 
         } catch (error) {
 
-            console.error('Error submitting form:', error);
             reportError('Error submitting form:', formData);
             document.dispatchEvent(new CustomEvent('itcc:form-error'));
 
