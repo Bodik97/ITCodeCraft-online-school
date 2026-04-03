@@ -45,25 +45,41 @@ const { lang, title, description, runtimeData } = Astro.props as Props;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-
-
     <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={data.meta.canonical} />
-<meta property="og:title" content={data.meta.title} />
-<meta property="og:description" content={data.meta.description} />
-<meta property="og:image" content=`${data.meta.canonical}assets/OGP/fb.png` />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={data.meta.canonical} />
+    <meta property="og:title" content={data.meta.title} />
+    <meta property="og:description" content={data.meta.description} />
+    <meta
+      property="og:image"
+      content=`${data.meta.canonical}assets/OGP/fb.png`
+    />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={data.meta.canonical} />
-<meta property="twitter:title" content={data.meta.title} />
-<meta property="twitter:description" content={data.meta.description} />
-<meta property="twitter:image" content=`${data.meta.canonical}assets/OGP/tw.png` />
-
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={data.meta.canonical} />
+    <meta property="twitter:title" content={data.meta.title} />
+    <meta property="twitter:description" content={data.meta.description} />
+    <meta
+      property="twitter:image"
+      content=`${data.meta.canonical}assets/OGP/tw.png`
+    />
 
     <meta property="og:url" content="https://itcodecraft.com" />
     <meta property="og:type" content="website" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WP6WZ3Q7MG"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-WP6WZ3Q7MG");
+    </script>
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -109,19 +125,6 @@ const { lang, title, description, runtimeData } = Astro.props as Props;
       type="application/json"
       set:html={JSON.stringify(runtimeData)}
     />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WP6WZ3Q7MG"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-WP6WZ3Q7MG");
-    </script>
 
     <script is:inline>
       const dynamicDataNode = document.getElementById("dynamic-data");
