@@ -2,7 +2,8 @@
   "meta": {
     "lang": "uk",
     "title": "ITCodeCraft - Онлайн школа програмування для дітей",
-    "description": "Онлайн курси програмування для дітей 7-17 років: Python, Roblox, Minecraft, Web. Безоплатний пробний урок та реальні проєкти вже з першого тижня."
+    "description": "Онлайн курси програмування для дітей 7-17 років: Python, Roblox, Minecraft, Web. Безоплатний пробний урок та реальні проєкти вже з першого тижня.",
+    "canonical": "https://itcodecraft.tech/"
   },
   "brand": {
     "primary": "ITCode",
