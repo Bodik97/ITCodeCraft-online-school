@@ -93,6 +93,19 @@ const { lang, title, description, runtimeData } = Astro.props as Props;
       set:html={JSON.stringify(runtimeData)}
     />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WP6WZ3Q7MG"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-WP6WZ3Q7MG");
+    </script>
+
     <script is:inline>
       const dynamicDataNode = document.getElementById("dynamic-data");
       const dynamicData = dynamicDataNode
