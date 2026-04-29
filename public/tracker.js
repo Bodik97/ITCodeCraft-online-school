@@ -5,6 +5,12 @@
   var startTime = Date.now();
   var lastSent = Object.create(null);
 
+  function getEndpoint() {
+    var m = document.querySelector('meta[name="itcc-track-endpoint"]');
+    var u = m && m.getAttribute('content');
+    return u && String(u).trim() ? String(u).trim() : '';
+  }
+
   function canSend(event, label) {
     var key = event + '\u0000' + (label || '');
     var now = Date.now();
@@ -25,6 +31,19 @@
     };
   }
 
+  function postJson(bodyObj) {
+    var url = getEndpoint();
+    if (!url) return;
+    var json = JSON.stringify(bodyObj);
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: json,
+      keepalive: true,
+    }).catch(function () {});
+  }
+
   function send(event, label, options) {
     var skipThrottle = options && options.skipThrottle;
     if (!skipThrottle && !canSend(event, label)) return;
@@ -32,13 +51,7 @@
       var k = event + '\u0000' + (label || '');
       lastSent[k] = Date.now();
     }
-    var body = payload(event, label);
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      keepalive: true,
-    }).catch(function () {});
+    postJson(payload(event, label));
   }
 
   window.itccTrack = function (event, label, options) {
@@ -87,19 +100,16 @@
   );
 
   window.addEventListener('beforeunload', function () {
+    var url = getEndpoint();
+    if (!url) return;
     var sec = Math.max(0, Math.round((Date.now() - startTime) / 1000));
     var body = payload('time_on_page', String(sec) + 's');
     var json = JSON.stringify(body);
     if (navigator.sendBeacon) {
-      var blob = new Blob([json], { type: 'application/json' });
-      navigator.sendBeacon('/api/track', blob);
+      var blob = new Blob([json], { type: 'text/plain;charset=utf-8' });
+      navigator.sendBeacon(url, blob);
     } else {
-      fetch('/api/track', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: json,
-        keepalive: true,
-      }).catch(function () {});
+      postJson(body);
     }
   });
 })();

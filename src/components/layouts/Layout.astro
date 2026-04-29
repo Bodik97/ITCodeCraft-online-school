@@ -50,6 +50,9 @@ const organizationJsonLd = JSON.stringify({
   description,
   inLanguage: lang,
 });
+
+const itccTrackEndpoint =
+  import.meta.env.PUBLIC_ITCC_TRACK_ENDPOINT?.trim() ?? "";
 ---
 
 <!doctype html>
@@ -57,6 +60,11 @@ const organizationJsonLd = JSON.stringify({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {
+      itccTrackEndpoint ? (
+        <meta name="itcc-track-endpoint" content={itccTrackEndpoint} />
+      ) : null
+    }
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
