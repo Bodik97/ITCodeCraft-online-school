@@ -114,6 +114,34 @@ const modal = data.modal;
         window.productName = productName;
       }
       setModalTitle(productName, colorClass);
+
+      window.__itccRegistrationClicks =
+        (typeof window.__itccRegistrationClicks === "number"
+          ? window.__itccRegistrationClicks
+          : 0) + 1;
+      const clickNum = window.__itccRegistrationClicks;
+      const sourceLabel =
+        el && el.id === "modal-open"
+          ? "шапка"
+          : el && el.hasAttribute("data-modal-open")
+            ? "картка_курсу"
+            : "невідомо";
+      const productLabel =
+        (typeof productName === "string" && productName.trim()) || "—";
+      const detail =
+        "натискання #" +
+        clickNum +
+        " | джерело: " +
+        sourceLabel +
+        " | курс: " +
+        productLabel;
+      if (typeof window.itccTrack === "function") {
+        window.itccTrack("registration_cta_click", detail, {
+          skipThrottle: true,
+        });
+        window.itccTrack("modal_open", detail, { skipThrottle: true });
+      }
+
       modalRoot.removeAttribute("inert");
       modalRoot.setAttribute("aria-hidden", "false");
       modalRoot.classList.remove("pointer-events-none");

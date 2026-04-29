@@ -29,21 +29,22 @@ interface Props {
   runtimeData: RuntimeData;
 }
 
-const { lang, title, description, runtimeData, canonicalUrl } = Astro.props as Props;
+const { lang, title, description, runtimeData, canonicalUrl } =
+  Astro.props as Props;
 
 const site = Astro.site;
 if (!site) {
-  throw new Error('Set `site` in astro.config for canonical and sitemap URLs.');
+  throw new Error("Set `site` in astro.config for canonical and sitemap URLs.");
 }
 
 const hrefBase = canonicalUrl ?? new URL(Astro.url.pathname, site).href;
-const canonical = new URL(hrefBase, site).href.replace(/\/+$/, '') + '/';
-const ogImageFb = new URL('/assets/OGP/fb.png', canonical).href;
-const ogImageTw = new URL('/assets/OGP/tw.png', canonical).href;
+const canonical = new URL(hrefBase, site).href.replace(/\/+$/, "") + "/";
+const ogImageFb = new URL("/assets/OGP/fb.png", canonical).href;
+const ogImageTw = new URL("/assets/OGP/tw.png", canonical).href;
 
 const organizationJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'EducationalOrganization',
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
   name: `${data.brand.primary}${data.brand.accent}`,
   url: canonical,
   description,
@@ -81,7 +82,7 @@ const organizationJsonLd = JSON.stringify({
     <script type="application/ld+json" set:html={organizationJsonLd} />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SG04GDD668"
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-00YT0R9QFP"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -90,8 +91,9 @@ const organizationJsonLd = JSON.stringify({
       }
       gtag("js", new Date());
 
-      gtag("config", "G-SG04GDD668");
+      gtag("config", "G-00YT0R9QFP");
     </script>
+
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -130,6 +132,8 @@ const organizationJsonLd = JSON.stringify({
     class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"
   >
     <slot />
+
+    <script src="/tracker.js" defer></script>
 
     <script
       is:inline

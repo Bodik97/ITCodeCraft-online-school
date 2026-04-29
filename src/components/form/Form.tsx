@@ -3,12 +3,19 @@ declare global {
         dataLayer?: any[];
         LEELOO_INIT_CHECK?: boolean;
         LEELOO_LEADGENTOOLS?: string[];
+        itccTrack?: (
+            event: string,
+            label?: string,
+            opts?: { skipThrottle?: boolean },
+        ) => void;
+        __itccRegistrationClicks?: number;
+        productName?: string;
     }
 }
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { getFormSchema } from './schema';
 import { useUserInfoStore } from '@/store/useUserInfoStore.ts';
@@ -87,16 +94,73 @@ export default function FormComponent({
         reset,
         setValue,
         getValues,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(formSchema)
     });
+
+    const progressDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    useEffect(() => {
+        const sub = watch((value) => {
+            if (progressDebounceRef.current) {
+                clearTimeout(progressDebounceRef.current);
+            }
+            progressDebounceRef.current = setTimeout(() => {
+                const entries = formFields.inputs
+                    .map((f: InputField) => {
+                        const raw = value[f.name];
+                        const str =
+                            raw === undefined || raw === null ? '' : String(raw);
+                        return (
+                            f.name +
+                            '=' +
+                            (str.length > 120 ? str.slice(0, 120) + '…' : str)
+                        );
+                    })
+                    .join(' | ');
+                const hasAny = formFields.inputs.some((f: InputField) => {
+                    const raw = value[f.name];
+                    if (raw === undefined || raw === null) return false;
+                    return String(raw).trim().length > 0;
+                });
+                if (!hasAny) return;
+                const ctx = crmParams.isModalForm ? 'модалка' : 'блок_на_сайті';
+                const productHint =
+                    typeof window !== 'undefined' && window.productName
+                        ? window.productName
+                        : crmParams.isModalForm
+                          ? '—'
+                          : 'сторінка_реєстрації';
+                window.itccTrack?.(
+                    'form_fill_progress',
+                    `${ctx} | курс: ${productHint} | ${entries}`,
+                    { skipThrottle: true },
+                );
+            }, 1500);
+        });
+        return () => {
+            sub.unsubscribe();
+            if (progressDebounceRef.current) {
+                clearTimeout(progressDebounceRef.current);
+            }
+        };
+    }, [watch, formFields.inputs, crmParams.isModalForm]);
 
     const onSubmit = async (formData: Record<string, any>) => {
         const resolvedProductName =
             typeof window !== 'undefined' && (window as { productName?: string }).productName != null
                 ? (window as { productName?: string }).productName
                 : product_name;
+
+        const trackCtx = crmParams.isModalForm ? 'модалка' : 'блок_на_сайті';
+        const leadSummary = JSON.stringify({
+            context: trackCtx,
+            course: resolvedProductName || 'Консультація',
+            ...formData,
+        });
+        window.itccTrack?.('form_submit_lead', leadSummary, { skipThrottle: true });
+
         const sendData: Record<string, any> = {
             Course: resolvedProductName || "Консультація",
             leadActionSource: siteUrl,
@@ -178,6 +242,7 @@ export default function FormComponent({
             {!isSubmitting && (
                 <form
                     className={cn(' grid grid-cols-1 gap-6 xl:grid-cols-2 xl:gap-8')}
+                    data-itcc-form="register-lead"
                     noValidate
                     autoComplete="on"
                     onSubmit={handleSubmit(onSubmit)}
