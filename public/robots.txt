@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itcodecraft.tech/sitemap-index.xml
