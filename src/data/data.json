@@ -365,12 +365,14 @@
     }
   },
   "messengerFab": {
-    "toggleLabel": "Зв'язатися у Viber або Telegram",
+    "toggleLabel": "Зв'язатися у Viber, Telegram або WhatsApp",
     "toggleLabelClose": "Закрити",
     "viberLabel": "Відкрити чат у Viber",
     "telegramLabel": "Відкрити чат у Telegram",
+    "whatsappLabel": "Відкрити чат у WhatsApp",
     "viberUrl": "https://viber.me/+380930610913",
-    "telegramUrl": "https://t.me/ITCodeCraf"
+    "telegramUrl": "https://t.me/ITCodeCraf",
+    "whatsappUrl": "https://wa.me/380930610913"
   },
   "footerSection": {
     "aboutText": "Сучасна онлайн IT школа для дітей та підлітків. Навчаємо навичкам майбутнього через гру та практику.",
