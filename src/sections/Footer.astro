@@ -3,11 +3,6 @@ import content from "../data/data.json";
 import Logo from "../components/Logo.astro";
 import { Icon } from "astro-icon/components";
 
-const footerSocialTextColors = [
-  "hover:text-neon-cyan",
-  "hover:text-neon-magenta",
-  "hover:text-neon-lime",
-] as const;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -47,16 +42,13 @@ const currentYear = new Date().getFullYear();
 
       <div class="flex gap-4 md:absolute md:left-6 md:bottom-16">
         {
-          content.footerSection.socialLinks.map((link, index) => (
+          content.footerSection.socialLinks.map((link) => (
             <a
               href={link.url}
               aria-label={link.label}
               target="_blank"
               rel="noopener noreferrer"
-              class:list={[
-                "w-10 h-10 rounded-sm bg-surface flex items-center justify-center  text-red-500 border hover:border-red-500 border-gray-500  transition-all",
-                ,
-              ]}
+              class="flex h-10 w-10 items-center justify-center rounded-sm border border-slate-200/35 bg-surface text-slate-500 transition-colors duration-200 hover:border-neon-cyan/45 hover:text-neon-cyan"
             >
               <Icon name={link.label.toLowerCase()} class="size-6" />
             </a>

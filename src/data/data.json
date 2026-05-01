@@ -415,6 +415,14 @@
     },
     "socialLinks": [
       {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/itcodecraft"
+      },
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/profile.php?id=61578550358897"
+      },
+      {
         "label": "Youtube",
         "url": "https://www.youtube.com/@CodeCraft-it-q4f"
       }
