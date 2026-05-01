@@ -364,6 +364,14 @@
       "description": "Ми отримали вашу заявку. Менеджер звʼяжеться з вами найближчим часом."
     }
   },
+  "messengerFab": {
+    "toggleLabel": "Зв'язатися у Viber або Telegram",
+    "toggleLabelClose": "Закрити",
+    "viberLabel": "Відкрити чат у Viber",
+    "telegramLabel": "Відкрити чат у Telegram",
+    "viberUrl": "https://viber.me/+380930610913",
+    "telegramUrl": "https://t.me/ITCodeCraf"
+  },
   "footerSection": {
     "aboutText": "Сучасна онлайн IT школа для дітей та підлітків. Навчаємо навичкам майбутнього через гру та практику.",
     "navigationTitle": "Навігація",
