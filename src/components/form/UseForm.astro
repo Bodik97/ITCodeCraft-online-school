@@ -2,7 +2,7 @@
 import Form from "./Form.tsx";
 import content from "../../data/data.json";
 
-const {isModalForm = false} = Astro.props;
+const { isModalForm = false, formId = "" } = Astro.props;
 ---
 
 <Form
@@ -13,5 +13,6 @@ const {isModalForm = false} = Astro.props;
     product_id: "product_id",
     redirectUrl: "",
     isModalForm,
+    formId,
   }}
 />

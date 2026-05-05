@@ -44,6 +44,7 @@ export interface CrmParams {
     product_id: string;
     isModalForm?: boolean;
     redirectUrl?: string;
+    formId?: string;
 
 }
 
@@ -163,6 +164,7 @@ export default function FormComponent({
 
         const sendData: Record<string, any> = {
             Course: resolvedProductName || "Консультація",
+            FormID: crmParams.formId || null,
             leadActionSource: siteUrl,
             SiteURL: siteUrl,
             leadIP: userInfo.ip || null,
