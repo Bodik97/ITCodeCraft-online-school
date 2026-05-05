@@ -54,7 +54,7 @@ interface FormConfigProps {
     afterSendFunction?: (data: any) => Promise<void>;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwueBHdSPupfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyayfZuKHmihCF6048mwuuA-XC7_D802bM54W0ArXvPFuiK42ZxSvdNm39c-_OdeaE-0Q/exec';
 
 // for testing
 // const GOOGLE_SCRIPT_URL = 'https://sfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';

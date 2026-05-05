@@ -51,8 +51,6 @@ const organizationJsonLd = JSON.stringify({
   inLanguage: lang,
 });
 
-const itccTrackEndpoint =
-  import.meta.env.PUBLIC_ITCC_TRACK_ENDPOINT?.trim() ?? "";
 ---
 
 <!doctype html>
@@ -60,11 +58,6 @@ const itccTrackEndpoint =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {
-      itccTrackEndpoint ? (
-        <meta name="itcc-track-endpoint" content={itccTrackEndpoint} />
-      ) : null
-    }
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -141,8 +134,6 @@ const itccTrackEndpoint =
     class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"
   >
     <slot />
-
-    <script src="/tracker.js" defer></script>
 
     <script
       is:inline

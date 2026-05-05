@@ -1,3 +1,6 @@
+/* Не використовується: Layout.astro більше не підключає цей файл.
+   Якщо знов знадобиться трекінг на зовнішній endpoint — підключити script і мета-тег itcc-track-endpoint. */
+
 (function () {
   'use strict';
 
