@@ -16,10 +16,9 @@ declare global {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect, useRef } from 'react';
-import Cookies from 'js-cookie';
 import { getFormSchema } from './schema';
 import { useUserInfoStore } from '@/store/useUserInfoStore.ts';
-import { cn, getGoogleIdFromGACookie, pushGtmEvent, uid } from '@/lib/utils';
+import { cn, pushGtmEvent, uid } from '@/lib/utils';
 
 
 import { reportError } from '@/lib/reportError';
@@ -66,14 +65,6 @@ export default function FormComponent({
 }: FormConfigProps) {
     const { userInfo } = useUserInfoStore();
     const [country, setCountry] = useState(userInfo.country_code);
-    const [siteUrl, setSiteUrl] = useState('');
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const url = new URL(window.location.href);
-            setSiteUrl(`${url.origin}${url.pathname}`);
-        }
-    }, []);
 
     useEffect(() => {
         setCountry(userInfo.country_code || 'UA');
@@ -165,14 +156,6 @@ export default function FormComponent({
         const sendData: Record<string, any> = {
             Course: resolvedProductName || "Консультація",
             FormID: crmParams.formId || null,
-            leadActionSource: siteUrl,
-            SiteURL: siteUrl,
-            leadIP: userInfo.ip || null,
-            leadUserAgent: window.navigator.userAgent,
-            leadFBC: Cookies.get('_fbc') || null,
-            leadFBP: Cookies.get('_fbp') || null,
-            google_id: getGoogleIdFromGACookie(Cookies.get('_ga')),
-            // product_name: resolvedProductName,
 
             ...formData,
         };
