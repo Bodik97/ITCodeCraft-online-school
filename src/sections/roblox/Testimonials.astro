@@ -1,0 +1,81 @@
+---
+import TestimonialsCarousel from "@/components/roblox/TestimonialsCarousel";
+import content from "@/data/roblox.json";
+const s = content.testimonialsSection;
+---
+
+<section id="testimonials" class="py-12 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center mb-10 md:mb-16 reveal">
+      <span class="inline-block bg-indigo-50 text-[#6366F1] text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest mb-4 border border-[#C7D2FE]">
+        {s.eyebrow}
+      </span>
+      <h2 class="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-[#0F172A] mb-4 leading-tight">
+        {s.title}
+      </h2>
+      <div class="w-12 h-1 bg-[#6366F1] mx-auto rounded-full opacity-30"></div>
+    </div>
+
+    <div class="reveal-slow">
+      <TestimonialsCarousel client:visible items={s.items} />
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Анімація тексту при зміні слайду */
+  @keyframes softFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-soft-fade {
+    animation: softFade 0.4s ease-out forwards;
+  }
+
+  /* 3D Кнопка */
+  .btn-3d-amber {
+    background: #FFB800;
+    color: #000;
+    border-bottom: 4px solid #E6A600;
+    transition: all 0.2s;
+    /* display: inline-flex; */
+    align-items: center;
+    justify-content: center;
+    /* white-space: nowrap; */
+  }
+  .btn-3d-amber:hover {
+    background: #FFC426;
+    transform: translateY(-2px);
+    border-bottom-width: 5px;
+  }
+  .btn-3d-amber:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+  }
+
+  /* Класи появи при скролі */
+  .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
+  .reveal-slow { opacity: 0; transition: all 1.2s ease-out; }
+  .active { opacity: 1 !important; transform: none !important; }
+
+  /* Оптимізація під екрани 320px */
+  @media (max-width: 360px) {
+    .container {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    h2 {
+      font-size: 1.4rem !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal, .reveal-slow').forEach(el => observer.observe(el));
+</script>

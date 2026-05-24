@@ -1,0 +1,138 @@
+---
+import { Image } from "astro:assets";
+import StatsRow from "@/components/roblox/StatsRow";
+import content from "@/data/roblox.json";
+import { getAsset } from "@/lib/assets";
+
+const s = content.studentGamesSection;
+// Дублюємо масиви для безперервної анімації
+const row1 = [...s.games, ...s.games];
+const row2 = [...[...s.games].reverse(), ...[...s.games].reverse()];
+---
+
+<section id="games" class="py-12 md:py-20 bg-[#0B1120] text-white relative overflow-hidden scan-line-bg">
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center mb-8 md:mb-10 fade-in-up">
+      <span class="inline-block bg-white/8 text-slate-300 text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 md:mb-4 border border-white/10">
+        {s.eyebrow}
+      </span>
+      <h2 class="text-2xl md:text-4xl font-display font-bold mb-3 px-2">
+        {s.title}
+      </h2>
+      <p class="text-slate-400 text-base md:text-lg max-w-xl mx-auto px-4">
+        {s.subtitle}
+      </p>
+    </div>
+    
+    <div class="mb-10 md:mb-16">
+      <StatsRow client:visible stats={s.stats} />
+    </div>
+  </div>
+
+  <!-- Перший рядок (рух вліво) -->
+  <div class="marquee-outer mb-4 md:mb-6">
+    <div class="marquee-track py-2">
+      {row1.map((game) => (
+        <article class="game-card shrink-0 w-60 md:w-75 mx-2 md:mx-4 bg-[#161F32] rounded-xl border border-white/5 overflow-hidden shadow-xl">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <Image src={getAsset(game.image)} alt={game.name} class="w-full h-full object-cover" loading="lazy" />
+            <span class="badge-published absolute top-2 left-2 md:top-3 md:left-3 bg-[#00A2FF] text-white text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded">
+              PUBLISHED
+            </span>
+          </div>
+          <div class="p-3 md:p-4 text-sm">
+            <h3 class="font-display font-bold text-white text-base md:text-lg truncate">{game.name}</h3>
+            <p class="text-slate-400 text-xs md:text-sm">{game.student}{game.age ? `, ${game.age}р.` : ''}</p>
+            <p class="text-[#00A2FF] font-bold mt-1 md:mt-2 text-xs md:text-sm">{game.visits.toLocaleString("uk-UA")} візитів</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- Другий рядок (рух вправо) -->
+  <div class="marquee-outer">
+    <div class="marquee-track-rev py-2">
+      {row2.map((game) => (
+        <article class="game-card shrink-0 w-60 md:w-75 mx-2 md:mx-4 bg-[#161F32] rounded-xl border border-white/5 overflow-hidden shadow-xl">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <Image src={getAsset(game.image)} alt={game.name} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div class="p-3 md:p-4 text-sm">
+            <h3 class="font-display font-bold text-white text-base md:text-lg truncate">{game.name}</h3>
+            <p class="text-slate-400 text-xs md:text-sm">{game.student}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <div class="text-center mt-10 md:mt-12 px-4 relative z-10">
+    <p class="text-slate-400 text-[11px] md:text-sm mb-6 max-w-xs mx-auto md:max-w-none">
+      {s.footnote}
+    </p>
+    <button type="button" data-scroll-to="cta" class="w-full sm:w-auto px-8 md:px-10 py-4 rounded-xl font-display text-sm font-bold md:text-base btn-3d-amber transition-transform active:scale-95">
+      {s.cta}
+    </button>
+  </div>
+</section>
+
+<style>
+  .marquee-outer {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    /* М'яке затухання країв */
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    /* Сповільнена анімація до 50 секунд */
+    animation: marquee 50s linear infinite;
+  }
+
+  .marquee-track-rev {
+    display: flex;
+    white-space: nowrap;
+    /* Сповільнена анімація до 50 секунд */
+    animation: marquee-rev 50s linear infinite;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-rev {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+
+  /* Зупинка при наведенні або тривалому натисканні на мобільному */
+  .marquee-outer:hover .marquee-track,
+  .marquee-outer:hover .marquee-track-rev,
+  .marquee-outer:active .marquee-track,
+  .marquee-outer:active .marquee-track-rev {
+    animation-play-state: paused;
+  }
+
+  @media (min-width: 768px) {
+    .game-card {
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .game-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 162, 255, 0.4);
+    }
+  }
+
+  /* Для екранів 320px-375px додатково зменшуємо масштаб, якщо потрібно */
+  @media (max-width: 360px) {
+    .game-card {
+      width: 220px; /* Трохи вужчі картки для зовсім малих екранів */
+    }
+  }
+</style>

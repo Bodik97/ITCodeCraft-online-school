@@ -1,0 +1,38 @@
+---
+import Logo from "../../components/Logo.astro";
+import content from "@/data/roblox.json";
+const { footerSection, brand } = content;
+---
+
+<footer class="bg-[#080E1C] text-slate-400 py-14 border-t border-slate-800">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-4 gap-8 mb-10">
+      <div class="col-span-2">
+        <div class="flex items-center gap-2 mb-3">
+          <Logo size="sm" href={brand.homeUrl} />
+        </div>
+        <p class="text-sm max-w-xs leading-relaxed">{footerSection.description}</p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Курс</h4>
+        <ul class="space-y-2 text-sm">
+          {footerSection.courseLinks.map((link) => (
+            <li><button type="button" data-scroll-to={link.id} class="hover:text-white transition-colors">{link.label}</button></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Контакти</h4>
+        <ul class="space-y-2 text-sm">
+          {footerSection.contacts.map((c) => (
+            <li><a href={c.href} class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">{c.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
+      <p>{footerSection.copyright}</p>
+      <p class="text-slate-600 text-center md:text-right max-w-md">{footerSection.disclaimer}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,168 @@
+---
+import content from "@/data/roblox.json";
+const s = content.benefitsSection;
+---
+
+<section id="benefits" class="py-12 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 max-w-6xl">
+    
+    <!-- Шапка секції -->
+    <div class="text-center mb-12 md:mb-20 reveal">
+      <span class="inline-block bg-[#6366F1]/10 text-[#6366F1] text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 md:mb-6 border border-[#6366F1]/20">
+        {s.eyebrow}
+      </span>
+      <h2 class="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-[#0F172A] leading-tight max-w-4xl mx-auto mb-4 md:mb-6">
+        {s.title}
+      </h2>
+      <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-2xl mx-auto px-2">
+        {s.subtitle}
+      </p>
+    </div>
+
+    <!-- Сітка переваг -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 md:mb-16">
+      {s.items.map((item) => (
+        <article 
+          class="reveal-item group relative bg-white rounded-3xl md:rounded-4xl p-6 md:p-8 border-2 border-slate-50 shadow-sm hover:shadow-xl hover:border-[#6366F1]/20 transition-all duration-500"
+        >
+          <!-- Іконка -->
+          <div class="w-14 h-14 md:w-16 md:h-16 mb-4 md:mb-6 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl md:text-3xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner">
+            {item.emoji}
+          </div>
+
+          <h3 class="text-lg md:text-xl font-display font-bold text-[#0F172A] mb-2 md:mb-3 group-hover:text-[#6366F1] transition-colors">
+            {item.title}
+          </h3>
+          <p class="text-slate-500 leading-relaxed text-sm md:text-base">
+            {item.text}
+          </p>
+          
+          <!-- Декоративна лінія знизу -->
+          <div class="absolute bottom-6 left-6 right-6 md:left-8 md:right-8 h-1 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full w-0 group-hover:w-full bg-[#6366F1]/30 transition-all duration-700"></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- CTA Блок -->
+    <div class="reveal bg-[#6366F1]/5 border-2 border-[#6366F1]/10 rounded-3xl md:rounded-5xl p-6 sm:p-10 md:p-12 text-center relative overflow-hidden">
+      <!-- Декоративна пляма на фоні -->
+      <div class="absolute -top-24 -right-24 w-48 h-48 md:w-64 md:h-64 bg-[#6366F1]/10 rounded-full blur-3xl"></div>
+      
+      <h3 class="text-xl sm:text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-6 md:mb-8 relative z-10 px-2">
+        Готові дати дитині <span class="text-[#6366F1]">суперсилу</span> розробника?
+      </h3>
+      
+      <div class="flex flex-col items-center gap-5 md:gap-6 relative z-10">
+        <button 
+          data-scroll-to="cta"
+          class="w-full sm:w-auto px-3 md:px-10 py-4 md:py-5 rounded-2xl font-display font-bold text-sm md:text-base xl:text-lg btn-3d-amber shadow-xl transition-transform active:scale-95"
+        >
+          {s.cta}
+        </button>
+        
+        <div class="flex flex-col gap-3">
+          <p class="text-slate-600 text-xs md:text-base font-medium">
+            {s.footnote}
+          </p>
+          <div class="flex items-center justify-center gap-2 text-[#00B06F] text-[10px] md:text-xs font-bold uppercase tracking-wider">
+            <span class="shrink-0 w-4 h-4 bg-[#00B06F] text-white rounded-full flex items-center justify-center text-[8px]">✓</span>
+            95% дітей створюють свою першу гру на пробному уроці
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Анімації */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Жовта кнопка */
+  .btn-3d-amber {
+    background: #FFB800;
+    color: #000;
+    border-bottom: 4px solid #E6A600;
+    transition: all 0.15s;
+  }
+
+  @media (hover: hover) {
+    .btn-3d-amber:hover {
+      background: #FFC426;
+      transform: translateY(-2px);
+      border-bottom-width: 6px;
+    }
+  }
+
+  .btn-3d-amber:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+  }
+
+  /* Для екранів 320px - 375px */
+  @media (max-width: 375px) {
+    .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    h2 {
+      font-size: 1.35rem !important;
+    }
+    h3 {
+      font-size: 1.1rem !important;
+    }
+  }
+</style>
+
+<script>
+  function reveal() {
+    const reveals = document.querySelectorAll(".reveal, .reveal-item");
+    
+    reveals.forEach((entry, index) => {
+      const windowHeight = window.innerHeight;
+      const elementTop = entry.getBoundingClientRect().top;
+      const elementVisible = 80; // Зменшено для кращого спрацювання на мобільних
+
+      if (elementTop < windowHeight - elementVisible) {
+        if (entry.classList.contains('reveal-item')) {
+           // Адаптивний delay: на мобільних (1 колонка) затримка менша
+           const isMobile = window.innerWidth < 640;
+           const delay = isMobile ? 0.05 : (index % 3) * 0.1;
+           (entry as HTMLElement).style.transitionDelay = `${delay}s`;
+        }
+        entry.classList.add("active");
+      }
+    });
+  }
+
+  // throttle для оптимізації скролу на телефонах
+  let isScrolling = false;
+  window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+      window.requestAnimationFrame(() => {
+        reveal();
+        isScrolling = false;
+      });
+      isScrolling = true;
+    }
+  });
+
+  reveal();
+</script>

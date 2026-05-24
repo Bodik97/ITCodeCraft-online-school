@@ -1,0 +1,100 @@
+---
+import "@/styles/global.css";
+import data from "@/data/roblox.json";
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: string;
+  canonicalUrl?: string;
+}
+
+const { title, description, lang = data.meta.lang, canonicalUrl = data.meta.canonical } = Astro.props;
+const site = Astro.site;
+if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
+
+const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
+const ogImage = new URL("/opengraph.jpg", canonical).href;
+
+const organizationJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: `${data.brand.primary}${data.brand.accent}`,
+  url: canonical,
+  description,
+  inLanguage: lang,
+});
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="uk_UA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline type="application/ld+json" set:html={organizationJsonLd} />
+    <script is:inline define:vars={{ productName: data.crm.productName }}>
+      window.productName = productName;
+    </script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="roblox-site min-h-dvh flex flex-col font-sans antialiased">
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-white focus:z-[100] focus:text-[#6366F1] focus:font-bold">
+      Перейти до головного контенту
+    </a>
+    <slot />
+    <script>
+      const progress = document.getElementById("scroll-progress");
+      const onScroll = () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        if (progress) progress.style.setProperty("--scroll-progress", `${pct}%`);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      document.querySelectorAll("[data-scroll-to]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-scroll-to");
+          if (!id) return;
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+          document.dispatchEvent(new CustomEvent("mobile-menu:close"));
+        });
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("is-visible");
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".fade-in-up").forEach((el) => io.observe(el));
+
+      const timeline = document.querySelector(".timeline-line");
+      if (timeline) {
+        const tio = new IntersectionObserver(
+          ([e]) => {
+            if (e.isIntersecting) timeline.classList.add("is-visible");
+          },
+          { threshold: 0.2 },
+        );
+        tio.observe(timeline.parentElement ?? timeline);
+      }
+    </script>
+  </body>
+</html>

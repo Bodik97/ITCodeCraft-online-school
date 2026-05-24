@@ -1,0 +1,17 @@
+---
+import content from "@/data/roblox.json";
+const items = [...content.socialProof.items, ...content.socialProof.items];
+---
+
+<div class="bg-[#1E293B] border-b border-slate-700/60 py-3 overflow-hidden">
+  <div class="ticker-track">
+    {
+      items.map((item) => (
+        <span class="flex items-center gap-3 text-slate-300 text-sm font-medium whitespace-nowrap px-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#6366F1] inline-block" />
+          {item}
+        </span>
+      ))
+    }
+  </div>
+</div>

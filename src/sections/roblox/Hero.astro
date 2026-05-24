@@ -1,0 +1,52 @@
+---
+import content from "@/data/roblox.json";
+import RobloxCharacter from "@/components/roblox/RobloxCharacter.astro";
+
+const h = content.hero;
+const particles = [
+  { size: 8, left: "8%", delay: "0s", duration: "14s", color: "#6366F1" },
+  { size: 6, left: "25%", delay: "2.5s", duration: "11s", color: "#FBBF24" },
+  { size: 10, left: "45%", delay: "1.2s", duration: "16s", color: "#00A2FF" },
+  { size: 5, left: "62%", delay: "4s", duration: "13s", color: "#00B06F" },
+  { size: 7, left: "78%", delay: "6s", duration: "15s", color: "#6366F1" },
+  { size: 6, left: "92%", delay: "3.5s", duration: "12s", color: "#FBBF24" },
+];
+---
+
+<section class="bg-[#041424] text-white pt-16 pb-20 overflow-hidden relative">
+  <div class="hero-particles" aria-hidden="true">
+    {
+      particles.map((p) => (
+        <div
+          class="hero-particle"
+          style={`width:${p.size}px;height:${p.size}px;left:${p.left};bottom:-20px;background:${p.color};animation-delay:${p.delay};animation-duration:${p.duration}`}
+        />
+      ))
+    }
+  </div>
+  <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-8 items-center relative z-10">
+    <div class="space-y-7 fade-in-up">
+      <div class="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full border border-white/20 text-sm font-medium">
+        <span class="w-2 h-2 rounded-full bg-[#00B06F] animate-pulse" />
+        {h.badge}
+      </div>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight">
+        {h.titlePrefix}
+        <span class="text-[#00A2FF]">{h.titleHighlight}</span>
+        {h.titleSuffix}
+      </h1>
+      <p class="text-lg text-slate-300 max-w-xl leading-relaxed">{h.description}</p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button type="button" data-scroll-to="cta" class="px-7 py-4 lg:px-4 rounded-xl font-display font-bold text-sm md:text-base btn-3d-amber">
+          {h.primaryCta}
+        </button>
+        <button type="button" data-scroll-to="games" class="px-7 py-4 rounded-xl font-bold text-sm md:text-base bg-white/10 hover:bg-white/20 border border-white/20">
+          {h.secondaryCta}
+        </button>
+      </div>
+    </div>
+    <div class="hidden lg:flex justify-center">
+      <RobloxCharacter />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+---
+import UseForm from "@/components/roblox/form/UseForm.astro";
+import content from "@/data/roblox.json";
+const s = content.registerSection;
+---
+
+<section id="cta" class="py-20 bg-[#0F172A] text-white relative overflow-hidden">
+  <div class="container mx-auto px-4 max-w-5xl relative z-10">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="fade-in-up space-y-6">
+        <span class="inline-block bg-[#FBBF24]/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{s.eyebrow}</span>
+        <h2 class="text-3xl md:text-4xl font-display font-bold leading-tight">{s.title}</h2>
+        <p class="text-slate-300 text-lg">{s.description}</p>
+        <ul class="space-y-3 text-slate-300">
+          {s.perks.map((perk) => <li>{perk}</li>)}
+        </ul>
+      </div>
+      <div class="fade-in-up bg-white rounded-3xl p-8 shadow-2xl text-[#0F172A]">
+        <h3 class="text-xl font-display font-bold mb-1 text-center">{s.form.title}</h3>
+        <p class="text-slate-400 text-sm text-center mb-6">{s.form.subtitle}</p>
+        <UseForm />
+      </div>
+    </div>
+  </div>
+</section>

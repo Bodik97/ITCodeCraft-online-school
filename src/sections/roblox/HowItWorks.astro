@@ -1,0 +1,126 @@
+---
+import content from "@/data/roblox.json";
+const s = content.howItWorksSection;
+---
+
+<section id="program" class="py-12 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 sm:px-6 max-w-4xl">
+    
+    {/* Заголовок - Адаптивні розміри шрифтів */}
+    <div class="text-center mb-10 md:mb-20 fade-in-up">
+      <span class="inline-block bg-[#6366F1]/10 text-[#6366F1] text-[9px] md:text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.2em] mb-4 border border-[#6366F1]/20">
+        {s.eyebrow}
+      </span>
+      <h2 class="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-[#0F172A] mb-4 md:mb-6 tracking-tight leading-[1.1]">
+        {s.title}
+      </h2>
+      <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-2xl mx-auto leading-relaxed font-medium px-2">
+        {s.subtitle}
+      </p>
+    </div>
+
+    <div class="relative">
+      {/* Адаптивна лінія таймлайну: зсувається в залежності від розміру кнопок */}
+      <div class="absolute left-4.5 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-linear-to-b from-[#6366F1]/0 via-[#6366F1]/20 to-[#6366F1]/0" aria-hidden="true"></div>
+
+      <div class="space-y-4 md:space-y-8">
+        {s.steps.map((item, i) => (
+          <article 
+            class="step-item fade-in-up relative flex gap-4 sm:gap-6 md:gap-10 items-start cursor-pointer group"
+            data-step={i}
+          >
+            {/* Номер кроку - Масштабується від 36px до 64px */}
+            <div class="relative z-10 w-9 h-9 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-xl sm:rounded-[18px] md:rounded-[22px] bg-white border-2 border-slate-100 text-slate-300 group-[.is-active]:bg-[#6366F1] group-[.is-active]:border-[#6366F1] group-[.is-active]:text-white font-display font-black text-sm sm:text-lg md:text-2xl flex items-center justify-center shrink-0 transition-all duration-500 shadow-sm group-[.is-active]:shadow-[0_10px_30px_-10px_rgba(99,102,241,0.6)]">
+              {i + 1}
+            </div>
+
+            {/* Картка */}
+            <div class="flex-1 bg-white border border-slate-100 group-[.is-active]:border-[#6366F1]/20 rounded-[20px] sm:rounded-[28px] md:rounded-[36px] p-4 sm:p-6 md:p-10 transition-all duration-500 group-[.is-active]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)]">
+              
+              <div class="flex justify-between items-start gap-3">
+                <div class="flex-1">
+                  <div class="text-[8px] sm:text-[10px] md:text-xs font-black text-slate-400 group-[.is-active]:text-[#6366F1] uppercase tracking-[0.15em] mb-1 md:mb-2 transition-colors">
+                    {item.step}
+                  </div>
+                  <h3 class="text-sm sm:text-lg md:text-2xl font-display font-bold text-[#0F172A] leading-tight tracking-tight group-hover:text-[#6366F1] transition-colors">
+                    {item.title}
+                  </h3>
+                </div>
+                
+                {/* Стрілочка - прихована на дуже малих екранах для економії місця */}
+                <div class="mt-1 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-slate-50 flex items-center justify-center group-[.is-active]:bg-[#6366F1]/10 group-[.is-active]:rotate-180 transition-all duration-500 shrink-0">
+                   <svg class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-slate-300 group-[.is-active]:text-[#6366F1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              
+              <p class="text-slate-500 text-xs sm:text-sm md:text-base mt-2 md:mt-4 leading-relaxed font-medium">
+                {item.desc}
+              </p>
+
+              {/* Деталі */}
+              <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
+                <div class="overflow-hidden">
+                  <div class="pt-4 md:pt-8 mt-4 md:mt-8 border-t border-slate-100">
+                    <p class="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4 md:mb-6">
+                      {item.details}
+                    </p>
+                    
+                    {/* Outcome плашка */}
+                    <div class="flex items-start sm:items-center gap-3 bg-[#6366F1]/5 border border-[#6366F1]/10 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                      <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#6366F1] flex items-center justify-center text-white shrink-0">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <span class="text-[10px] sm:text-xs md:text-sm font-bold text-[#6366F1] leading-tight uppercase tracking-wide">
+                        {item.outcome}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initProgramAccordion() {
+    const steps = document.querySelectorAll('.step-item');
+    if (!steps.length) return;
+
+    steps.forEach((step, index) => {
+      // Перший активний
+      if (index === 0) step.classList.add('is-active');
+
+      step.addEventListener('click', () => {
+        const isActive = step.classList.contains('is-active');
+        steps.forEach(s => s.classList.remove('is-active'));
+        if (!isActive) {
+          step.classList.add('is-active');
+          // Скрол з врахуванням відступу зверху (наприклад для фіксованого хедеру)
+          setTimeout(() => {
+            const offset = 100;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = step.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }, 300);
+        }
+      });
+    });
+  }
+
+  initProgramAccordion();
+  document.addEventListener('astro:after-swap', initProgramAccordion);
+</script>

@@ -1,24 +1,32 @@
 ---
-import content from "../data/data.json";
+import content from "@/data/roblox.json";
 
 interface Props {
   size?: "md" | "sm";
   href?: string;
-  className?: string;
+  class?: string;
+  variant?: "dark" | "light";
 }
 
-const { size = "md", href = "https://itcodecraft.tech/", className = "" } = Astro.props;
+const {
+  size = "md",
+  href = content.brand.homeUrl,
+  class: className = "",
+  variant = "dark",
+} = Astro.props;
+
 const isSmall = size === "sm";
-const brandPrimary = content.brand.primary ?? "ITCode";
-const brandAccent = content.brand.accent ?? "Craft";
+const brandPrimary = content.brand.primary;
+const brandAccent = content.brand.accent;
 const brandPrefix = brandPrimary.startsWith("IT") ? "IT" : brandPrimary.slice(0, 2);
 const brandBase = brandPrimary.slice(brandPrefix.length);
+const variantClass = variant === "light" ? "ic-logo--light" : "";
 ---
 
 <a
   href={href}
   aria-label={`${brandPrimary}${brandAccent}`}
-  class:list={["ic-logo group", isSmall ? "ic-logo--sm" : "ic-logo--md", className]}
+  class:list={["ic-logo", isSmall ? "ic-logo--sm" : "ic-logo--md", variantClass, className]}
 >
   <span class="ic-wordmark">
     <span class="ic-name">

@@ -1,0 +1,226 @@
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: var(--scroll-progress);
+  background: linear-gradient(90deg, #6366f1 0%, #00a2ff 50%, #fbbf24 100%);
+  z-index: 100;
+  transition: width 0.05s linear;
+}
+
+.btn-3d-amber {
+  background-color: var(--roblox-accent);
+  color: #000;
+  box-shadow: 0 4px 0 #b8830c;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.btn-3d-amber:hover:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b8830c;
+}
+
+.btn-3d-amber:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #b8830c;
+}
+
+.floating {
+  animation: float 3.2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-12px) rotate(0.5deg);
+  }
+
+  66% {
+    transform: translateY(-6px) rotate(-0.5deg);
+  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-120vh) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.marquee-outer {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+
+.marquee-track-rev {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: marquee-scroll-rev 38s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-scroll-rev {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.game-card {
+  flex-shrink: 0;
+  width: 280px;
+  background: #1e293b;
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.badge-published {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0, 176, 111, 0.15);
+  border: 1px solid rgba(0, 176, 111, 0.4);
+  color: #00e090;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+
+.scan-line-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.012) 3px,
+    rgba(255, 255, 255, 0.012) 4px
+  );
+  pointer-events: none;
+}
+
+.stat-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 18px 28px;
+  text-align: center;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 22s linear infinite;
+}
+
+.course-card {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 19px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #6366f1 0%, #00a2ff 100%);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-line.is-visible {
+  transform: scaleY(1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}

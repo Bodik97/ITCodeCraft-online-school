@@ -1,4 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono&family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@300;900&family=Space+Grotesk:wght@600;700&display=swap");
 @import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-paper: #070d18;
@@ -43,7 +46,69 @@
     0 0 20px rgba(255, 107, 0, 0.3);
 }
 
+@theme inline {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Fredoka", sans-serif;
+}
+
+:root {
+  --roblox-primary: #6366f1;
+  --roblox-primary-dark: #4f46e5;
+  --roblox-accent: #fbbf24;
+  --roblox-blue: #00a2ff;
+  --roblox-success: #00b06f;
+  --roblox-dark: #0f172a;
+  --roblox-text: #1f2937;
+  --roblox-text-soft: #6b7280;
+  --roblox-bg-soft: #f9fafb;
+  --scroll-progress: 0%;
+  --color-neon-cyan: #22d3ee;
+  --color-neon-lime: #84cc16;
+  --color-ink: #e6eef9;
+}
+
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  html.scroll-locked,
+  body.scroll-locked {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.scroll-locked {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  body.roblox-site {
+    @apply font-sans antialiased bg-(--roblox-bg-soft) text-(--roblox-text);
+    background-image: none;
+    overflow-x: hidden;
+  }
+
+  body.roblox-site h1,
+  body.roblox-site h2,
+  body.roblox-site h3,
+  body.roblox-site h4,
+  body.roblox-site h5,
+  body.roblox-site h6 {
+    @apply font-display;
+  }
+}
+
 @import "./base/layouts.css";
 @import "./utils/intTelInput.css";
+@import "./components/logo.css";
 @import "./components/form.css";
 @import "./components/modal.css";
+@import "./components/roblox-form.css";
+@import "./roblox/theme.css";

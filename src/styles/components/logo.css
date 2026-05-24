@@ -1,0 +1,79 @@
+@layer components {
+  .ic-logo {
+    --ic-cyan: var(--color-neon-cyan, #22d3ee);
+    --ic-text: var(--color-ink, #e6eef9);
+    --ic-muted: rgba(230, 238, 249, 0.5);
+    --ic-name-size: 26px;
+    --ic-sub-size: 8px;
+    --ic-gap: 14px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ic-gap);
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ic-logo--sm {
+    --ic-name-size: 22px;
+    --ic-sub-size: 7px;
+    --ic-gap: 12px;
+  }
+
+  .ic-wordmark {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 5px;
+  }
+
+  .ic-name {
+    font-family: "Outfit", "Inter", sans-serif;
+    font-size: var(--ic-name-size);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .ic-name-prefix {
+    color: var(--ic-cyan);
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+  }
+
+  .ic-name-base {
+    color: var(--ic-text);
+  }
+
+  .ic-name-accent {
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+
+  .ic-subline {
+    font-family: "DM Mono", "Space Mono", monospace;
+    font-size: var(--ic-sub-size);
+    letter-spacing: 0.28em;
+    color: var(--ic-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ic-logo--sm .ic-subline {
+    display: none;
+  }
+
+  .ic-logo:hover .ic-name-prefix,
+  .ic-logo:focus-visible .ic-name-prefix {
+    color: #67e8f9;
+  }
+
+  @media (max-width: 768px) {
+    .ic-logo--md {
+      --ic-name-size: 24px;
+      --ic-sub-size: 7px;
+      --ic-gap: 12px;
+    }
+  }
+}

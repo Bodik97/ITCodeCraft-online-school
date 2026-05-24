@@ -1,0 +1,39 @@
+---
+import Layout from "@/components/roblox/layouts/Layout.astro";
+import Header from "@/sections/roblox/Header.astro";
+import Hero from "@/sections/roblox/Hero.astro";
+import SocialProof from "@/sections/roblox/SocialProof.astro";
+import GamesShowcase from "@/sections/roblox/GamesShowcase.astro";
+import WhyRoblox from "@/sections/roblox/WhyRoblox.astro";
+import HowItWorks from "@/sections/roblox/HowItWorks.astro";
+import StudentGames from "@/sections/roblox/StudentGames.astro";
+import Benefits from "@/sections/roblox/Benefits.astro";
+import Testimonials from "@/sections/roblox/Testimonials.astro";
+import FAQ from "@/sections/roblox/FAQ.astro";
+import RegisterForm from "@/sections/roblox/RegisterForm.astro";
+import Footer from "@/sections/roblox/Footer.astro";
+import ModalRegister from "@/components/roblox/modal/ModalRegister.astro";
+import ModalSuccess from "@/components/roblox/modal/ModalSuccess.astro";
+import ModalError from "@/components/roblox/modal/ModalError.astro";
+import content from "@/data/roblox.json";
+---
+
+<Layout title={content.meta.title} description={content.meta.description} canonicalUrl={content.meta.canonical}>
+  <Header />
+  <main id="main-content" class="flex-1">
+    <Hero />
+    <SocialProof />
+    <GamesShowcase />
+    <WhyRoblox />
+    <HowItWorks />
+    <StudentGames />
+    <Benefits />
+    <Testimonials />
+    <FAQ />
+    <RegisterForm />
+  </main>
+  <Footer />
+  <ModalRegister />
+  <ModalSuccess />
+  <ModalError />
+</Layout>

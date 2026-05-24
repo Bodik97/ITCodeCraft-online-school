@@ -1,0 +1,28 @@
+---
+import content from "@/data/roblox.json";
+---
+
+<div id="modal-error" class="hidden fixed inset-0 z-[200] items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
+  <div class="bg-white rounded-2xl p-8 max-w-md text-center shadow-xl">
+    <h3 class="text-xl font-bold text-red-600 mb-2">{content.modal.errorTitle}</h3>
+    <p class="text-slate-600 text-sm">{content.modal.errorMessage}</p>
+    <button type="button" id="modal-error-close" class="mt-6 px-6 py-2 rounded-xl border font-bold">Закрити</button>
+  </div>
+</div>
+
+<script>
+  import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
+
+  const modal = document.getElementById("modal-error");
+
+  function setErrorModalOpen(open: boolean) {
+    if (!modal) return;
+    modal.classList.toggle("hidden", !open);
+    modal.classList.toggle("flex", open);
+    if (open) lockBodyScroll();
+    else unlockBodyScroll();
+  }
+
+  window.addEventListener("itcc:form-error", () => setErrorModalOpen(true));
+  document.getElementById("modal-error-close")?.addEventListener("click", () => setErrorModalOpen(false));
+</script>
