@@ -105,10 +105,10 @@
   }
 }
 
-@import "./base/layouts.css";
+@import "./main/layouts.css";
 @import "./utils/intTelInput.css";
-@import "./components/logo.css";
-@import "./components/form.css";
-@import "./components/modal.css";
-@import "./components/roblox-form.css";
+@import "./main/logo.css";
+@import "./main/form.css";
+@import "./main/modal.css";
+@import "./roblox/form.css";
 @import "./roblox/theme.css";

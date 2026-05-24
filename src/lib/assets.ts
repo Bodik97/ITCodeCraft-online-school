@@ -1,25 +1,25 @@
-import gameObby from "@/assets/game-obby.png";
-import gameBattle from "@/assets/game-battle.png";
-import gameTycoon from "@/assets/game-tycoon.png";
-import gameRacing from "@/assets/game-racing.png";
-import sgZombie from "@/assets/sg-zombie.png";
-import sgSky from "@/assets/sg-sky.png";
-import sgCity from "@/assets/sg-city.png";
-import sgDragon from "@/assets/sg-dragon.png";
-import sgPizza from "@/assets/sg-pizza.png";
-import sgSpace from "@/assets/sg-space.png";
-import gameSky from "@/assets/game-plane.jpg";
-import gameRuner from "@/assets/game-runer.jpg";
-import gameSurvival from "@/assets/survivaled.jpg";
+import gameObby from "@/assets/roblox/game-obby.png";
+import gameBattle from "@/assets/roblox/game-battle.png";
+import gameTycoon from "@/assets/roblox/game-tycoon.png";
+import gameRacing from "@/assets/roblox/game-racing.png";
+import sgZombie from "@/assets/roblox/sg-zombie.png";
+import sgSky from "@/assets/roblox/sg-sky.png";
+import sgCity from "@/assets/roblox/sg-city.png";
+import sgDragon from "@/assets/roblox/sg-dragon.png";
+import sgPizza from "@/assets/roblox/sg-pizza.png";
+import sgSpace from "@/assets/roblox/sg-space.png";
+import gameSky from "@/assets/roblox/game-plane.jpg";
+import gameRuner from "@/assets/roblox/game-runer.jpg";
+import gameSurvival from "@/assets/roblox/survivaled.jpg";
 
 const byFile: Record<string, (typeof gameObby)> = {
   "game-obby.png": gameObby,
   "game-battle.png": gameBattle,
   "game-tycoon.png": gameTycoon,
   "game-racing.png": gameRacing,
-  "game-plane.jpg" : gameSky,
-  "game-runner.jpg" : gameRuner,
-  "survivaled.jpg" : gameSurvival,
+  "game-plane.jpg": gameSky,
+  "game-runner.jpg": gameRuner,
+  "survivaled.jpg": gameSurvival,
   "sg-zombie.png": sgZombie,
   "sg-sky.png": sgSky,
   "sg-city.png": sgCity,

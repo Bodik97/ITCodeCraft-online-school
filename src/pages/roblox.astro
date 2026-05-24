@@ -1,5 +1,5 @@
 ---
-import Layout from "@/components/roblox/layouts/Layout.astro";
+import RobloxLayout from "@/layouts/RobloxLayout.astro";
 import Header from "@/sections/roblox/Header.astro";
 import Hero from "@/sections/roblox/Hero.astro";
 import SocialProof from "@/sections/roblox/SocialProof.astro";
@@ -18,7 +18,7 @@ import ModalError from "@/components/roblox/modal/ModalError.astro";
 import content from "@/data/roblox.json";
 ---
 
-<Layout title={content.meta.title} description={content.meta.description} canonicalUrl={content.meta.canonical}>
+<RobloxLayout title={content.meta.title} description={content.meta.description} canonicalUrl={content.meta.canonical}>
   <Header />
   <main id="main-content" class="flex-1">
     <Hero />
@@ -36,4 +36,4 @@ import content from "@/data/roblox.json";
   <ModalRegister />
   <ModalSuccess />
   <ModalError />
-</Layout>
+</RobloxLayout>

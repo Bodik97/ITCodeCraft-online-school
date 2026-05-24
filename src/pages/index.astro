@@ -1,21 +1,20 @@
 ---
-import Layout from "../components/layouts/Layout.astro";
-import SignupNotification from "../components/SignupNotification.astro";
-import content from "../data/data.json";
-import Courses from "../sections/Courses.astro";
-import FAQ from "../sections/FAQ.astro";
-import Footer from "../sections/Footer.astro";
-import Header from "../sections/Header.astro";
-import Hero from "../sections/Hero.astro";
-
-import RegisterForm from "../sections/RegisterForm.astro";
-import Reviews from "../sections/Reviews.astro";
-import Modal from "../components/modal/Modal.astro";
-import ModalError from "../components/modal/ModalError.astro";
-import ModalSuccess from "../components/modal/ModalSuccess.astro";
-import Why from "../sections/Why.astro";
-import Works from "../sections/Works.astro";
-import MessengerFab from "../components/MessengerFab.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import SignupNotification from "@/components/shared/SignupNotification.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import Modal from "@/components/main/modal/Modal.astro";
+import ModalError from "@/components/main/modal/ModalError.astro";
+import ModalSuccess from "@/components/main/modal/ModalSuccess.astro";
+import content from "@/data/main.json";
+import Header from "@/sections/main/Header.astro";
+import Hero from "@/sections/main/Hero.astro";
+import Why from "@/sections/main/Why.astro";
+import Courses from "@/sections/main/Courses.astro";
+import Works from "@/sections/main/Works.astro";
+import Reviews from "@/sections/main/Reviews.astro";
+import FAQ from "@/sections/main/FAQ.astro";
+import RegisterForm from "@/sections/main/RegisterForm.astro";
+import Footer from "@/sections/main/Footer.astro";
 
 const initialNotificationAvatar =
   content.signupNotifications[0]?.name?.charAt(0) ?? "";
@@ -30,7 +29,7 @@ const runtimeData = {
 };
 ---
 
-<Layout
+<MainLayout
   lang={content.meta.lang}
   title={content.meta.title}
   description={content.meta.description}
@@ -43,7 +42,6 @@ const runtimeData = {
     <Hero />
     <Why />
     <Courses />
-
     <Works />
     <Reviews />
     <FAQ />
@@ -56,4 +54,4 @@ const runtimeData = {
   <Modal />
   <ModalError />
   <ModalSuccess />
-</Layout>
+</MainLayout>

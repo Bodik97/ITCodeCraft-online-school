@@ -1,5 +1,5 @@
 ---
-import Logo from "../../components/Logo.astro";
+import Logo from "@/components/shared/Logo.astro";
 import content from "@/data/roblox.json";
 const { footerSection, brand } = content;
 ---
@@ -32,7 +32,7 @@ const { footerSection, brand } = content;
     </div>
     <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
       <p>{footerSection.copyright}</p>
-      <p class="text-slate-600 text-center md:text-right max-w-md">{footerSection.disclaimer}</p>
+      <p class="text-[#45556c] text-center md:text-right max-w-md">{footerSection.disclaimer}</p>
     </div>
   </div>
 </footer>
