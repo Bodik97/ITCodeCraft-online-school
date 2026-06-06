@@ -22,6 +22,10 @@ import { cn, pushGtmEvent, uid } from '@/lib/utils';
 
 
 import { reportError } from '@/lib/reportError';
+import {
+  buildGoogleSheetLeadPayload,
+  submitLeadToGoogleSheet,
+} from '@/lib/formSubmit';
 
 import Inputs from './inputs/Inputs';
 
@@ -52,7 +56,8 @@ interface FormConfigProps {
     afterSendFunction?: (data: any) => Promise<void>;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec';
+const GOOGLE_SCRIPT_URL = import.meta.env.PUBLIC_GOOGLE_SCRIPT_URL?.trim() ||
+    'https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec';
 
 // for testing
 // const GOOGLE_SCRIPT_URL = 'https://sfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
@@ -152,21 +157,17 @@ export default function FormComponent({
         });
         window.itccTrack?.('form_submit_lead', leadSummary, { skipThrottle: true });
 
-        const sendData: Record<string, any> = {
-            Course: resolvedProductName || "Консультація",
-            FormID: crmParams.formId,
-
-            ...formData,
-        };
+        const sendData = buildGoogleSheetLeadPayload({
+            course: resolvedProductName || 'Консультація',
+            formId: crmParams.formId,
+            name: formData.name ?? '',
+            phone: formData.phone ?? '',
+            email: formData.email ?? '',
+            childAge: formData.childAge ?? formData.child_age,
+        });
 
         try {
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(sendData),
-                keepalive: true,
-            });
+            await submitLeadToGoogleSheet(sendData, GOOGLE_SCRIPT_URL);
 
             const mergedData = {
                 ...sendData,

@@ -67,7 +67,7 @@ export default function LeadForm({ copy, crm }: Props) {
 
       pushGtmEvent("lead", {
         phone: sendData.phone,
-        email: "",
+        email: sendData.email,
         conversionId: uid(),
       });
 
