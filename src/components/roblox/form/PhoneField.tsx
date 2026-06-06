@@ -4,23 +4,31 @@ import type { IntlTelInputRef } from "@intl-tel-input/react";
 import "intl-tel-input/styles";
 import type { Control, FieldError } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import type { LeadFormValues } from "./schema";
+
+type PhoneFormValues = { phone: string };
 
 type Props = {
-  control: Control<LeadFormValues>;
+  control: Control<PhoneFormValues>;
   error?: FieldError;
+  inputId?: string;
+  testId?: string;
 };
 
-export default function PhoneField({ control, error }: Props) {
+export default function PhoneField({
+  control,
+  error,
+  inputId = "phone",
+  testId = "input-phone",
+}: Props) {
   const itiRef = useRef<IntlTelInputRef>(null);
 
   useEffect(() => {
-    itiRef.current?.getInput()?.setAttribute("data-testid", "input-phone");
-  }, []);
+    itiRef.current?.getInput()?.setAttribute("data-testid", testId);
+  }, [testId]);
 
   return (
     <div>
-      <label htmlFor="phone">Телефон</label>
+      <label htmlFor={inputId}>Телефон</label>
       <Controller
         name="phone"
         control={control}
@@ -38,7 +46,7 @@ export default function PhoneField({ control, error }: Props) {
             value={field.value}
             onChangeNumber={field.onChange}
             inputProps={{
-              id: "phone",
+              id: inputId,
               name: field.name,
               onBlur: field.onBlur,
               placeholder: "050 123 45 67",

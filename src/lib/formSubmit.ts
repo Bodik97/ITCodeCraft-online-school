@@ -9,6 +9,7 @@ export type GoogleSheetLeadPayload = {
   email: string;
   name: string;
   phone: string;
+  question?: string;
 };
 
 export function buildGoogleSheetLeadPayload(input: {
@@ -16,17 +17,19 @@ export function buildGoogleSheetLeadPayload(input: {
   formId: string;
   name: string;
   phone: string;
-  childAge: number;
+  childAge?: number;
   email?: string;
+  question?: string;
 }): GoogleSheetLeadPayload {
   return {
     Course: input.course,
     FormID: input.formId,
     SiteURL: window.location.href,
-    childAge: Number(input.childAge),
+    childAge: Number(input.childAge ?? 0),
     email: input.email ?? "",
     name: input.name,
     phone: input.phone,
+    ...(input.question ? { question: input.question } : {}),
   };
 }
 

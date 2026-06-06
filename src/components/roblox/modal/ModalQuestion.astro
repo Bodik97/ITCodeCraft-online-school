@@ -1,0 +1,158 @@
+---
+import UseQuestionForm from "@/components/roblox/form/UseQuestionForm.astro";
+import content from "@/data/roblox.json";
+const q = content.faqSection.questionForm;
+---
+
+<div
+  id="modal-question"
+  class="register-modal hidden fixed inset-0 z-[150] items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-question-title"
+  aria-hidden="true"
+>
+  <button
+    type="button"
+    class="register-modal__backdrop"
+    data-question-modal-close
+    aria-label="Закрити вікно запитання"
+  ></button>
+
+  <div class="register-modal__panel relative w-full max-w-lg text-[#0F172A]">
+    <div class="register-modal__card bg-white rounded-3xl p-8 shadow-2xl overflow-visible">
+      <button
+        type="button"
+        class="register-modal__close"
+        data-question-modal-close
+        aria-label="Закрити"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3 id="modal-question-title" class="text-xl font-display font-bold mb-1 text-center pr-8">
+        {q.title}
+      </h3>
+      <p class="text-slate-400 text-sm text-center mb-6">{q.subtitle}</p>
+      <UseQuestionForm />
+    </div>
+  </div>
+</div>
+
+<style>
+  .register-modal {
+    background: rgba(2, 12, 22, 0.62);
+    backdrop-filter: blur(8px);
+  }
+
+  .register-modal.is-open {
+    display: flex;
+    overscroll-behavior: none;
+  }
+
+  .register-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .register-modal__panel {
+    position: relative;
+    z-index: 1;
+    max-height: min(92vh, 44rem);
+    overflow: auto;
+    animation: register-modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .register-modal__card {
+    overflow: visible;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+      0 24px 48px -12px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(34, 211, 238, 0.08) inset;
+  }
+
+  .register-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    background: rgba(15, 23, 42, 0.04);
+    color: #64748b;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .register-modal__close:hover {
+    background: rgba(15, 23, 42, 0.08);
+    border-color: rgba(0, 162, 255, 0.35);
+    color: #0f172a;
+  }
+
+  @keyframes register-modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .register-modal__panel {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
+
+  const modal = document.getElementById("modal-question");
+  const openTriggers = document.querySelectorAll("[data-open-question-modal]");
+
+  function setQuestionModalOpen(open: boolean) {
+    if (!modal) return;
+    modal.classList.toggle("is-open", open);
+    modal.classList.toggle("hidden", !open);
+    modal.setAttribute("aria-hidden", String(!open));
+    if (open) lockBodyScroll();
+    else unlockBodyScroll();
+    if (open) {
+      document.dispatchEvent(new CustomEvent("mobile-menu:close"));
+      const firstInput = modal.querySelector<HTMLInputElement>("input, textarea");
+      window.setTimeout(() => firstInput?.focus(), 100);
+    }
+  }
+
+  openTriggers.forEach((el) => {
+    el.addEventListener("click", () => setQuestionModalOpen(true));
+  });
+
+  modal?.querySelectorAll("[data-question-modal-close]").forEach((el) => {
+    el.addEventListener("click", () => setQuestionModalOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal?.classList.contains("is-open")) {
+      setQuestionModalOpen(false);
+    }
+  });
+
+  window.addEventListener("itcc:form-success", () => setQuestionModalOpen(false));
+</script>

@@ -1,0 +1,9 @@
+---
+import QuestionForm from "./QuestionForm";
+import content from "@/data/roblox.json";
+
+const { faqSection, crm } = content;
+const crmWithFormId = { ...crm, formId: "roblox-faq-question" };
+---
+
+<QuestionForm client:idle copy={faqSection.questionForm} crm={crmWithFormId} />
