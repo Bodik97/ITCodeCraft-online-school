@@ -2,8 +2,13 @@
 import QuestionForm from "./QuestionForm";
 import content from "@/data/roblox.json";
 
+interface Props {
+  formId: string;
+}
+
+const { formId } = Astro.props;
 const { faqSection, crm } = content;
-const crmWithFormId = { ...crm, formId: "roblox-faq-question" };
+const crmWithFormId = { ...crm, formId };
 ---
 
 <QuestionForm client:idle copy={faqSection.questionForm} crm={crmWithFormId} />

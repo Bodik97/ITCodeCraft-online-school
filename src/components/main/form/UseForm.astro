@@ -2,7 +2,12 @@
 import Form from "./Form.tsx";
 import content from "@/data/main.json";
 
-const { isModalForm = false, formId = "" } = Astro.props;
+interface Props {
+  isModalForm?: boolean;
+  formId: string;
+}
+
+const { isModalForm = false, formId } = Astro.props;
 ---
 
 <Form

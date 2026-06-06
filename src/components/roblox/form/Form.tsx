@@ -19,7 +19,7 @@ type FormCopy = {
 
 export type CrmParams = {
   productName: string;
-  formId?: string;
+  formId: string;
   googleScriptUrl?: string;
   redirectUrl?: string;
 };
@@ -56,7 +56,7 @@ export default function LeadForm({ copy, crm }: Props) {
 
     const sendData = buildGoogleSheetLeadPayload({
       course: resolvedProductName,
-      formId: crm.formId ?? "roblox-landing",
+      formId: crm.formId,
       name: values.parentName,
       phone: values.phone,
       childAge: values.childAge,
@@ -98,10 +98,12 @@ export default function LeadForm({ copy, crm }: Props) {
 
   return (
     <form
+      id={crm.formId}
       onSubmit={onSubmit}
       className="lead-form space-y-5"
       data-testid="lead-form"
       data-itcc-form="register-lead"
+      data-form-id={crm.formId}
       noValidate
     >
       <div>

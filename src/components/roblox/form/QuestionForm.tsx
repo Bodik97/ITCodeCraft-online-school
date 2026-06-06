@@ -47,7 +47,7 @@ export default function QuestionForm({ copy, crm }: Props) {
 
     const sendData = buildGoogleSheetLeadPayload({
       course: resolvedProductName,
-      formId: crm.formId ?? "roblox-faq-question",
+      formId: crm.formId,
       name: values.name,
       phone: values.phone,
       question: values.question,
@@ -73,10 +73,12 @@ export default function QuestionForm({ copy, crm }: Props) {
 
   return (
     <form
+      id={crm.formId}
       onSubmit={onSubmit}
       className="lead-form space-y-5"
       data-testid="question-form"
       data-itcc-form="faq-question"
+      data-form-id={crm.formId}
       noValidate
     >
       <div>

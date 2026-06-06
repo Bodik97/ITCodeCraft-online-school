@@ -3,12 +3,12 @@ import LeadForm from "./Form";
 import content from "@/data/roblox.json";
 
 interface Props {
-  formId?: string;
+  formId: string;
 }
 
 const { formId } = Astro.props;
 const { registerSection, crm } = content;
-const crmWithFormId = formId ? { ...crm, formId } : crm;
+const crmWithFormId = { ...crm, formId };
 ---
 
 <LeadForm client:idle copy={registerSection.form} crm={crmWithFormId} />

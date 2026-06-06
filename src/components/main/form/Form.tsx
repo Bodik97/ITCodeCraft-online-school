@@ -43,8 +43,7 @@ export interface CrmParams {
     product_id: string;
     isModalForm?: boolean;
     redirectUrl?: string;
-    formId?: string;
-
+    formId: string;
 }
 
 interface FormConfigProps {
@@ -155,7 +154,7 @@ export default function FormComponent({
 
         const sendData: Record<string, any> = {
             Course: resolvedProductName || "Консультація",
-            FormID: crmParams.formId || null,
+            FormID: crmParams.formId,
 
             ...formData,
         };
@@ -226,8 +225,10 @@ export default function FormComponent({
         <div className="relative">
             {!isSubmitting && (
                 <form
+                    id={crmParams.formId}
                     className={cn(' grid grid-cols-1 gap-6 xl:grid-cols-2 xl:gap-8')}
                     data-itcc-form="register-lead"
+                    data-form-id={crmParams.formId}
                     noValidate
                     autoComplete="on"
                     onSubmit={handleSubmit(onSubmit)}
