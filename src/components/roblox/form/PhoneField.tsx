@@ -37,6 +37,11 @@ export default function PhoneField({
             ref={itiRef}
             initialCountry="ua"
             countryNameLocale="uk"
+            i18n={{
+              searchPlaceholder: "Пошук",
+              noCountrySelected: "Оберіть країну",
+              countryListAriaLabel: "Список країн",
+            }}
             containerClass="iti--lead-form"
             separateDialCode={false}
             nationalMode

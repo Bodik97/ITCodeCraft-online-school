@@ -74,7 +74,7 @@ export default function TestimonialsCarousel({ items }: Props) {
           </div>
 
           {/* Текст відгуку */}
-          <p className="text-slate-600 text-sm sm:text-base md:text-2xl leading-relaxed italic mb-8 md:mb-10 text-left">
+          <p className="text-slate-700 text-sm sm:text-base md:text-2xl leading-relaxed italic mb-8 md:mb-10 text-left">
             «{items[index].text}»
           </p>
 

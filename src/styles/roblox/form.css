@@ -76,6 +76,7 @@
 
 .lead-form .iti--lead-form {
   @apply relative isolate block w-full;
+  z-index: 300;
 }
 
 .lead-form .iti--lead-form .iti__dropdown-content {
@@ -85,21 +86,48 @@
   box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15);
   overflow: hidden;
   background-color: #fff;
-  z-index: 200;
+  z-index: 310;
 }
 
 .lead-form .iti--lead-form.iti--inline-dropdown .iti__dropdown-content {
   position: absolute;
-  z-index: 200;
+  z-index: 310;
 }
 
 .lead-form .iti--lead-form .iti__search-input-wrapper {
   background-color: #fff;
+  padding: 0.375rem;
+  border-bottom: 1px solid rgb(226 232 240);
 }
 
 .lead-form .iti--lead-form .iti__search-input {
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 0.625rem;
   background-color: #fff;
   color: #0f172a;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-left: 2.25rem;
+  padding-right: 2rem;
+}
+
+.lead-form .iti--lead-form .iti__search-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.18);
+}
+
+.lead-form .iti--lead-form .iti__search-icon {
+  left: 0.95rem;
+}
+
+.lead-form .iti--lead-form .iti__search-clear {
+  right: 0.625rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
 }
 
 .lead-form .iti--lead-form .iti__country-list {
@@ -110,10 +138,17 @@
 .lead-form .iti--lead-form .iti__country {
   background-color: #fff;
   color: #334155;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .lead-form .iti--lead-form .iti__country.iti__highlight {
   background-color: rgb(241 245 249);
+}
+
+.lead-form .iti--lead-form .iti__country-check {
+  color: #6366f1;
 }
 
 .lead-form .iti--lead-form .iti__no-results {
