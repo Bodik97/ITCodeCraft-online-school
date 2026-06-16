@@ -42,6 +42,7 @@ const s = content.registerSection;
   .register-modal {
     background: rgba(2, 12, 22, 0.62);
     backdrop-filter: blur(8px);
+    overflow-y: auto;
   }
 
   .register-modal.is-open {
@@ -62,7 +63,7 @@ const s = content.registerSection;
     position: relative;
     z-index: 1;
     max-height: min(92vh, 44rem);
-    overflow: auto;
+    overflow: visible;
     animation: register-modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
