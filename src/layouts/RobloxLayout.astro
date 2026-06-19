@@ -93,6 +93,7 @@ const organizationJsonLd = JSON.stringify({
         el.addEventListener("click", () => {
           const id = el.getAttribute("data-scroll-to");
           if (!id) return;
+          history.pushState(null, "", `#${id}`);
           document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
           document.dispatchEvent(new CustomEvent("mobile-menu:close"));
         });

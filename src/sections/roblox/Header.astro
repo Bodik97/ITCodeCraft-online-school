@@ -12,13 +12,12 @@ const { navigation, brand } = content;
     </div>
     <nav class="hidden md:flex items-center gap-5" aria-label="Навігація">
       {navigation.links.map((link) => (
-        <button
-          type="button"
-          data-scroll-to={link.id}
-          class="cursor-pointer text-sm font-medium text-white/70 hover:text-white transition-colors"
+        <a
+          href={`#${link.id}`}
+          class="text-sm font-medium text-white/70 hover:text-white transition-colors"
         >
           {link.label}
-        </button>
+        </a>
       ))}
     </nav>
     <div class="flex items-center gap-3">
@@ -63,15 +62,14 @@ const { navigation, brand } = content;
     <div class="mobile-menu-accent" aria-hidden="true"></div>
     <nav class="mobile-menu-inner" aria-label="Навігація">
       {navigation.links.map((link, index) => (
-        <button
-          type="button"
-          data-scroll-to={link.id}
+        <a
+          href={`#${link.id}`}
           class="mobile-menu-link"
           style={`--item-index: ${index}`}
         >
           <span class="mobile-menu-link__dot" aria-hidden="true"></span>
           {link.label}
-        </button>
+        </a>
       ))}
       <button
         type="button"
@@ -245,6 +243,7 @@ const { navigation, brand } = content;
     color: rgba(255, 255, 255, 0.92);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
     cursor: pointer;
   }
 
@@ -328,4 +327,31 @@ const { navigation, brand } = content;
   });
 
   document.addEventListener("mobile-menu:close", () => setMenuOpen(false));
+
+  function navigateToHash(href: string) {
+    const id = href.slice(1);
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    history.pushState(null, "", href);
+    target.scrollIntoView({ behavior: "smooth" });
+  }
+
+  panel?.querySelectorAll('.mobile-menu-link[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      if (!href?.startsWith("#") || href.length < 2) return;
+
+      event.preventDefault();
+
+      const menuWasOpen = header?.classList.contains("is-menu-open") ?? false;
+      if (menuWasOpen) setMenuOpen(false);
+
+      if (menuWasOpen) {
+        requestAnimationFrame(() => requestAnimationFrame(() => navigateToHash(href)));
+      } else {
+        navigateToHash(href);
+      }
+    });
+  });
 </script>

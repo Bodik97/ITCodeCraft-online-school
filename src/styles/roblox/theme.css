@@ -1,3 +1,7 @@
+html:has(body.roblox-site) {
+  scroll-behavior: smooth;
+}
+
 .scroll-progress {
   position: fixed;
   top: 0;
