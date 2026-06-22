@@ -2,24 +2,29 @@ import { useEffect, useRef } from "react";
 import IntlTelInput from "@intl-tel-input/react";
 import type { IntlTelInputRef } from "@intl-tel-input/react";
 import "intl-tel-input/styles";
-import type { Control, FieldError } from "react-hook-form";
+import type {
+  Control,
+  FieldError,
+  FieldValues,
+  FieldPath,
+} from "react-hook-form";
 import { Controller } from "react-hook-form";
 
-type PhoneFormValues = { phone: string };
-
-type Props = {
-  control: Control<PhoneFormValues>;
+type Props<TFieldValues extends FieldValues> = {
+  control: Control<TFieldValues>;
   error?: FieldError;
+  name?: FieldPath<TFieldValues>;
   inputId?: string;
   testId?: string;
 };
 
-export default function PhoneField({
+export default function PhoneField<TFieldValues extends FieldValues>({
   control,
   error,
+  name = "phone" as FieldPath<TFieldValues>,
   inputId = "phone",
   testId = "input-phone",
-}: Props) {
+}: Props<TFieldValues>) {
   const itiRef = useRef<IntlTelInputRef>(null);
 
   useEffect(() => {
@@ -30,7 +35,7 @@ export default function PhoneField({
     <div>
       <label htmlFor={inputId}>Телефон</label>
       <Controller
-        name="phone"
+        name={name}
         control={control}
         render={({ field }) => (
           <IntlTelInput

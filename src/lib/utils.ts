@@ -1,19 +1,19 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
+export function cn(...inputs: ClassValue[]): string {
     return twMerge(clsx(inputs));
 }
 
-export function uid() {
+export function uid(): string {
     return 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (Math.random() * 16) | 0,
-            v = c == 'x' ? r : (r & 0x3) | 0x8;
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
 }
 
-export function getNameRegex(locale: string | null) {
+export function getNameRegex(locale: string | null): RegExp {
     switch (locale) {
         case 'pl':
             return /^.[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż 'ʼ`-]{1,}$/i;
@@ -38,46 +38,17 @@ export function getNameRegex(locale: string | null) {
 /**
  * It returns the Email regular expression
  */
-export function getEmailRegex() {
+export function getEmailRegex(): RegExp {
     return /^(?=^.{3,63}$)(^[A-Za-z0-9_+]+(([_.+-](?=[A-Za-z0-9_+]))[a-zA-Z0-9_+]+([-+.](?=[A-Za-z0-9_+]))*?)*@(\w+([.-](?=(\w|\d))))+[a-zA-Z]{2,6})$/;
 }
 
-/**
- * Formats the value of the _qa cookie.
- * The _qa cookie value is expected to be a string with multiple parts separated by dots.
- * This function extracts and returns the third and fourth parts of the cookie value.
- *
- * @param value - The value of the _qa cookie.
- * @returns The formatted string containing the third and fourth parts of the cookie value, or null if the value is undefined.
- */
-export function getGoogleIdFromGACookie(value: any | undefined) {
-    if (!value) {
-        return null;
-    }
-    const tmp = value.split('.');
-    return tmp[2] + '.' + tmp[3];
-}
-
-// export function initializeLeeloo(leelooHash: string) {
-//     window.LEELOO = function () {
-//         window.LEELOO_INIT = { id: '5d0cb9cdaad9f4000e4b8e07' };
-//         var js = document.createElement('script');
-//         js.src = 'https://app.leeloo.ai/init.js';
-//         js.async = true;
-//         document.getElementsByTagName('head')[0].appendChild(js);
-//     };
-//     window.LEELOO();
-//     window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat(leelooHash);
-// }
-
 export async function pushGtmEvent(
     eventName: string,
-    eventData?: Record<string, any>
+    eventData?: Record<string, unknown>
 ): Promise<'success' | 'timeout' | 'no dataLayer'> {
     return new Promise(resolve => {
-        // Check if window and dataLayer are available
-        if (typeof window !== 'undefined' && (window as any).dataLayer) {
-            (window as any).dataLayer.push({
+        if (typeof window !== 'undefined' && window.dataLayer) {
+            window.dataLayer.push({
                 event: eventName,
                 ...eventData,
                 eventCallback: () => {
@@ -92,7 +63,6 @@ export async function pushGtmEvent(
                 resolve('timeout');
             }, 2500);
         } else {
-            // No dataLayer available (GTM not initialized)
             resolve('no dataLayer');
         }
     });

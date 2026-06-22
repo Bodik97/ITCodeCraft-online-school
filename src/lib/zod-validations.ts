@@ -8,7 +8,7 @@ export const nameValidation = z
     .max(30, 'Максимум 30 символів')
     .trim()
     .regex(getNameRegex(null), "Ім'я невірне")
-    .nonempty("Ім'я обов'язкове");
+    .min(1, "Ім'я обов'язкове");
 
 const phoneRequiredMessage = "Номер телефону обов'язковий";
 const phoneInvalidMessage = 'Номер телефону невірний';
@@ -32,15 +32,14 @@ export const phoneValidation = (country: string) =>
 
 export const emailValidation = z
     .string()
-    .email('Email невірний!')
     .regex(getEmailRegex(), 'Email невірний!')
-    .nonempty("Email обов'язковий");
+    .min(1, "Email обов'язковий");
 
 export const defaultInputValidation = z
     .string()
     .min(2, 'Мінімум 2 символи')
     .max(30, 'Максимум 30 символів')
-    .nonempty("Обов'язкове поле");
+    .min(1, "Обов'язкове поле");
 
 export const defaultInputValidationNotRequired = z.string().optional();
 
@@ -48,7 +47,7 @@ export const checkboxValidation = z
     .boolean()
     .refine(value => value === true, { message: "Обов'язкове поле" });
 
-export const selectValidation = z.string().nonempty("Обов'язкове поле");
+export const selectValidation = z.string().min(1, "Обов'язкове поле");
 export const selectValidationNotRequired = z.string().optional();
 
-export const radioValidation = z.string().nonempty('Будь ласка, оберіть один із варіантів');
+export const radioValidation = z.string().min(1, 'Будь ласка, оберіть один із варіантів');

@@ -1,18 +1,3 @@
-declare global {
-    interface Window {
-        dataLayer?: any[];
-        LEELOO_INIT_CHECK?: boolean;
-        LEELOO_LEADGENTOOLS?: string[];
-        itccTrack?: (
-            event: string,
-            label?: string,
-            opts?: { skipThrottle?: boolean },
-        ) => void;
-        __itccRegistrationClicks?: number;
-        productName?: string;
-    }
-}
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect, useRef } from 'react';
@@ -55,12 +40,6 @@ interface FormConfigProps {
     crmParams: CrmParams;
     afterSendFunction?: (data: any) => Promise<void>;
 }
-
-const GOOGLE_SCRIPT_URL = import.meta.env.PUBLIC_GOOGLE_SCRIPT_URL?.trim() ||
-    'https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec';
-
-// for testing
-// const GOOGLE_SCRIPT_URL = 'https://sfDOXUfpyHCrDuGzfGmGGA5Q1JKdtPr7WuJN3546pu7EF1LW7CN3kenWcjA/exec';
 
 export default function FormComponent({
     formFields,
@@ -167,7 +146,7 @@ export default function FormComponent({
         });
 
         try {
-            await submitLeadToGoogleSheet(sendData, GOOGLE_SCRIPT_URL);
+            await submitLeadToGoogleSheet(sendData);
 
             const mergedData = {
                 ...sendData,
@@ -213,10 +192,8 @@ export default function FormComponent({
 
 
         } catch (error) {
-
-            reportError('Error submitting form:', formData);
+            reportError(error, { formId: crmParams.formId, fields: formData });
             document.dispatchEvent(new CustomEvent('itcc:form-error'));
-
         } finally {
             reset();
         }

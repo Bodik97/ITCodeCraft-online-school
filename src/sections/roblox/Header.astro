@@ -304,7 +304,7 @@ const { navigation, brand } = content;
   const openLabel = toggle?.dataset.labelOpen ?? "Відкрити меню";
   const closeLabel = toggle?.dataset.labelClose ?? "Закрити меню";
 
-  function setMenuOpen(open) {
+  function setMenuOpen(open: boolean) {
     header?.classList.toggle("is-menu-open", open);
     toggle?.setAttribute("aria-expanded", String(open));
     toggle?.setAttribute("aria-label", open ? closeLabel : openLabel);

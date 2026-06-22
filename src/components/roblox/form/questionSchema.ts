@@ -1,14 +1,9 @@
 import { z } from "zod";
-import { validatePhoneE164 } from "./phoneValidation";
+import { phoneField } from "./phoneValidation";
 
 export const questionSchema = z.object({
   name: z.string().min(2, "Введіть коректне ім'я"),
-  phone: z.string().superRefine((value, ctx) => {
-    const result = validatePhoneE164(value);
-    if (result !== true) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: result });
-    }
-  }),
+  phone: phoneField,
   question: z
     .string()
     .min(10, "Напишіть запитання детальніше (мінімум 10 символів)")

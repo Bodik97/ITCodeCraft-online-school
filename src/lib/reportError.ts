@@ -1,22 +1,46 @@
 /**
- * Reports an error to the server and sends it to a Telegram bot.
- * @param message - The error string.
- * @param formData - The form data containing user information.
- * @param formData.name - The name of the user.
- * @param formData.email - The email of the user.
- * @param formData.phone - The phone number of the user.
+ * Reports a form-submission error to a Telegram bot.
+ *
+ * NOTE: the bot token below is bundled into the client. This is a known
+ * limitation — anything needed at runtime in the browser is public. To keep
+ * the token secret it must be moved behind a server endpoint (e.g. an Astro
+ * API route) that proxies the Telegram call.
+ *
+ * @param error - The caught error (any thrown value).
+ * @param context - Optional metadata: the form id and the submitted fields.
  */
 
 const token = "8726418474:AAEKPI0SEAvMUH2TqMsCqA4ul_lHZLxEd9o";
 const chatId = "-1003812877228";
+
+type ReportErrorContext = {
+    formId?: string;
+    fields?: Record<string, unknown>;
+};
+
+function toMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    if (typeof error === "string") return error;
+    try {
+        return JSON.stringify(error);
+    } catch {
+        return "Unknown error";
+    }
+}
+
 export async function reportError(
-    message: string,
-    formData?: { name?: string; email?: string; phone?: string;[key: string]: any } | undefined
+    error: unknown,
+    context?: ReportErrorContext,
 ): Promise<void> {
+    const userData = {
+        formId: context?.formId,
+        ...context?.fields,
+    };
+
     const errorData = {
         landingUrl: window.location.href,
-        errorMessage: message || 'Unknown error',
-        userData: formData || {},
+        errorMessage: toMessage(error) || 'Unknown error',
+        userData,
         timestamp: new Date().toLocaleString('uk-UA', {
             timeZone: 'Europe/Kiev',
             year: 'numeric',
@@ -27,7 +51,7 @@ export async function reportError(
             second: '2-digit',
         }),
     };
-    const readableUserData = Object.keys(errorData.userData).length
+    const readableUserData = Object.values(errorData.userData).some(value => value != null)
         ? JSON.stringify(errorData.userData, null, 2)
         : 'Немає даних';
     const telegramText = [
@@ -50,11 +74,10 @@ export async function reportError(
             headers: {
                 'Content-Type': 'application/json',
             },
-            // body: JSON.stringify(errorData),
             body: JSON.stringify({
                 chat_id: chatId,
                 text: safeTelegramText,
-              }),
+            }),
         });
     } catch (reportingError) {
         console.error('Failed to report error:', reportingError);

@@ -10,11 +10,6 @@ type NotificationItem = {
 
 type RuntimeData = {
   notifications: NotificationItem[];
-  timer: {
-    hours: number;
-    minutes: number;
-    seconds: number;
-  };
   onlineCount: number;
   openMenuLabel: string;
   closeMenuLabel: string;
@@ -105,7 +100,7 @@ const organizationJsonLd = JSON.stringify({
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=AW-18135456615"></script>
-    <script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -210,66 +205,6 @@ const organizationJsonLd = JSON.stringify({
         const dynamicData = dynamicDataNode
           ? JSON.parse(dynamicDataNode.textContent || "{}")
           : {};
-
-        const timerHours = document.getElementById("timer-hours");
-        const timerMinutes = document.getElementById("timer-minutes");
-        const timerSeconds = document.getElementById("timer-seconds");
-        const timerState = {
-          hours: Number(dynamicData.timer?.hours || 0),
-          minutes: Number(dynamicData.timer?.minutes || 0),
-          seconds: Number(dynamicData.timer?.seconds || 0),
-        };
-
-        const drawTimer = () => {
-          if (timerHours)
-            timerHours.textContent = String(timerState.hours).padStart(2, "0");
-          if (timerMinutes)
-            timerMinutes.textContent = String(timerState.minutes).padStart(
-              2,
-              "0",
-            );
-          if (timerSeconds)
-            timerSeconds.textContent = String(timerState.seconds).padStart(
-              2,
-              "0",
-            );
-        };
-
-        drawTimer();
-        window.setInterval(() => {
-          if (timerState.seconds > 0) {
-            timerState.seconds -= 1;
-          } else if (timerState.minutes > 0) {
-            timerState.minutes -= 1;
-            timerState.seconds = 59;
-          } else if (timerState.hours > 0) {
-            timerState.hours -= 1;
-            timerState.minutes = 59;
-            timerState.seconds = 59;
-          }
-          drawTimer();
-        }, 1000);
-
-        const registerForm = document.getElementById("register-form");
-        const registerFormBody = document.getElementById("register-form-body");
-        const registerSuccess = document.getElementById("register-success");
-
-        registerForm?.addEventListener("submit", (event) => {
-          event.preventDefault();
-          if (
-            !registerFormBody ||
-            !registerSuccess ||
-            !(registerForm instanceof HTMLFormElement)
-          )
-            return;
-          registerFormBody.classList.add("hidden");
-          registerSuccess.classList.remove("hidden");
-          window.setTimeout(() => {
-            registerSuccess.classList.add("hidden");
-            registerFormBody.classList.remove("hidden");
-            registerForm.reset();
-          }, 5000);
-        });
 
         const notifications = Array.isArray(dynamicData.notifications)
           ? dynamicData.notifications

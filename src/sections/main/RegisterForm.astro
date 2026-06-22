@@ -63,28 +63,7 @@ import UseForm from "@/components/main/form/UseForm.astro";
           >
           </div>
       
-          <div id="register-success" class="hidden text-center py-12">
-            <div
-              class="w-24 h-24 bg-neon-lime/20 rounded-full flex items-center justify-center mx-auto mb-6"
-            >
-              <span class="text-neon-lime text-4xl" aria-hidden="true">✔</span>
-            </div>
-            <h3 class="text-3xl font-bold text-ink mb-4">
-              {content.registerSection.success.title}
-            </h3>
-            <p class="text-slate-600 mb-6">
-              {content.registerSection.success.description}
-            </p>
-            <div
-              class="bg-white/60 p-4 rounded border border-slate-200 text-sm text-slate-500"
-            >
-              {content.registerSection.success.note}
-            </div>
-          </div>
-      
-          <div id="register-form-body ">
-            <UseForm formId="register-section" />
-          </div>
+          <UseForm formId="register-section" />
         </div>
       </div>
 

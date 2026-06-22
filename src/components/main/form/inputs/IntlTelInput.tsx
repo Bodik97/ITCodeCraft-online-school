@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 
 import intlTelInput, { type Iti } from 'intl-tel-input';
 
+type ItiOptions = NonNullable<Parameters<typeof intlTelInput>[1]>;
+
 type IntlTelInputProps = {
   control: any;
   setCountry: (country: string) => void;
@@ -49,10 +51,10 @@ const TelInput = ({
   const itiInstanceRef = useRef<Iti | null>(null);
   const isProgrammaticNumberUpdateRef = useRef(false);
 
-  const initOptions = useMemo(
+  const initOptions = useMemo<ItiOptions>(
     () => ({
-      loadUtils: () => import('intl-tel-input/build/js/utils.js'),
-      initialCountry: country || 'ua',
+      loadUtils: () => import('intl-tel-input/utils'),
+      initialCountry: (country || 'ua') as ItiOptions['initialCountry'],
       excludeCountries: ['ru'],
       countryOrder: ['ua', 'pl', 'tr'],
       autoPlaceholder: 'aggressive',
@@ -102,7 +104,9 @@ const TelInput = ({
 
     const currentCountry = itiInstanceRef.current.getSelectedCountryData().iso2;
     if (currentCountry !== country.toLowerCase()) {
-      itiInstanceRef.current.setCountry(country);
+      itiInstanceRef.current.setCountry(
+        country.toLowerCase() as Parameters<Iti['setCountry']>[0],
+      );
     }
   }, [country]);
 

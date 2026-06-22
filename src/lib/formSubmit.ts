@@ -1,5 +1,6 @@
+/** Production Google Apps Script endpoint shared by every lead form. */
 const DEFAULT_GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyayfZuKHmihCF6048mwuuA-XC7_D802bM54W0ArXvPFuiK42ZxSvdNm39c-_OdeaE-0Q/exec";
+  "https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec";
 
 /** Поля таблиці лідів (порядок колонок у Google Sheet). */
 export type GoogleSheetLeadPayload = {

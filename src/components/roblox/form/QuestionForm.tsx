@@ -2,13 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PhoneField from "./PhoneField";
 import { questionSchema, type QuestionFormValues } from "./questionSchema";
-import { reportError } from "@/lib/reportError";
-import {
-  buildGoogleSheetLeadPayload,
-  submitLeadToGoogleSheet,
-} from "@/lib/formSubmit";
-import { pushGtmEvent, uid } from "@/lib/utils";
-import type { CrmParams } from "./Form";
+import { submitLead, type CrmParams } from "./submitLead";
 
 type FormCopy = {
   submitLabel: string;
@@ -33,39 +27,16 @@ export default function QuestionForm({ copy, crm }: Props) {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    const resolvedProductName =
-      typeof window !== "undefined" && window.productName != null
-        ? window.productName
-        : crm.productName;
-
-    const leadSummary = JSON.stringify({
-      context: "faq_питання",
-      course: resolvedProductName,
-      ...values,
-    });
-    window.itccTrack?.("form_submit_question", leadSummary, { skipThrottle: true });
-
-    const sendData = buildGoogleSheetLeadPayload({
-      course: resolvedProductName,
-      formId: crm.formId,
-      name: values.name,
-      phone: values.phone,
-      question: values.question,
-    });
-
     try {
-      await submitLeadToGoogleSheet(sendData, crm.googleScriptUrl);
-
-      pushGtmEvent("lead", {
-        phone: sendData.phone,
-        email: "",
-        conversionId: uid(),
+      await submitLead({
+        crm,
+        trackEvent: "form_submit_question",
+        trackContext: "faq_питання",
+        name: values.name,
+        phone: values.phone,
+        question: values.question,
+        fields: values,
       });
-
-      window.dispatchEvent(new CustomEvent("itcc:form-success"));
-    } catch (error) {
-      reportError(error, "question-form");
-      window.dispatchEvent(new CustomEvent("itcc:form-error"));
     } finally {
       reset();
     }

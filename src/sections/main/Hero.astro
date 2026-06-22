@@ -17,7 +17,6 @@ const heroStatColors = [
 ] as const;
 
 const section = content.hero;
-const registerSection = content.registerSection;
 const getInitialCounterValue = (rawValue: string): string => {
   const suffix = rawValue.replace(/[\d.]/g, "");
   return `0${suffix}`;
@@ -109,24 +108,7 @@ const getInitialCounterValue = (rawValue: string): string => {
             >
             </div>
 
-            <div id="register-success" class="hidden text-center py-12">
-              <div
-                class="w-24 h-24 bg-neon-lime/20 rounded-full flex items-center justify-center mx-auto mb-6"
-              >
-                <span class="text-neon-lime text-4xl" aria-hidden="true">✔</span
-                >
-              </div>
-              <h3 class="text-3xl font-bold text-ink mb-4">
-                {registerSection.success.title}
-              </h3>
-              <p class="text-slate-600 mb-6">
-                {registerSection.success.description}
-              </p>
-            </div>
-
-            <div id="register-form-body">
-              <UseForm client:load formId="hero" />
-            </div>
+            <UseForm formId="hero" />
           </div>
         </div>
       </div>
