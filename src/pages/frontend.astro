@@ -47,7 +47,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
     >
       <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
         <span
-          class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] text-white text-sm font-bold fe-mono"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-[#6366f1] to-[#8b5cf6] text-white text-sm font-bold fe-mono"
           >&lt;/&gt;</span
         >
         <span class="font-display font-bold text-lg leading-none text-[#0f172a]">
@@ -87,15 +87,15 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
   <main id="main-content" class="flex-1">
     {/* ---------- HERO ---------- */}
     <section
-      class="relative overflow-hidden bg-gradient-to-b from-[#0b1120] via-[#0f172a] to-[#131c33] text-white"
+      class="relative overflow-hidden bg-linear-to-b from-[#0b1120] via-[#0f172a] to-[#131c33] text-white"
     >
       <div
-        class="pointer-events-none absolute -top-40 -left-32 w-[480px] h-[480px] rounded-full bg-[#6366f1]/30 blur-[120px]"
+        class="pointer-events-none absolute -top-40 -left-32 w-120 h-120 rounded-full bg-[#6366f1]/30 blur-[120px]"
         aria-hidden="true"
       >
       </div>
       <div
-        class="pointer-events-none absolute -bottom-48 -right-28 w-[540px] h-[540px] rounded-full bg-[#22d3ee]/20 blur-[130px]"
+        class="pointer-events-none absolute -bottom-48 -right-28 w-135 h-135 rounded-full bg-neon-cyan/20 blur-[130px]"
         aria-hidden="true"
       >
       </div>
@@ -122,8 +122,8 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <div class="flex flex-wrap gap-2 mb-5">
             {
               hero.badges.map((b) => (
-                <span class="inline-flex items-center gap-1.5 rounded-full bg-[#22d3ee]/10 border border-[#22d3ee]/30 px-3 py-1 text-xs font-semibold text-[#a5f3fc]">
-                  <span class="w-2 h-2 rounded-full bg-[#22d3ee] animate-pulse" />
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 px-3 py-1 text-xs font-semibold text-[#a5f3fc]">
+                  <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
                   {b}
                 </span>
               ))
@@ -134,7 +134,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           >
             {hero.title}{" "}
             <span
-              class="bg-gradient-to-r from-[#818cf8] via-[#a78bfa] to-[#22d3ee] bg-clip-text text-transparent"
+              class="bg-linear-to-r from-[#818cf8] via-[#a78bfa] to-neon-cyan bg-clip-text text-transparent"
             >
               {hero.titleAccent}
             </span>
@@ -198,7 +198,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
               height="400"
               loading="eager"
               decoding="async"
-              class="w-full h-full object-cover aspect-[3/2]"
+              class="w-full h-full object-cover aspect-3/2"
             />
           </div>
           <div
@@ -285,7 +285,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                   </div>
                   <div class="h-3 w-full rounded-full bg-slate-100 overflow-hidden">
                     <div
-                      class="fe-bar-fill h-full rounded-full bg-gradient-to-r from-[#6366f1] to-[#22d3ee]"
+                      class="fe-bar-fill h-full rounded-full bg-linear-to-r from-[#6366f1] to-neon-cyan"
                       data-fe-level={item.level}
                     />
                   </div>
@@ -310,11 +310,11 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                 height="400"
                 loading="lazy"
                 decoding="async"
-                class="w-full h-full object-cover aspect-[3/2]"
+                class="w-full h-full object-cover aspect-3/2"
               />
             </div>
             <div
-              class="absolute -bottom-5 -right-3 sm:-right-5 fe-mono text-xs sm:text-sm rounded-lg bg-[#0f172a] text-slate-100 px-4 py-3 shadow-2xl border border-white/10 min-w-[230px]"
+              class="absolute -bottom-5 -right-3 sm:-right-5 fe-mono text-xs sm:text-sm rounded-lg bg-[#0f172a] text-slate-100 px-4 py-3 shadow-2xl border border-white/10 min-w-57.5"
             >
               <span
                 data-fe-type
@@ -350,7 +350,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           >
             <div
               data-quiz-fill
-              class="h-full bg-gradient-to-r from-[#6366f1] to-[#22d3ee] transition-[width] duration-300"
+              class="h-full bg-linear-to-r from-[#6366f1] to-neon-cyan transition-[width] duration-300"
               style={`width:${100 / quiz.questions.length}%`}
             >
             </div>
@@ -421,7 +421,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                 class="fe-step fe-reveal group flex gap-4 sm:gap-6 items-start cursor-pointer"
                 data-step={i}
               >
-                <div class="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-white border border-slate-200 text-slate-300 group-[.is-active]:bg-gradient-to-br group-[.is-active]:from-[#6366f1] group-[.is-active]:to-[#8b5cf6] group-[.is-active]:border-transparent group-[.is-active]:text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
+                <div class="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-white border border-slate-200 text-slate-300 group-[.is-active]:bg-linear-to-br group-[.is-active]:from-[#6366f1] group-[.is-active]:to-[#8b5cf6] group-[.is-active]:border-transparent group-[.is-active]:text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
                   {i + 1}
                 </div>
                 <div class="flex-1 fe-card p-5 sm:p-6 group-[.is-active]:border-[#6366f1]/40 group-[.is-active]:shadow-[0_18px_40px_-16px_rgba(99,102,241,0.45)] transition-all duration-300">
@@ -474,7 +474,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mb-12 fe-reveal">
           <span
-            class="fe-mono inline-block bg-white/10 text-[#22d3ee] text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-[0.15em] mb-4 border border-white/15"
+            class="fe-mono inline-block bg-white/10 text-neon-cyan text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-[0.15em] mb-4 border border-white/15"
             >{projects.eyebrow}</span
           >
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
@@ -523,7 +523,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
             testimonials.items.map((t) => (
               <figure class="fe-reveal fe-lift fe-card p-6">
                 <div class="flex items-center gap-3 mb-4">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] text-white font-bold">
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] text-white font-bold">
                     {t.name.charAt(0)}
                   </span>
                   <figcaption>
@@ -599,7 +599,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
     {/* ---------- REGISTER ---------- */}
     <section
       id="register"
-      class="py-16 md:py-24 bg-gradient-to-br from-[#4f46e5] to-[#7c3aed]"
+      class="py-16 md:py-24 bg-linear-to-br from-[#4f46e5] to-[#7c3aed]"
     >
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
@@ -623,7 +623,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           </ul>
         </div>
 
-        <div class="fe-reveal rounded-2xl bg-[#0e172b] p-6 md:p-8 shadow-2xl">
+        <div class="fe-reveal rounded-2xl bg-surface p-6 md:p-8 shadow-2xl">
           <div data-fe-form>
             <UseForm formId="frontend-landing" />
           </div>
