@@ -93,7 +93,7 @@ const organizationJsonLd = JSON.stringify({
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageTw} />
 
-    <script type="application/ld+json" set:html={organizationJsonLd} />
+    <script is:inline type="application/ld+json" set:html={organizationJsonLd} />
 
     <link
       rel="apple-touch-icon"
@@ -116,6 +116,7 @@ const organizationJsonLd = JSON.stringify({
 
     <!-- Google tag (gtag.js) -->
     <script
+      is:inline
       async
       src="https://www.googletagmanager.com/gtag/js?id=AW-18135456615"></script>
     <script is:inline>

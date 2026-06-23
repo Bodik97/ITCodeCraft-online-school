@@ -18,7 +18,7 @@ function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.V
 
 // Сохраняем оригинальный SelectIcon для совместимости
 const SelectIcon = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  React.ComponentRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Icon>
 >(({ className, children, ...props }, _ref) => (
   <SelectPrimitive.Icon asChild {...props}>
