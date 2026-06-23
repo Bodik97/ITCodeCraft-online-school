@@ -20,6 +20,13 @@ const courseButtonBackgrounds = [
 
   "bg-neon-cyan",
 ] as const;
+
+const courseLandings: Record<string, string> = {
+  Roblox: "/roblox",
+  Minecraft: "/minecraft",
+  Frontend: "/frontend",
+  Scratch: "/scratch",
+};
 ---
 
 <section id="courses" class="py-24 bg-paper relative overflow-hidden">
@@ -49,7 +56,7 @@ const courseButtonBackgrounds = [
           content.coursesSection.courses.map((course, index) => (
             <article
               class:list={[
-                "swiper-slide group relative min-h-[580px] bg-surface border xl:min-h-[580px] max-w-[440px] xl:max-w-[600px] p-8 rounded-sm transition-all duration-300 flex flex-col  h-full hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
+                "swiper-slide group relative min-h-[460px] bg-surface border max-w-[440px] xl:max-w-[600px] p-8 rounded-sm transition-all duration-300 flex flex-col h-full hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
                 courseBorders[index % courseBorders.length],
               ]}
             >
@@ -84,20 +91,38 @@ const courseButtonBackgrounds = [
                 {course.description}
               </p>
 
-              <button
-                type="button"
-                data-modal-open
-                data-product-name={course.title}
-                data-product-color={courseTextColors[index % courseTextColors.length]}
-                class:list={[
-                  "flex items-center absolute bottom-8 w-[calc(100%-56px)] left-1/2 -translate-x-1/2 justify-center gap-2  py-3 rounded-sm font-bold text-white opacity-90 hover:opacity-100 transition-opacity mt-auto",
-                  courseButtonBackgrounds[
-                    index % courseButtonBackgrounds.length
-                  ],
-                ]}
-              >
-                {content.coursesSection.enrollLabel}{" "}
-              </button>
+              {
+                courseLandings[course.title] ? (
+                  <a
+                    href={courseLandings[course.title]}
+                    class:list={[
+                      "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-white opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                      courseButtonBackgrounds[
+                        index % courseButtonBackgrounds.length
+                      ],
+                    ]}
+                  >
+                    Детальніше <span aria-hidden="true">→</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    data-modal-open
+                    data-product-name={course.title}
+                    data-product-color={
+                      courseTextColors[index % courseTextColors.length]
+                    }
+                    class:list={[
+                      "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-white opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                      courseButtonBackgrounds[
+                        index % courseButtonBackgrounds.length
+                      ],
+                    ]}
+                  >
+                    {content.coursesSection.enrollLabel}{" "}
+                  </button>
+                )
+              }
             </article>
           ))
         }

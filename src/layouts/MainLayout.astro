@@ -44,6 +44,10 @@ const organizationJsonLd = JSON.stringify({
   url: canonical,
   description,
   inLanguage: lang,
+  logo: new URL("/assets/favicon/android-chrome-512x512.png", canonical).href,
+  email: data.footerSection.email,
+  telephone: data.footerSection.linkPhone.replace("tel:", ""),
+  sameAs: data.footerSection.socialLinks.map((link) => link.url),
 });
 
 ---

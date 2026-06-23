@@ -1,7 +1,22 @@
 ---
 import content from "@/data/main.json";
 import { Icon } from "astro-icon/components";
+
+const faqJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: content.faqSection.items.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+});
 ---
+
+<script type="application/ld+json" set:html={faqJsonLd} />
 
 <section id="faq" class="py-24 bg-paper relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -42,50 +42,46 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
       </h2>
     </div>
 
-    <div class="swiper reviews__slider grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="swiper reviews__slider">
       <div class="swiper-wrapper">
         {
           content.reviewsSection.reviews.map((review, index) => (
             <article
               class:list={[
-                "swiper-slide bg-surface min-h-[500px] relative p-8 rounded-sm border-l-4  group hover:bg-surface-light transition-colors duration-300 flex flex-col h-full",
+                "swiper-slide bg-surface min-h-[300px] p-8 rounded-sm border-l-4 group hover:bg-surface-light transition-colors duration-300 flex flex-col h-full",
                 reviewBorders[index % reviewBorders.length],
               ]}
             >
-              <div class="mt-auto border-b pb-3 border-slate-200/70 pt-4 absolute top-6 ">
-                <div class="flex  justify-between items-start">
-                  <div class="flex items-center gap-2">
-                    <div class="">
-                      <img
-                        src={`./assets/reviews/${review.img}.webp`}
-                        alt={review.name}
-                        width="40"
-                        height="40"
-                      />
-                    </div>
-                    <div>
-                      <p class="text-ink font-bold font-display">
-                        {review.name}
-                      </p>
-                      <p class="text-sm text-slate-500">{review.role}</p>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-xs ml-12 text-gray-500 mt-2 uppercase tracking-wider font-mono">
-                  {review.course}
-                </p>
-              </div>
               <div
-                class="absolute top-6 right-6 text-ink/10 text-4xl"
+                class="text-ink/15 font-display text-5xl leading-none mb-3"
                 aria-hidden="true"
               >
                 "
               </div>
 
               <p
-                class="text-slate-600 mb-6 absolute top-[140px] mr-10 leading-relaxed   z-10"
-                set:html={`"${highlightReviewText(review.text, review.highlight)}"`}
+                class="text-slate-600 leading-relaxed mb-6 flex-1"
+                set:html={`${highlightReviewText(review.text, review.highlight)}`}
               />
+
+              <div class="flex items-center gap-3 border-t border-slate-200/70 pt-4 mt-auto">
+                <img
+                  src={`./assets/reviews/${review.img}.webp`}
+                  alt={review.name}
+                  width="44"
+                  height="44"
+                  class="w-11 h-11 rounded-full object-cover shrink-0"
+                />
+                <div>
+                  <p class="text-ink font-bold font-display leading-tight">
+                    {review.name}
+                  </p>
+                  <p class="text-sm text-slate-500">{review.role}</p>
+                  <p class="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wider font-mono">
+                    {review.course}
+                  </p>
+                </div>
+              </div>
             </article>
           ))
         }

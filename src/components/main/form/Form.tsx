@@ -186,6 +186,7 @@ export default function FormComponent({
 
             }
 
+            reset();
 
             return;
 
@@ -194,8 +195,6 @@ export default function FormComponent({
         } catch (error) {
             reportError(error, { formId: crmParams.formId, fields: formData });
             document.dispatchEvent(new CustomEvent('itcc:form-error'));
-        } finally {
-            reset();
         }
     };
 
