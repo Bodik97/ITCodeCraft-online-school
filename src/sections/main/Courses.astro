@@ -50,13 +50,16 @@ const courseLandings: Record<string, string> = {
       </p>
     </div>
 
-    <div class="courses__slider swiper overflow-visible!">
-      <div class="swiper-wrapper">
+    <div class="relative">
+      <div
+        data-scroller
+        class="courses-scroll flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+      >
         {
           content.coursesSection.courses.map((course, index) => (
             <article
               class:list={[
-                "swiper-slide group relative min-h-[460px] bg-surface border max-w-[440px] xl:max-w-[600px] p-8 rounded-sm transition-all duration-300 flex flex-col h-full hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
+                "snap-start shrink-0 basis-[85%] sm:basis-[55%] lg:basis-[42%] xl:basis-[33%] group relative min-h-[460px] bg-surface border p-8 rounded-sm transition-all duration-300 flex flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
                 courseBorders[index % courseBorders.length],
               ]}
             >
@@ -127,83 +130,119 @@ const courseLandings: Record<string, string> = {
           ))
         }
       </div>
-      <div class="swiper-pagination"></div>
       <div
-        class="hidden xl:flex xl:items-center xl:flex-row-reverse xl:gap-4 xl:absolute xl:-top-20 xl:right-0"
+        class="hidden md:flex md:items-center md:flex-row-reverse md:gap-3 md:absolute md:-top-16 md:right-0"
       >
-        <div class="swiper-button-next">
+        <button
+          type="button"
+          data-scroll-next
+          aria-label="Наступні курси"
+          class="slider-arrow"
+        >
           <Arrow />
-        </div>
-        <div class="swiper-button-prev">
+        </button>
+        <button
+          type="button"
+          data-scroll-prev
+          aria-label="Попередні курси"
+          class="slider-arrow slider-arrow--prev"
+        >
           <Arrow />
-        </div>
+        </button>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  import Swiper from "swiper";
-  import { Navigation, Pagination } from "swiper/modules";
-  import "swiper/css";
-  import "swiper/css/navigation";
-  import "swiper/css/pagination";
-
-  const root = document.querySelector<HTMLElement>(".courses__slider");
-  if (root) {
-    const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
-    const styleBullets = () => {
-      root
-        .querySelectorAll<HTMLElement>(".swiper-pagination-bullet")
-        .forEach((b, i) => {
-          b.style.background = bulletColors[i % bulletColors.length];
-        });
+  const section = document.getElementById("courses");
+  const scroller = section?.querySelector<HTMLElement>("[data-scroller]");
+  if (section && scroller) {
+    const step = () => {
+      const card = scroller.querySelector<HTMLElement>(":scope > article");
+      return card ? card.offsetWidth + 24 : scroller.clientWidth * 0.8;
     };
+    section
+      .querySelector("[data-scroll-next]")
+      ?.addEventListener("click", () =>
+        scroller.scrollBy({ left: step(), behavior: "smooth" }),
+      );
+    section
+      .querySelector("[data-scroll-prev]")
+      ?.addEventListener("click", () =>
+        scroller.scrollBy({ left: -step(), behavior: "smooth" }),
+      );
 
-    new Swiper(root, {
-      modules: [Navigation, Pagination],
-      slidesPerView: 1.1,
-      spaceBetween: 16,
-      grabCursor: true,
-      navigation: {
-        nextEl: root.querySelector<HTMLElement>(".swiper-button-next"),
-        prevEl: root.querySelector<HTMLElement>(".swiper-button-prev"),
-      },
-      pagination: {
-        el: root.querySelector<HTMLElement>(".swiper-pagination"),
-        clickable: true,
-      },
-      breakpoints: {
-        768: { slidesPerView: 1.7, spaceBetween: 16 },
-        1024: { slidesPerView: 2.2, spaceBetween: 24 },
-        1280: { slidesPerView: 2.7, spaceBetween: 24 },
-      },
-      on: {
-        init: () => requestAnimationFrame(styleBullets),
-        paginationRender: () => requestAnimationFrame(styleBullets),
-        breakpoint: () => requestAnimationFrame(styleBullets),
-      },
+    // mouse drag-to-scroll (touch keeps native swipe)
+    let down = false,
+      sx = 0,
+      sl = 0,
+      moved = false;
+    scroller.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse") return;
+      down = true;
+      moved = false;
+      sx = e.clientX;
+      sl = scroller.scrollLeft;
+      scroller.classList.add("is-grabbing");
     });
+    scroller.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - sx;
+      if (Math.abs(dx) > 4) moved = true;
+      scroller.scrollLeft = sl - dx;
+    });
+    const endDrag = () => {
+      down = false;
+      scroller.classList.remove("is-grabbing");
+    };
+    scroller.addEventListener("pointerup", endDrag);
+    scroller.addEventListener("pointerleave", endDrag);
+    scroller.addEventListener(
+      "click",
+      (e) => {
+        if (moved) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true,
+    );
   }
 </script>
 
 <style>
-  @media (min-width: 1200px) {
-    #courses.courses-grid .courses {
-      max-width: none;
+  .courses-scroll {
+    scrollbar-width: none;
+    scroll-padding-left: 1rem;
+  }
+  .courses-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  @media (pointer: fine) {
+    .courses-scroll {
+      cursor: grab;
     }
-    #courses.courses-grid .swiper-wrapper {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      transform: none !important;
+    .courses-scroll.is-grabbing {
+      cursor: grabbing;
+      scroll-snap-type: none;
     }
-    #courses.courses-grid .swiper-slide {
-      height: auto !important;
-      transform: none !important;
-    }
-    #courses.courses-grid .swiper-pagination {
-      display: none;
-    }
+  }
+  .slider-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #1f2937;
+    color: #fff;
+    transition: background 0.15s ease;
+  }
+  .slider-arrow:hover {
+    background: #273549;
+  }
+  .slider-arrow--prev {
+    transform: rotate(180deg);
   }
 </style>

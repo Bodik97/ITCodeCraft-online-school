@@ -42,13 +42,16 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
       </h2>
     </div>
 
-    <div class="swiper reviews__slider">
-      <div class="swiper-wrapper">
+    <div class="relative">
+      <div
+        data-scroller
+        class="reviews-scroll flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+      >
         {
           content.reviewsSection.reviews.map((review, index) => (
             <article
               class:list={[
-                "swiper-slide bg-surface min-h-[300px] p-8 rounded-sm border-l-4 group hover:bg-surface-light transition-colors duration-300 flex flex-col h-full",
+                "snap-start shrink-0 basis-[88%] md:basis-[46%] xl:basis-[31%] bg-surface min-h-[300px] p-8 rounded-sm border-l-4 group hover:bg-surface-light transition-colors duration-300 flex flex-col",
                 reviewBorders[index % reviewBorders.length],
               ]}
             >
@@ -86,69 +89,120 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
           ))
         }
       </div>
-      <div class="swiper-pagination"></div>
       <div
-        class="hidden xl:flex xl:items-center xl:flex-row-reverse xl:gap-4 xl:absolute xl:-top-20 xl:right-0"
+        class="hidden md:flex md:items-center md:flex-row-reverse md:gap-3 md:absolute md:-top-16 md:right-0"
       >
-        <div class="swiper-button-next">
+        <button
+          type="button"
+          data-scroll-next
+          aria-label="Наступні відгуки"
+          class="slider-arrow"
+        >
           <Arrow />
-        </div>
-        <div class="swiper-button-prev">
+        </button>
+        <button
+          type="button"
+          data-scroll-prev
+          aria-label="Попередні відгуки"
+          class="slider-arrow slider-arrow--prev"
+        >
           <Arrow />
-        </div>
+        </button>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .reviews__slider {
-    overflow: visible;
+  .reviews-scroll {
+    scrollbar-width: none;
+    scroll-padding-left: 1rem;
   }
-
+  .reviews-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  @media (pointer: fine) {
+    .reviews-scroll {
+      cursor: grab;
+    }
+    .reviews-scroll.is-grabbing {
+      cursor: grabbing;
+      scroll-snap-type: none;
+    }
+  }
+  .slider-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #1f2937;
+    color: #fff;
+    transition: background 0.15s ease;
+  }
+  .slider-arrow:hover {
+    background: #273549;
+  }
+  .slider-arrow--prev {
+    transform: rotate(180deg);
+  }
 </style>
 
 <script>
-  import Swiper from "swiper";
-  import { Navigation, Pagination } from "swiper/modules";
-  import "swiper/css";
-  import "swiper/css/navigation";
-  import "swiper/css/pagination";
-
-  const root = document.querySelector<HTMLElement>(".reviews__slider");
-  if (root) {
-    const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
-    const styleBullets = () => {
-      root
-        .querySelectorAll<HTMLElement>(".swiper-pagination-bullet")
-        .forEach((b, i) => {
-          b.style.background = bulletColors[i % bulletColors.length];
-        });
+  const section = document.getElementById("reviews");
+  const scroller = section?.querySelector<HTMLElement>("[data-scroller]");
+  if (section && scroller) {
+    const step = () => {
+      const card = scroller.querySelector<HTMLElement>(":scope > article");
+      return card ? card.offsetWidth + 24 : scroller.clientWidth * 0.8;
     };
+    section
+      .querySelector("[data-scroll-next]")
+      ?.addEventListener("click", () =>
+        scroller.scrollBy({ left: step(), behavior: "smooth" }),
+      );
+    section
+      .querySelector("[data-scroll-prev]")
+      ?.addEventListener("click", () =>
+        scroller.scrollBy({ left: -step(), behavior: "smooth" }),
+      );
 
-    new Swiper(root, {
-      modules: [Navigation, Pagination],
-      slidesPerView: 1.1,
-      spaceBetween: 16,
-      grabCursor: true,
-      navigation: {
-        nextEl: root.querySelector<HTMLElement>(".swiper-button-next"),
-        prevEl: root.querySelector<HTMLElement>(".swiper-button-prev"),
-      },
-      pagination: {
-        el: root.querySelector<HTMLElement>(".swiper-pagination"),
-        clickable: true,
-      },
-      breakpoints: {
-        768: { slidesPerView: 2, spaceBetween: 16 },
-        1280: { slidesPerView: 3, spaceBetween: 24 },
-      },
-      on: {
-        init: () => requestAnimationFrame(styleBullets),
-        paginationRender: () => requestAnimationFrame(styleBullets),
-        breakpoint: () => requestAnimationFrame(styleBullets),
-      },
+    // mouse drag-to-scroll (touch keeps native swipe)
+    let down = false,
+      sx = 0,
+      sl = 0,
+      moved = false;
+    scroller.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse") return;
+      down = true;
+      moved = false;
+      sx = e.clientX;
+      sl = scroller.scrollLeft;
+      scroller.classList.add("is-grabbing");
     });
+    scroller.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - sx;
+      if (Math.abs(dx) > 4) moved = true;
+      scroller.scrollLeft = sl - dx;
+    });
+    const endDrag = () => {
+      down = false;
+      scroller.classList.remove("is-grabbing");
+    };
+    scroller.addEventListener("pointerup", endDrag);
+    scroller.addEventListener("pointerleave", endDrag);
+    scroller.addEventListener(
+      "click",
+      (e) => {
+        if (moved) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true,
+    );
   }
 </script>
 
