@@ -111,66 +111,45 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
 <script>
   import Swiper from "swiper";
   import { Navigation, Pagination } from "swiper/modules";
+  import "swiper/css";
+  import "swiper/css/navigation";
+  import "swiper/css/pagination";
 
-  Swiper.use([Navigation, Pagination]);
-
-  const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
-
-  const styleBullets = () => {
-    const bullets = document.querySelectorAll(
-      "#reviews .swiper-pagination-bullet",
-    );
-    bullets.forEach((bullet, index) => {
-      (bullet as HTMLElement).style.background =
-        bulletColors[index % bulletColors.length];
-    });
-  };
-
-  const reviewsSwiper = new Swiper(".reviews__slider", {
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    modules: [Navigation, Pagination],
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    spaceBetween: 16,
-    breakpoints: {
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 16,
-      },
-      1280: {
-        slidesPerView: 3,
-        spaceBetween: 24,
-      },
-    },
-
-    mousewheel: true,
-    keyboard: true,
-    on: {
-      init() {
-        requestAnimationFrame(() => styleBullets());
-      },
-    },
-  });
-
-  const updateMode = () => {
-    if (reviewsSwiper) {
-      reviewsSwiper.update();
-      requestAnimationFrame(() => styleBullets());
-    }
-  };
-
-  const debounce = (fn: () => void, ms: number) => {
-    let timeout: ReturnType<typeof setTimeout>;
-    return () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(fn, ms);
+  const root = document.querySelector<HTMLElement>(".reviews__slider");
+  if (root) {
+    const bulletColors = ["#22d3ee", "#f43f5e", "#84cc16"];
+    const styleBullets = () => {
+      root
+        .querySelectorAll<HTMLElement>(".swiper-pagination-bullet")
+        .forEach((b, i) => {
+          b.style.background = bulletColors[i % bulletColors.length];
+        });
     };
-  };
-  window.addEventListener("resize", debounce(updateMode, 150));
+
+    new Swiper(root, {
+      modules: [Navigation, Pagination],
+      slidesPerView: 1.1,
+      spaceBetween: 16,
+      grabCursor: true,
+      navigation: {
+        nextEl: root.querySelector<HTMLElement>(".swiper-button-next"),
+        prevEl: root.querySelector<HTMLElement>(".swiper-button-prev"),
+      },
+      pagination: {
+        el: root.querySelector<HTMLElement>(".swiper-pagination"),
+        clickable: true,
+      },
+      breakpoints: {
+        768: { slidesPerView: 2, spaceBetween: 16 },
+        1280: { slidesPerView: 3, spaceBetween: 24 },
+      },
+      on: {
+        init: () => requestAnimationFrame(styleBullets),
+        paginationRender: () => requestAnimationFrame(styleBullets),
+        breakpoint: () => requestAnimationFrame(styleBullets),
+      },
+    });
+  }
 </script>
 
 <style>
