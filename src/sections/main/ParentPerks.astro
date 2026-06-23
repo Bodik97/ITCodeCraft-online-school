@@ -1,0 +1,88 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+
+const perks = content.parentPerks;
+const guarantee = content.guarantee;
+
+const accentText = [
+  "text-neon-cyan",
+  "text-neon-magenta",
+  "text-neon-lime",
+  "text-neon-orange",
+  "text-neon-cyan",
+  "text-neon-magenta",
+];
+const accentChip = [
+  "bg-neon-cyan/10 border-neon-cyan/30",
+  "bg-neon-magenta/10 border-neon-magenta/30",
+  "bg-neon-lime/10 border-neon-lime/30",
+  "bg-neon-orange/10 border-neon-orange/30",
+  "bg-neon-cyan/10 border-neon-cyan/30",
+  "bg-neon-magenta/10 border-neon-magenta/30",
+];
+---
+
+<section id="parents" class="py-24 bg-paper relative overflow-hidden">
+  <div
+    class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+  >
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="mb-16 max-w-2xl">
+      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+        {perks.titlePrefix}
+        <span class="text-neon-cyan text-glow-cyan">{perks.titleHighlight}</span>
+      </h2>
+      <p class="text-slate-500 text-sm md:text-base xl:text-lg">
+        {perks.subtitle}
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        perks.items.map((item, i) => (
+          <div class="bg-surface border border-slate-200 rounded-sm p-6 transition-all duration-300 hover:-translate-y-1 hover:border-neon-cyan/40">
+            <div
+              class:list={[
+                "inline-flex h-12 w-12 items-center justify-center rounded-sm border mb-4",
+                accentChip[i % accentChip.length],
+              ]}
+            >
+              <Icon
+                name={item.icon}
+                class:list={["size-6", accentText[i % accentText.length]]}
+              />
+            </div>
+            <h3 class="text-lg font-bold font-display text-ink mb-2">
+              {item.title}
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col sm:flex-row items-center gap-5 bg-surface border border-neon-lime/30 rounded-sm p-6 sm:p-8 text-center sm:text-left"
+    >
+      <div
+        class="shrink-0 inline-flex h-16 w-16 items-center justify-center rounded-sm bg-neon-lime/10 border border-neon-lime/40 text-neon-lime animate-neon-pulse"
+      >
+        <Icon name="lucide:shield-check" class="size-9" />
+      </div>
+      <div>
+        <span
+          class="inline-block bg-neon-lime/15 text-neon-lime text-xs font-black px-3 py-1 rounded-full uppercase tracking-[0.15em] mb-2"
+          >{guarantee.badge}</span
+        >
+        <h3 class="text-xl font-bold font-display text-ink mb-1">
+          {guarantee.title}
+        </h3>
+        <p class="text-slate-500 text-sm md:text-base leading-relaxed">
+          {guarantee.text}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
