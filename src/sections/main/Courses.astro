@@ -27,7 +27,28 @@ const courseLandings: Record<string, string> = {
   Frontend: "/frontend",
   Scratch: "/scratch",
 };
+
+const coursesJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: content.coursesSection.courses.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Course",
+      name: `${c.title} для дітей ${c.age}`,
+      description: c.description,
+      provider: {
+        "@type": "EducationalOrganization",
+        name: `${content.brand.primary}${content.brand.accent}`,
+        sameAs: content.meta.canonical,
+      },
+    },
+  })),
+});
 ---
+
+<script type="application/ld+json" is:inline set:html={coursesJsonLd} />
 
 <section id="courses" class="py-24 bg-paper relative overflow-hidden">
   <div
