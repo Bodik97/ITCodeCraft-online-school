@@ -257,6 +257,7 @@ const particles = [
 
           {/* Stage: ready schema (gray → lit) + lamp result */}
           <div
+            data-pg-stage
             class="rounded-[12px] mc-block relative overflow-hidden p-6 min-h-[300px] md:min-h-[340px] bg-[#1a1f29] flex flex-col items-center justify-center gap-5"
           >
             <p class="text-[10px] font-black uppercase tracking-[0.15em] text-[#5b6675]">
@@ -991,12 +992,34 @@ const particles = [
         return b ? (b.textContent || "").trim() : id;
       };
 
+      const stage = pg.querySelector<HTMLElement>("[data-pg-stage]");
+      const burstSparks = () => {
+        if (prefersReduced || !stage) return;
+        for (let i = 0; i < 12; i++) {
+          const s = document.createElement("span");
+          s.className = "mc-spark";
+          const ang = (Math.PI * 2 * i) / 12 + Math.random() * 0.4;
+          const dist = 40 + Math.random() * 45;
+          s.style.left = "50%";
+          s.style.top = "58%";
+          s.style.setProperty("--tx", `${Math.cos(ang) * dist}px`);
+          s.style.setProperty("--ty", `${Math.sin(ang) * dist}px`);
+          stage.appendChild(s);
+          setTimeout(() => s.remove(), 760);
+        }
+      };
+      const shakeStage = () => {
+        if (prefersReduced || !stage) return;
+        stage.classList.add("mc-stage-shake");
+        setTimeout(() => stage.classList.remove("mc-stage-shake"), 430);
+      };
+
       const lightChip = (chip: HTMLElement) => {
-        const color = chip.dataset.color || "#ffffff";
-        chip.classList.add("is-on");
-        chip.style.borderColor = color;
+        const color = chip.dataset.color || "#fc4a3a";
+        chip.style.setProperty("--mc-glow", color);
         chip.style.background = "#1f2630";
-        chip.style.boxShadow = `0 0 16px ${color}`;
+        chip.classList.add("is-on", "just-on");
+        setTimeout(() => chip.classList.remove("just-on"), 520);
       };
 
       const setStatus = (text: string, color: string) => {
@@ -1007,10 +1030,11 @@ const particles = [
 
       const success = () => {
         if (lamp) {
-          lamp.classList.add("is-on");
-          lamp.style.borderColor = "#F39C12";
-          lamp.style.boxShadow = "0 0 38px 6px rgba(243,156,18,0.7)";
+          lamp.classList.add("is-on", "surge");
+          setTimeout(() => lamp.classList.remove("surge"), 750);
         }
+        burstSparks();
+        shakeStage();
         setStatus("Механізм працює — лампа горить!", "#ffce6b");
         buttons.forEach((b) => b.setAttribute("disabled", ""));
       };
@@ -1018,16 +1042,13 @@ const particles = [
       const reset = () => {
         expected = 0;
         chips.forEach((ch) => {
-          ch.classList.remove("is-on");
-          ch.style.borderColor = "";
+          ch.classList.remove("is-on", "just-on");
+          ch.style.removeProperty("--mc-glow");
           ch.style.background = "";
-          ch.style.boxShadow = "";
         });
-        conns.forEach((cn) => (cn.style.background = ""));
+        conns.forEach((cn) => cn.classList.remove("is-on"));
         if (lamp) {
-          lamp.classList.remove("is-on");
-          lamp.style.borderColor = "";
-          lamp.style.boxShadow = "";
+          lamp.classList.remove("is-on", "surge");
         }
         buttons.forEach((b) => b.removeAttribute("disabled"));
         if (statusEl) {
@@ -1043,9 +1064,8 @@ const particles = [
           if (id === order[expected]) {
             const chip = chips[expected];
             lightChip(chip);
-            const color = chip.dataset.color || "#e0382b";
             if (expected > 0 && conns[expected - 1])
-              conns[expected - 1].style.background = color;
+              conns[expected - 1].classList.add("is-on");
             btn.setAttribute("disabled", "");
             expected++;
             if (expected >= order.length) success();
