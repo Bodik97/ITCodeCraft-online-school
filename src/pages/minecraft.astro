@@ -275,10 +275,16 @@ const particles = [
                     <span
                       data-schema={c.id}
                       data-color={c.color}
-                      class="mc-schema-chip inline-flex flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-[#39414f] bg-[#262d39] px-3 py-2 text-[#5b6675] transition-all duration-300"
+                      class="mc-schema-chip inline-flex flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-[#39414f] bg-[#12161f] p-1.5 transition-all duration-300"
                     >
-                      <img src={c.img} alt="" class="size-8 mc-pixel" />
-                      <span class="text-[10px] font-bold">{c.short}</span>
+                      <img
+                        src={c.img.replace(".svg", ".png")}
+                        alt={c.label}
+                        class="w-14 h-14 rounded-md object-cover"
+                      />
+                      <span class="text-[10px] font-bold text-[#8b96a8]">
+                        {c.short}
+                      </span>
                     </span>
                   </Fragment>
                 ))
@@ -286,12 +292,12 @@ const particles = [
             </div>
             <div
               data-pg-lamp
-              class="inline-flex h-24 w-24 items-center justify-center rounded-[12px] border-2 border-[#0c0f15] bg-[#2b3240] transition-all duration-300"
+              class="inline-flex h-24 w-24 items-center justify-center overflow-hidden rounded-[12px] border-2 border-[#0c0f15] bg-[#12161f] transition-all duration-300"
             >
               <img
-                src="/assets/minecraft/lamp.svg"
+                src="/assets/minecraft/lamp.png"
                 alt="Редстоун-лампа"
-                class="size-14 mc-pixel"
+                class="w-full h-full object-cover"
               />
             </div>
             <p
