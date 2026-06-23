@@ -1,0 +1,1114 @@
+---
+import MinecraftLayout from "@/layouts/MinecraftLayout.astro";
+import UseForm from "@/components/main/form/UseForm.astro";
+import { Icon } from "astro-icon/components";
+import content from "@/data/minecraft.json";
+
+const {
+  hero,
+  builds,
+  why,
+  playground,
+  results,
+  skills,
+  how,
+  quiz,
+  projects,
+  testimonials,
+  faq,
+  trust,
+  guarantee,
+  register,
+  footer,
+  navigation,
+  brand,
+} = content;
+const year = new Date().getFullYear();
+
+// Decorative drifting blocks in hero
+const particles = [
+  { size: 18, left: "6%", delay: "0s", duration: "15s", color: "#5dae3f" },
+  { size: 12, left: "20%", delay: "3s", duration: "12s", color: "#8b5a2b" },
+  { size: 22, left: "38%", delay: "1.5s", duration: "17s", color: "#fbbf24" },
+  { size: 14, left: "55%", delay: "5s", duration: "13s", color: "#34d6ce" },
+  { size: 16, left: "72%", delay: "2s", duration: "16s", color: "#5dae3f" },
+  { size: 12, left: "88%", delay: "6s", duration: "14s", color: "#8b5a2b" },
+];
+---
+
+<MinecraftLayout>
+  {/* ---------- HEADER ---------- */}
+  <header
+    class="sticky top-0 z-50 border-b-2 border-[#1f2937] bg-[#3a7d20]/95 backdrop-blur-sm"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
+    >
+      <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
+        <span
+          class="inline-flex h-9 w-9 items-center justify-center rounded-[4px] bg-[#5dae3f] text-white text-lg mc-block-sm"
+          >⛏️</span
+        >
+        <span class="font-display font-bold text-white text-lg leading-none">
+          {brand.primary}<span class="text-[#fde047]">{brand.accent}</span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-6">
+        {
+          navigation.links.map((link) => (
+            <a
+              href={`#${link.id}`}
+              class="text-sm font-semibold text-white/90 hover:text-[#fde047] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href={brand.homeUrl}
+          class="hidden sm:inline-flex text-sm font-semibold text-white/90 hover:text-[#fde047] transition-colors"
+          >← {navigation.backToMain}</a
+        >
+        <a
+          href="#register"
+          class="mc-btn mc-btn-gold inline-flex items-center rounded-[6px] px-4 py-2 text-sm font-bold"
+        >
+          {navigation.ctaLabel}
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="flex-1">
+    {/* ---------- HERO ---------- */}
+    <section
+      class="relative overflow-hidden bg-gradient-to-b from-[#8fd0f5] via-[#bfe3f5] to-[#eaf6e2]"
+    >
+      <div class="mc-particles" aria-hidden="true">
+        {
+          particles.map((p) => (
+            <div
+              class="mc-particle"
+              style={`width:${p.size}px;height:${p.size}px;left:${p.left};bottom:-30px;background:${p.color};animation-delay:${p.delay};animation-duration:${p.duration}`}
+            />
+          ))
+        }
+      </div>
+
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="mc-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {
+              hero.badges.map((b) => (
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-white/85 border-2 border-[#1f2937] px-3 py-1 text-xs font-bold text-[#3a7d20]">
+                  <span class="w-2 h-2 rounded-full bg-[#5dae3f] animate-pulse" />
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+          <h1
+            class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5"
+          >
+            {hero.title}{" "}
+            <span
+              class="text-[#3a7d20] underline decoration-[#fbbf24] decoration-4 underline-offset-4"
+            >
+              {hero.titleAccent}
+            </span>
+          </h1>
+          <p class="text-base md:text-lg text-[#374151] max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href="#register"
+              class="mc-btn mc-btn-grass inline-flex items-center gap-2 rounded-[8px] px-7 py-4 text-base font-bold"
+            >
+              {hero.ctaPrimary}
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="#projects"
+              class="inline-flex items-center rounded-[8px] border-2 border-[#1f2937] bg-white px-6 py-4 text-base font-bold text-[#1f2937] mc-block-sm hover:translate-y-[1px] transition-transform"
+            >
+              Дивитись проєкти
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-[#6b7280] font-medium">{hero.ctaNote}</p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {
+              hero.stats.map((s) => (
+                <div class="rounded-[8px] bg-white px-2 py-4 text-center mc-block-sm">
+                  <div
+                    class="mc-counter font-display text-2xl md:text-3xl font-bold text-[#3a7d20]"
+                    data-mc-count={s.value}
+                  >
+                    {s.value}
+                  </div>
+                  <div class="text-[11px] md:text-xs text-[#6b7280] font-medium mt-1">
+                    {s.label}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="mc-reveal relative">
+          <div
+            class="mc-float relative rounded-[12px] overflow-hidden mc-block bg-[#bfe3f5]"
+          >
+            <img
+              src="/assets/courses/minecraft2.webp"
+              alt="Світ Minecraft, створений учнем"
+              width="600"
+              height="450"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-[4/3]"
+            />
+          </div>
+          <div
+            class="absolute -bottom-4 -left-4 rounded-[8px] bg-[#fbbf24] px-4 py-3 mc-block-sm rotate-[-3deg]"
+          >
+            <p class="font-display font-bold text-sm text-[#1f2937]">
+              🏆 50+ проєктів учнів
+            </p>
+          </div>
+          <div
+            class="absolute -top-3 -right-3 hidden sm:block rounded-[8px] bg-[#5dae3f] px-3 py-2 mc-block-sm rotate-[4deg] text-white font-display font-bold text-sm"
+          >
+            ⛏️ 7-11 років
+          </div>
+        </div>
+      </div>
+
+      {/* Builds marquee */}
+      <div class="relative z-10 border-y-2 border-[#1f2937] bg-white/70 py-3">
+        <div class="mc-marquee">
+          <div class="mc-marquee-track">
+            {
+              [...builds, ...builds].map((b) => (
+                <span class="shrink-0 rounded-[6px] bg-white border-2 border-[#1f2937] px-4 py-1.5 text-sm font-bold text-[#1f2937]">
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- PLAYGROUND (unique interactive demo) ---------- */}
+    <section id="playground" class="py-16 md:py-24">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{playground.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {playground.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{playground.subtitle}</p>
+        </div>
+
+        <div id="mc-playground" class="mc-reveal grid md:grid-cols-2 gap-6 items-stretch">
+          {/* Activation buttons */}
+          <div class="rounded-[12px] bg-white p-5 md:p-6 mc-block flex flex-col">
+            <p class="text-xs font-black uppercase tracking-[0.15em] text-[#3a7d20] mb-4">
+              {playground.buttonsTitle}
+            </p>
+            <div class="flex flex-wrap gap-2.5 mb-auto">
+              {
+                playground.buttonsOrder.map((id) => {
+                  const c = playground.circuit.find((x) => x.id === id);
+                  return c ? (
+                    <button
+                      type="button"
+                      data-comp={c.id}
+                      class="mc-pg-btn inline-flex items-center gap-2 rounded-[8px] px-3.5 py-2.5 text-sm font-bold text-white mc-block-sm hover:translate-y-[1px] transition-transform disabled:opacity-50"
+                      style={`background:${c.color}`}
+                    >
+                      <img src={c.img} alt="" class="size-5 mc-pixel" />
+                      {c.label}
+                    </button>
+                  ) : null;
+                })
+              }
+            </div>
+            <button
+              type="button"
+              data-pg-reset
+              class="mt-6 self-start inline-flex items-center gap-2 rounded-[8px] border-2 border-[#1f2937] bg-white px-4 py-2.5 text-sm font-bold text-[#1f2937] mc-block-sm hover:translate-y-[1px] transition-transform"
+            >
+              <Icon name="lucide:eraser" class="size-4" />
+              {playground.resetLabel}
+            </button>
+          </div>
+
+          {/* Stage: ready schema (gray → lit) + lamp result */}
+          <div
+            class="rounded-[12px] mc-block relative overflow-hidden p-6 min-h-[300px] md:min-h-[340px] bg-[#1a1f29] flex flex-col items-center justify-center gap-5"
+          >
+            <p class="text-[10px] font-black uppercase tracking-[0.15em] text-[#5b6675]">
+              Схема механізму
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-1.5 w-full">
+              {
+                playground.circuit.map((c, idx) => (
+                  <Fragment>
+                    {idx > 0 && (
+                      <span
+                        data-conn
+                        class="w-3 h-1 rounded-full bg-[#3a4453] transition-colors duration-300"
+                      />
+                    )}
+                    <span
+                      data-schema={c.id}
+                      data-color={c.color}
+                      class="mc-schema-chip inline-flex flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-[#39414f] bg-[#262d39] px-3 py-2 text-[#5b6675] transition-all duration-300"
+                    >
+                      <img src={c.img} alt="" class="size-8 mc-pixel" />
+                      <span class="text-[10px] font-bold">{c.short}</span>
+                    </span>
+                  </Fragment>
+                ))
+              }
+            </div>
+            <div
+              data-pg-lamp
+              class="inline-flex h-24 w-24 items-center justify-center rounded-[12px] border-2 border-[#0c0f15] bg-[#2b3240] transition-all duration-300"
+            >
+              <img
+                src="/assets/minecraft/lamp.svg"
+                alt="Редстоун-лампа"
+                class="size-14 mc-pixel"
+              />
+            </div>
+            <p
+              data-pg-status
+              class="font-display font-bold text-base text-[#8b96a8] text-center px-2 min-h-[1.5em]"
+            >
+              {playground.idleText}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- WHY ---------- */}
+    <section id="why" class="py-16 md:py-24 bg-white border-b-2 border-[#1f2937]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{why.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {why.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{why.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-6">
+          {
+            why.items.map((item) => (
+              <div class="mc-reveal mc-lift rounded-[10px] bg-[#f5fbef] p-6 mc-block-sm">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-[8px] bg-[#5dae3f] text-white mb-4 mc-block-sm">
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-xl font-bold mb-2">{item.title}</h3>
+                <p class="text-[#4b5563] leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- SKILLS ---------- */}
+    <section id="skills" class="py-16 md:py-24 bg-white border-b-2 border-[#1f2937]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{skills.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {skills.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{skills.subtitle}</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <div id="mc-skills" class="mc-reveal space-y-5">
+            {
+              skills.items.map((item) => (
+                <div>
+                  <div class="flex justify-between items-baseline mb-1.5">
+                    <span class="font-semibold text-sm md:text-base text-[#1f2937]">
+                      {item.name}
+                    </span>
+                    <span class="font-bold text-xs text-[#3a7d20]">
+                      {item.level}%
+                    </span>
+                  </div>
+                  <div class="h-3.5 w-full rounded-full bg-[#eaf6e2] border-2 border-[#1f2937] overflow-hidden">
+                    <div
+                      class="mc-bar-fill h-full bg-[#5dae3f]"
+                      data-mc-level={item.level}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+            <p class="text-sm text-[#6b7280] pt-2">✅ {skills.note}</p>
+          </div>
+
+          <div class="mc-reveal relative">
+            <div class="rounded-[12px] overflow-hidden mc-block bg-[#bfe3f5]">
+              <img
+                src="/assets/courses/minecraft.webp"
+                alt="Проєкт учня курсу Minecraft"
+                width="600"
+                height="450"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover aspect-[4/3]"
+              />
+            </div>
+            <div
+              class="absolute -bottom-4 -right-4 rounded-[8px] bg-[#fbbf24] px-4 py-3 mc-block-sm rotate-[3deg]"
+            >
+              <p class="font-display font-bold text-sm text-[#1f2937]">
+                🧠 Навички на все життя
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- RESULTS ROADMAP (unique, parent-focused) ---------- */}
+    <section id="results" class="py-16 md:py-24 bg-white border-b-2 border-[#1f2937]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{results.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {results.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{results.subtitle}</p>
+        </div>
+
+        <div class="relative grid md:grid-cols-3 gap-6 md:gap-4">
+          <div
+            class="hidden md:block absolute top-9 left-[16%] right-[16%] h-1 bg-gradient-to-r from-[#5dae3f] via-[#22a06b] to-[#3a7d20] rounded-full"
+            aria-hidden="true"
+          >
+          </div>
+          {
+            results.stages.map((stage, i) => (
+              <div class="mc-reveal relative text-center px-2">
+                <div
+                  class="relative z-10 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-[10px] text-white mc-block-sm mb-4"
+                  style={`background:${stage.color}`}
+                >
+                  <Icon name={stage.icon} class="size-8" />
+                  <span class="absolute -top-2 -right-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white border-2 border-[#1f2937] text-xs font-black text-[#1f2937]">
+                    {i + 1}
+                  </span>
+                </div>
+                <div class="font-display font-bold text-lg text-[#3a7d20] mb-2">
+                  {stage.when}
+                </div>
+                <p class="text-[#6b7280] text-sm leading-relaxed max-w-xs mx-auto">
+                  {stage.text}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- QUIZ (engagement hook) ---------- */}
+    <section
+      id="quiz"
+      class="py-16 md:py-24 bg-[#eaf6e2] border-b-2 border-[#1f2937]"
+    >
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-8 mc-reveal">
+          <span
+            class="inline-block bg-[#fbbf24] text-[#1f2937] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#1f2937]"
+            >{quiz.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {quiz.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{quiz.subtitle}</p>
+        </div>
+
+        <div
+          id="mc-quiz"
+          class="mc-reveal rounded-[14px] bg-white p-6 md:p-8 mc-block"
+        >
+          {/* Progress */}
+          <div class="flex items-center justify-between mb-2">
+            <span
+              data-quiz-progress
+              class="text-xs font-black uppercase tracking-[0.15em] text-[#3a7d20]"
+              >Крок 1/{quiz.questions.length}</span
+            >
+          </div>
+          <div
+            class="h-3 w-full rounded-full bg-[#eaf6e2] border-2 border-[#1f2937] overflow-hidden mb-6"
+          >
+            <div
+              data-quiz-fill
+              class="h-full bg-[#5dae3f] transition-[width] duration-300"
+              style={`width:${100 / quiz.questions.length}%`}
+            >
+            </div>
+          </div>
+
+          {/* Questions */}
+          {
+            quiz.questions.map((qq, qi) => (
+              <div class="quiz-step" data-quiz-step={qi} hidden={qi !== 0}>
+                <h3 class="font-display text-xl md:text-2xl font-bold mb-5">
+                  {qq.q}
+                </h3>
+                <div class="grid sm:grid-cols-3 gap-3">
+                  {qq.options.map((o) => (
+                    <button
+                      type="button"
+                      class="quiz-option mc-btn rounded-[8px] bg-[#f5fbef] px-4 py-4 text-sm font-bold text-[#1f2937] hover:bg-[#fbbf24] transition-colors"
+                      data-tag={o.tag}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+
+          {/* Result */}
+          <div data-quiz-result hidden>
+            <h3 class="font-display text-2xl md:text-3xl font-bold mb-2">
+              {quiz.result.title}
+            </h3>
+            <p class="text-[#6b7280] mb-5">{quiz.result.lead}</p>
+            <ul data-quiz-tags class="space-y-2 mb-7"></ul>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href="#register"
+                class="mc-btn mc-btn-grass inline-flex items-center rounded-[8px] px-6 py-4 text-base font-bold"
+              >
+                {quiz.result.ctaLabel}
+              </a>
+              <button
+                type="button"
+                data-quiz-restart
+                class="text-sm font-bold text-[#6b7280] underline hover:text-[#3a7d20]"
+              >
+                {quiz.result.restartLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- HOW IT WORKS (interactive timeline) ---------- */}
+    <section id="how" class="py-16 md:py-24">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{how.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {how.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{how.subtitle}</p>
+        </div>
+
+        <div class="space-y-4">
+          {
+            how.steps.map((item, i) => (
+              <article
+                class="mc-step mc-reveal group flex gap-4 sm:gap-6 items-start cursor-pointer"
+                data-step={i}
+              >
+                <div class="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-[8px] bg-white border-2 border-[#1f2937] text-[#9ca3af] group-[.is-active]:bg-[#5dae3f] group-[.is-active]:text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 mc-block-sm">
+                  {i + 1}
+                </div>
+                <div class="flex-1 bg-white rounded-[10px] p-5 sm:p-6 mc-block-sm group-[.is-active]:shadow-[5px_5px_0_0_#5dae3f] transition-all duration-300">
+                  <div class="flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                      <div class="text-[10px] sm:text-xs font-black text-[#9ca3af] group-[.is-active]:text-[#3a7d20] uppercase tracking-[0.15em] mb-1 transition-colors">
+                        {item.step}
+                      </div>
+                      <h3 class="font-display text-lg sm:text-xl font-bold leading-tight">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <span
+                      class="text-2xl text-[#5dae3f] transition-transform duration-300 group-[.is-active]:rotate-45 shrink-0"
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </div>
+                  <p class="text-[#6b7280] text-sm sm:text-base mt-2 leading-relaxed">
+                    {item.text}
+                  </p>
+                  <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
+                    <div class="overflow-hidden">
+                      <div class="pt-5 mt-5 border-t-2 border-dashed border-[#e5e7eb]">
+                        <p class="text-[#4b5563] text-sm sm:text-base leading-relaxed mb-4">
+                          {item.details}
+                        </p>
+                        <div class="flex items-start gap-3 bg-[#5dae3f]/10 border-2 border-[#5dae3f]/30 p-3 rounded-[8px]">
+                          <span class="inline-flex w-6 h-6 rounded-[4px] bg-[#5dae3f] items-center justify-center text-white text-sm shrink-0">
+                            ✓
+                          </span>
+                          <span class="text-xs sm:text-sm font-bold text-[#3a7d20] leading-tight">
+                            {item.outcome}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- PROJECTS ---------- */}
+    <section
+      id="projects"
+      class="py-16 md:py-24 bg-[#3a7d20] border-y-2 border-[#1f2937]"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 mc-reveal">
+          <span
+            class="inline-block bg-white/15 text-white text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-white/25"
+            >{projects.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-3">
+            {projects.title}
+          </h2>
+          <p class="text-white/80 text-lg">{projects.subtitle}</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          {
+            projects.cards.map((card) => (
+              <div class="mc-reveal mc-lift rounded-[10px] bg-white overflow-hidden mc-block">
+                <div class="aspect-video bg-black">
+                  <iframe
+                    class="w-full h-full"
+                    src={`https://www.youtube-nocookie.com/embed/${card.youtubeId}`}
+                    title={card.title}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                </div>
+                <div class="p-5">
+                  <h3 class="font-display text-xl font-bold">{card.title}</h3>
+                  <p class="text-sm text-[#6b7280] mt-1">
+                    {card.student} · {card.time}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- TESTIMONIALS ---------- */}
+    <section
+      id="testimonials"
+      class="py-16 md:py-24 bg-white border-b-2 border-[#1f2937]"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{testimonials.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold">
+            {testimonials.title}
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          {
+            testimonials.items.map((t) => (
+              <figure class="mc-reveal mc-lift rounded-[10px] bg-[#f5fbef] p-6 mc-block-sm">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5dae3f] text-white font-bold mc-block-sm">
+                    {t.name.charAt(0)}
+                  </span>
+                  <figcaption>
+                    <div class="font-bold leading-tight">{t.name}</div>
+                    <div class="text-xs text-[#6b7280]">{t.role}</div>
+                  </figcaption>
+                </div>
+                <p class="text-[#374151] leading-relaxed">“{t.text}”</p>
+                <div class="mt-3 text-[#fbbf24]" aria-hidden="true">
+                  ★★★★★
+                </div>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- FAQ ---------- */}
+    <section id="faq" class="py-16 md:py-24">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{faq.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold">{faq.title}</h2>
+        </div>
+        <div class="space-y-4">
+          {
+            faq.items.map((item) => (
+              <details class="mc-reveal group rounded-[8px] bg-white p-5 mc-block-sm">
+                <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg list-none">
+                  {item.question}
+                  <span
+                    class="ml-4 text-[#5dae3f] transition-transform group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p class="mt-3 text-[#4b5563] leading-relaxed">{item.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- TRUST / METHODOLOGY (unique, confidence) ---------- */}
+    <section id="parents" class="py-16 md:py-24 bg-[#f5fbef] border-b-2 border-[#1f2937]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+            >{trust.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {trust.title}
+          </h2>
+          <p class="text-[#6b7280] text-lg">{trust.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            trust.items.map((item) => (
+              <div class="mc-reveal mc-lift rounded-[10px] bg-white p-6 mc-block-sm">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-[8px] bg-[#5dae3f] text-white mb-4 mc-block-sm">
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-lg font-bold mb-2">{item.title}</h3>
+                <p class="text-[#4b5563] text-sm leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- GUARANTEE band (confidence) ---------- */}
+    <section class="py-10 bg-[#1f2937]">
+      <div
+        class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
+      >
+        <div
+          class="shrink-0 inline-flex h-16 w-16 items-center justify-center rounded-[10px] bg-[#5dae3f] text-white mc-block-sm"
+        >
+          <Icon name="lucide:shield-check" class="size-9" />
+        </div>
+        <div class="mc-reveal">
+          <span
+            class="inline-block bg-[#5dae3f]/20 text-[#a7e08a] text-xs font-black px-3 py-1 rounded-full uppercase tracking-[0.15em] mb-2"
+            >{guarantee.badge}</span
+          >
+          <h3 class="font-display text-2xl font-bold text-white mb-1">
+            {guarantee.title}
+          </h3>
+          <p class="text-white/70 text-sm md:text-base leading-relaxed">
+            {guarantee.text}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- REGISTER ---------- */}
+    <section
+      id="register"
+      class="py-16 md:py-24 bg-[#3a7d20] border-t-2 border-[#1f2937]"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="mc-reveal text-white">
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+            {register.title}
+          </h2>
+          <p class="text-white/90 text-lg mb-8">{register.subtitle}</p>
+          <ul class="space-y-3">
+            {
+              register.features.map((f) => (
+                <li class="flex items-center gap-3 font-medium">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-[4px] bg-[#fbbf24] text-[#1f2937] text-sm mc-block-sm">
+                    ✓
+                  </span>
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="mc-reveal rounded-[12px] bg-[#0e172b] p-6 md:p-8 mc-block">
+          <div data-mc-form>
+            <UseForm formId="minecraft-landing" />
+          </div>
+          <div data-mc-success hidden class="text-center text-white py-6">
+            <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+            <h3 class="font-display text-2xl font-bold mb-2">Чудовий вибір!</h3>
+            <p class="text-white/80">
+              Ми отримали вашу заявку. Менеджер зателефонує найближчим часом.
+            </p>
+          </div>
+          <p
+            data-mc-error
+            hidden
+            class="mt-4 text-center text-sm font-medium text-[#fca5a5]"
+          >
+            Сталася помилка. Спробуйте ще раз або зателефонуйте нам:
+            {footer.phone}
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {/* ---------- FOOTER ---------- */}
+  <footer class="bg-[#1f2937] text-white">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-8 md:grid-cols-3"
+    >
+      <div>
+        <div class="font-display font-bold text-xl mb-3">
+          {brand.primary}<span class="text-[#74c043]">{brand.accent}</span>
+        </div>
+        <p class="text-white/70 text-sm leading-relaxed max-w-xs">
+          {footer.about}
+        </p>
+      </div>
+      <div>
+        <h3 class="font-bold mb-3">Навігація</h3>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li>
+            <a href={brand.homeUrl} class="hover:text-[#74c043]">Усі курси</a>
+          </li>
+          <li><a href="/roblox" class="hover:text-[#74c043]">Курс Roblox</a></li>
+          <li><a href="/frontend" class="hover:text-[#74c043]">Курс Frontend</a></li>
+          {
+            navigation.links.map((link) => (
+              <li>
+                <a href={`#${link.id}`} class="hover:text-[#74c043]">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold mb-3">Контакти</h3>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li>
+            <a href={footer.linkPhone} class="hover:text-[#74c043]"
+              >{footer.phone}</a
+            >
+          </li>
+          <li>
+            <a href={`mailto:${footer.email}`} class="hover:text-[#74c043]"
+              >{footer.email}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 py-4 text-center text-xs text-white/50">
+      © {year} {brand.primary}{brand.accent}. Всі права захищені.
+    </div>
+  </footer>
+
+  {/* ---------- PAGE SCRIPTS ---------- */}
+  <script>
+    // Success / error feedback for the lead form
+    document.addEventListener("itcc:form-success", () => {
+      document.querySelector("[data-mc-form]")?.setAttribute("hidden", "");
+      document.querySelector("[data-mc-error]")?.setAttribute("hidden", "");
+      document.querySelector("[data-mc-success]")?.removeAttribute("hidden");
+      document
+        .getElementById("register")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    document.addEventListener("itcc:form-error", () => {
+      document.querySelector("[data-mc-error]")?.removeAttribute("hidden");
+    });
+
+    // Interactive timeline accordion
+    const steps = Array.from(document.querySelectorAll<HTMLElement>(".mc-step"));
+    steps.forEach((step, i) => {
+      if (i === 0) step.classList.add("is-active");
+      step.addEventListener("click", () => {
+        const wasActive = step.classList.contains("is-active");
+        steps.forEach((s) => s.classList.remove("is-active"));
+        if (!wasActive) step.classList.add("is-active");
+      });
+    });
+
+    // Animated counters
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const counters =
+      document.querySelectorAll<HTMLElement>(".mc-counter[data-mc-count]");
+    const runCounter = (el: HTMLElement) => {
+      const raw = el.dataset.mcCount || "";
+      const suffix = raw.replace(/[\d.]/g, "");
+      const target = parseFloat(raw);
+      if (isNaN(target)) return;
+      const isFloat = raw.includes(".");
+      const decimals = isFloat ? 1 : 0;
+      const duration = 1500;
+      const start = performance.now();
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const val = target * ease(p);
+        el.textContent =
+          (isFloat ? val.toFixed(decimals) : Math.floor(val).toString()) +
+          suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (prefersReduced) {
+      // leave static values as-is
+    } else {
+      const cio = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              runCounter(e.target as HTMLElement);
+              cio.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      counters.forEach((el) => cio.observe(el));
+    }
+
+    // Skill bars fill on scroll
+    const skillsWrap = document.getElementById("mc-skills");
+    if (skillsWrap) {
+      const bars =
+        skillsWrap.querySelectorAll<HTMLElement>(".mc-bar-fill[data-mc-level]");
+      const fill = () =>
+        bars.forEach((b) => {
+          b.style.width = `${b.dataset.mcLevel}%`;
+        });
+      if (prefersReduced) {
+        fill();
+      } else {
+        const sio = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              fill();
+              sio.disconnect();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        sio.observe(skillsWrap);
+      }
+    }
+
+    // Interactive redstone schema — activate gray components in the right order
+    const pg = document.getElementById("mc-playground");
+    if (pg) {
+      const buttons = Array.from(
+        pg.querySelectorAll<HTMLButtonElement>(".mc-pg-btn"),
+      );
+      const chips = Array.from(pg.querySelectorAll<HTMLElement>("[data-schema]"));
+      const conns = Array.from(pg.querySelectorAll<HTMLElement>("[data-conn]"));
+      const resetBtn = pg.querySelector<HTMLElement>("[data-pg-reset]");
+      const lamp = pg.querySelector<HTMLElement>("[data-pg-lamp]");
+      const statusEl = pg.querySelector<HTMLElement>("[data-pg-status]");
+      const idleText = statusEl?.textContent?.trim() || "";
+      const order = chips.map((ch) => ch.dataset.schema || "");
+      let expected = 0;
+
+      const labelOf = (id: string) => {
+        const b = buttons.find((x) => x.dataset.comp === id);
+        return b ? (b.textContent || "").trim() : id;
+      };
+
+      const lightChip = (chip: HTMLElement) => {
+        const color = chip.dataset.color || "#ffffff";
+        chip.classList.add("is-on");
+        chip.style.borderColor = color;
+        chip.style.background = "#1f2630";
+        chip.style.boxShadow = `0 0 16px ${color}`;
+      };
+
+      const setStatus = (text: string, color: string) => {
+        if (!statusEl) return;
+        statusEl.textContent = text;
+        statusEl.style.color = color;
+      };
+
+      const success = () => {
+        if (lamp) {
+          lamp.classList.add("is-on");
+          lamp.style.borderColor = "#F39C12";
+          lamp.style.boxShadow = "0 0 38px 6px rgba(243,156,18,0.7)";
+        }
+        setStatus("Механізм працює — лампа горить!", "#ffce6b");
+        buttons.forEach((b) => b.setAttribute("disabled", ""));
+      };
+
+      const reset = () => {
+        expected = 0;
+        chips.forEach((ch) => {
+          ch.classList.remove("is-on");
+          ch.style.borderColor = "";
+          ch.style.background = "";
+          ch.style.boxShadow = "";
+        });
+        conns.forEach((cn) => (cn.style.background = ""));
+        if (lamp) {
+          lamp.classList.remove("is-on");
+          lamp.style.borderColor = "";
+          lamp.style.boxShadow = "";
+        }
+        buttons.forEach((b) => b.removeAttribute("disabled"));
+        if (statusEl) {
+          statusEl.textContent = idleText;
+          statusEl.style.color = "";
+        }
+      };
+
+      buttons.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          if (expected >= order.length) return;
+          const id = btn.dataset.comp || "";
+          if (id === order[expected]) {
+            const chip = chips[expected];
+            lightChip(chip);
+            const color = chip.dataset.color || "#e0382b";
+            if (expected > 0 && conns[expected - 1])
+              conns[expected - 1].style.background = color;
+            btn.setAttribute("disabled", "");
+            expected++;
+            if (expected >= order.length) success();
+            else setStatus(`Далі увімкни: ${labelOf(order[expected])}`, "#9fb0c7");
+          } else {
+            setStatus(`⚠ Спершу увімкни: ${labelOf(order[expected])}`, "#fca5a5");
+          }
+        }),
+      );
+
+      resetBtn?.addEventListener("click", reset);
+    }
+
+    // Interactive quiz
+    const quizEl = document.getElementById("mc-quiz");
+    if (quizEl) {
+      const qSteps = Array.from(
+        quizEl.querySelectorAll<HTMLElement>("[data-quiz-step]"),
+      );
+      const total = qSteps.length;
+      const progressEl = quizEl.querySelector<HTMLElement>("[data-quiz-progress]");
+      const fillEl = quizEl.querySelector<HTMLElement>("[data-quiz-fill]");
+      const resultEl = quizEl.querySelector<HTMLElement>("[data-quiz-result]");
+      const tagsEl = quizEl.querySelector<HTMLElement>("[data-quiz-tags]");
+      const restartBtn = quizEl.querySelector<HTMLElement>("[data-quiz-restart]");
+      const answers: string[] = [];
+
+      const setProgress = (n: number) => {
+        if (fillEl) fillEl.style.width = `${(n / total) * 100}%`;
+      };
+      const showStep = (i: number) => {
+        qSteps.forEach((s, idx) => (s.hidden = idx !== i));
+        if (resultEl) resultEl.hidden = true;
+        if (progressEl) progressEl.textContent = `Крок ${i + 1}/${total}`;
+        setProgress(i + 1);
+      };
+      const showResult = () => {
+        qSteps.forEach((s) => (s.hidden = true));
+        if (progressEl) progressEl.textContent = "Готово!";
+        setProgress(total);
+        if (tagsEl) {
+          tagsEl.innerHTML = "";
+          answers.forEach((tag) => {
+            const li = document.createElement("li");
+            li.className = "flex items-start gap-3 text-[#374151]";
+            li.innerHTML =
+              '<span class="inline-flex w-6 h-6 rounded-[4px] bg-[#5dae3f] items-center justify-center text-white text-sm shrink-0">✓</span><span class="leading-snug">' +
+              tag +
+              "</span>";
+            tagsEl.appendChild(li);
+          });
+        }
+        if (resultEl) resultEl.hidden = false;
+      };
+
+      qSteps.forEach((step, i) => {
+        step.querySelectorAll<HTMLElement>(".quiz-option").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            answers[i] = btn.getAttribute("data-tag") || "";
+            if (i < total - 1) showStep(i + 1);
+            else showResult();
+          });
+        });
+      });
+
+      restartBtn?.addEventListener("click", () => {
+        answers.length = 0;
+        showStep(0);
+      });
+    }
+  </script>
+</MinecraftLayout>
