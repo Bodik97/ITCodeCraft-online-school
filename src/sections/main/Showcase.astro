@@ -10,6 +10,23 @@ const glow = [
   "rgba(132,204,22,0.5)",
 ] as const;
 const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
+
+// Travelling neon orbs (autonomous)
+const orbs = [
+  { top: "12%", color: "#22d3ee", dur: "9s", delay: "0s", size: 7 },
+  { top: "34%", color: "#f43f5e", dur: "13s", delay: "2s", size: 5 },
+  { top: "58%", color: "#84cc16", dur: "11s", delay: "1s", size: 6 },
+  { top: "76%", color: "#22d3ee", dur: "15s", delay: "4s", size: 5 },
+  { top: "90%", color: "#f43f5e", dur: "10s", delay: "3s", size: 6 },
+];
+// Drifting tick marks (autonomous)
+const ticks = [
+  { left: "12%", top: "20%", color: "#22d3ee", dur: "7s", delay: "0s", rot: 20 },
+  { left: "44%", top: "14%", color: "#84cc16", dur: "9s", delay: "1.5s", rot: -15 },
+  { left: "70%", top: "24%", color: "#f43f5e", dur: "8s", delay: "0.6s", rot: 35 },
+  { left: "28%", top: "82%", color: "#84cc16", dur: "10s", delay: "2.2s", rot: -25 },
+  { left: "84%", top: "78%", color: "#22d3ee", dur: "8.5s", delay: "1.2s", rot: 12 },
+];
 ---
 
 <section id="showcase" class="py-24 bg-paper relative overflow-hidden">
@@ -17,11 +34,53 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
     class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
   >
   </div>
+
+  {/* ---- Autonomous decorative moving layer ---- */}
+  <div class="sc-deco-layer absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+    <svg
+      class="absolute inset-0 w-full h-full"
+      viewBox="0 0 1200 640"
+      preserveAspectRatio="none"
+    >
+      <line x1="-50" y1="120" x2="1250" y2="120" class="sc-dash sc-dash-cyan" />
+      <line x1="-50" y1="520" x2="1250" y2="520" class="sc-dash sc-dash-magenta" />
+      <path
+        d="M-60,330 Q300,250 640,350 T1260,300"
+        class="sc-flow sc-flow-lime"
+        fill="none"
+      />
+      <path
+        d="M-60,210 Q360,300 720,210 T1260,250"
+        class="sc-flow sc-flow-cyan"
+        fill="none"
+      />
+    </svg>
+
+    {
+      orbs.map((o) => (
+        <span
+          class="sc-orb"
+          style={`top:${o.top};color:${o.color};width:${o.size}px;height:${o.size}px;animation-duration:${o.dur};animation-delay:${o.delay}`}
+        />
+      ))
+    }
+    {
+      ticks.map((t) => (
+        <span
+          class="sc-tick"
+          style={`left:${t.left};top:${t.top};color:${t.color};--rot:${t.rot}deg;animation-duration:${t.dur};animation-delay:${t.delay}`}
+        />
+      ))
+    }
+  </div>
+
   <div class="max-w-[104rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="mb-16 max-w-2xl">
       <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
         {section.titlePrefix}
-        <span class="text-neon-cyan text-glow-cyan">{section.titleHighlight}</span>
+        <span class="sc-pulse text-neon-cyan text-glow-cyan">
+          {section.titleHighlight}
+        </span>
       </h2>
       <p class="text-slate-500 text-sm md:text-base xl:text-lg">
         {section.subtitle}
@@ -31,49 +90,52 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
     <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
       {
         section.cards.map((card, i) => (
-          <article
-            data-sc-card
-            class="sc-card group relative rounded-sm overflow-hidden border border-slate-200 bg-surface"
-            style={`--glow:${glow[i % glow.length]};--bc:${borderC[i % borderC.length]}`}
-          >
-            <div class="relative aspect-[4/3] overflow-hidden">
-              <img
-                src={`./assets/home/${card.image}.webp`}
-                alt={card.title}
-                width="720"
-                height="540"
-                loading="lazy"
-                decoding="async"
-                class="sc-img w-full h-full object-cover"
-              />
-              <div class="absolute inset-0 bg-linear-to-t from-surface via-surface/30 to-transparent" />
-            </div>
-            <div class="relative -mt-12 p-6">
-              <h3
-                class:list={[
-                  "text-xl font-bold font-display mb-2",
-                  accent[i % accent.length],
-                ]}
-              >
-                {card.title}
-              </h3>
-              <span
-                class:list={[
-                  "sc-underline block h-[3px] w-10 mb-3 rounded-full",
-                  underlineBg[i % underlineBg.length],
-                ]}
-              />
-              <p class="text-slate-500 text-sm leading-relaxed">{card.text}</p>
-            </div>
-          </article>
+          <div class="sc-floatwrap" style={`animation-delay:${i * 0.9}s`}>
+            <article
+              data-sc-tilt
+              class="sc-card group relative h-full rounded-sm overflow-hidden border border-slate-200 bg-surface"
+              style={`--glow:${glow[i % glow.length]};--bc:${borderC[i % borderC.length]}`}
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={`./assets/home/${card.image}.webp`}
+                  alt={card.title}
+                  width="720"
+                  height="540"
+                  loading="lazy"
+                  decoding="async"
+                  class="sc-img w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-linear-to-t from-surface via-surface/30 to-transparent" />
+                <div class="sc-sheen absolute inset-0" />
+              </div>
+              <div class="relative -mt-12 p-6">
+                <h3
+                  class:list={[
+                    "text-xl font-bold font-display mb-2",
+                    accent[i % accent.length],
+                  ]}
+                >
+                  {card.title}
+                </h3>
+                <span
+                  class:list={[
+                    "sc-underline block h-[3px] w-10 mb-3 rounded-full",
+                    underlineBg[i % underlineBg.length],
+                  ]}
+                />
+                <p class="text-slate-500 text-sm leading-relaxed">{card.text}</p>
+              </div>
+            </article>
+          </div>
         ))
       }
     </div>
 
-    <div class="mt-12 text-center sc-card">
+    <div class="mt-12 text-center sc-reveal">
       <a
         href="#courses"
-        class="inline-flex items-center gap-2 px-7 py-4 bg-neon-cyan text-paper font-bold rounded-xl shadow-neon-cyan hover:scale-[1.04] transition-transform duration-200"
+        class="inline-flex items-center gap-2 px-7 py-4 bg-neon-cyan text-paper font-bold rounded-xl shadow-neon-cyan hover:scale-[1.04] transition-transform duration-200 animate-neon-pulse"
       >
         Обрати напрямок для дитини
         <span aria-hidden="true">→</span>
@@ -83,7 +145,137 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
 </section>
 
 <style>
-  .sc-card {
+  /* ---- Decorative moving lines ---- */
+  .sc-dash {
+    stroke-width: 2;
+    stroke-dasharray: 10 16;
+    opacity: 0.22;
+  }
+  .sc-dash-cyan {
+    stroke: #22d3ee;
+    animation: sc-march 16s linear infinite;
+  }
+  .sc-dash-magenta {
+    stroke: #f43f5e;
+    animation: sc-march 22s linear infinite reverse;
+  }
+  .sc-flow {
+    stroke-width: 2;
+    stroke-dasharray: 6 18;
+    opacity: 0.28;
+  }
+  .sc-flow-lime {
+    stroke: #84cc16;
+    animation: sc-march 26s linear infinite;
+  }
+  .sc-flow-cyan {
+    stroke: #22d3ee;
+    animation: sc-march 30s linear infinite reverse;
+  }
+  @keyframes sc-march {
+    to {
+      stroke-dashoffset: -260;
+    }
+  }
+
+  /* ---- Travelling orbs ---- */
+  .sc-orb {
+    position: absolute;
+    left: -2%;
+    border-radius: 9999px;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+    opacity: 0;
+    animation-name: sc-travel;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes sc-travel {
+    0% {
+      left: -2%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 0.9;
+    }
+    92% {
+      opacity: 0.6;
+    }
+    100% {
+      left: 102%;
+      opacity: 0;
+    }
+  }
+
+  /* ---- Drifting tick marks ---- */
+  .sc-tick {
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    opacity: 0.35;
+    box-shadow: 0 0 8px currentColor;
+    transform: rotate(var(--rot, 0deg));
+    animation-name: sc-drift;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes sc-drift {
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(var(--rot, 0deg));
+      opacity: 0.3;
+    }
+    50% {
+      transform: translate(14px, -18px) rotate(calc(var(--rot, 0deg) + 12deg));
+      opacity: 0.55;
+    }
+  }
+
+  /* ---- Heading accent pulse ---- */
+  .sc-pulse {
+    animation: sc-textpulse 3s ease-in-out infinite;
+  }
+  @keyframes sc-textpulse {
+    0%,
+    100% {
+      text-shadow: 0 0 14px rgba(34, 211, 238, 0.35);
+    }
+    50% {
+      text-shadow:
+        0 0 22px rgba(34, 211, 238, 0.7),
+        0 0 4px rgba(34, 211, 238, 0.5);
+    }
+  }
+
+  /* ---- Autonomous card float ---- */
+  .sc-floatwrap {
+    height: 100%;
+    animation: sc-bob 6.5s ease-in-out infinite;
+  }
+  .sc-floatwrap:nth-child(2) {
+    animation-duration: 7.4s;
+  }
+  .sc-floatwrap:nth-child(3) {
+    animation-duration: 8.1s;
+  }
+  .sc-floatwrap:hover {
+    animation-play-state: paused;
+  }
+  @keyframes sc-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* ---- Card reveal + hover ---- */
+  .sc-card,
+  .sc-reveal {
     opacity: 0;
     transform: translateY(28px);
     transition:
@@ -91,9 +283,9 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
       transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.35s ease,
       border-color 0.35s ease;
-    will-change: transform, opacity;
   }
-  .sc-card.is-in {
+  .sc-card.is-in,
+  .sc-reveal.is-in {
     opacity: 1;
     transform: translateY(0);
   }
@@ -102,12 +294,8 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
     border-color: var(--bc);
   }
   .sc-card.is-hover {
-    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
-      translateY(-8px);
-    transition:
-      transform 0.12s ease,
-      box-shadow 0.35s ease,
-      border-color 0.35s ease;
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.12s ease;
   }
   .sc-img {
     transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -122,18 +310,56 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
     width: 3.75rem;
   }
 
+  /* ---- Shimmer sweep across image (autonomous, staggered) ---- */
+  .sc-sheen {
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.14) 50%,
+      transparent 60%
+    );
+    background-size: 220% 100%;
+    background-position: 180% 0;
+    animation: sc-sheen 6s ease-in-out infinite;
+  }
+  .sc-floatwrap:nth-child(2) .sc-sheen {
+    animation-delay: 2s;
+  }
+  .sc-floatwrap:nth-child(3) .sc-sheen {
+    animation-delay: 4s;
+  }
+  @keyframes sc-sheen {
+    0%,
+    65%,
+    100% {
+      background-position: 180% 0;
+    }
+    80% {
+      background-position: -60% 0;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .sc-card {
+    .sc-card,
+    .sc-reveal {
       opacity: 1;
       transform: none;
       transition: box-shadow 0.3s ease;
     }
-    .sc-card.is-hover {
-      transform: none;
-    }
+    .sc-card.is-hover,
     .sc-img,
     .sc-underline {
+      transform: none;
       transition: none;
+    }
+    .sc-deco-layer,
+    .sc-floatwrap,
+    .sc-pulse,
+    .sc-sheen {
+      animation: none !important;
+    }
+    .sc-deco-layer {
+      display: none;
     }
   }
 </style>
@@ -142,50 +368,48 @@ const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
   const prefersReduced = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
-  const cards = Array.from(
-    document.querySelectorAll<HTMLElement>("#showcase [data-sc-card]"),
-  );
   const section = document.getElementById("showcase");
-  const allCards = section
-    ? Array.from(section.querySelectorAll<HTMLElement>(".sc-card"))
-    : [];
-
-  // Staggered reveal on scroll
-  if (prefersReduced) {
-    allCards.forEach((c) => c.classList.add("is-in"));
-  } else {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const el = e.target as HTMLElement;
-            const idx = allCards.indexOf(el);
-            setTimeout(() => el.classList.add("is-in"), Math.max(0, idx) * 130);
-            io.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.15 },
+  if (section) {
+    const revealEls = Array.from(
+      section.querySelectorAll<HTMLElement>(".sc-card, .sc-reveal"),
     );
-    allCards.forEach((c) => io.observe(c));
-  }
+    if (prefersReduced) {
+      revealEls.forEach((el) => el.classList.add("is-in"));
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const el = e.target as HTMLElement;
+              const idx = revealEls.indexOf(el);
+              setTimeout(
+                () => el.classList.add("is-in"),
+                Math.max(0, idx) * 130,
+              );
+              io.unobserve(el);
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+      revealEls.forEach((el) => io.observe(el));
 
-  // 3D tilt on hover (image cards only)
-  if (!prefersReduced) {
-    cards.forEach((card) => {
-      card.addEventListener("pointermove", (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.setProperty("--ry", `${px * 8}deg`);
-        card.style.setProperty("--rx", `${-py * 8}deg`);
-        card.classList.add("is-hover");
+      // 3D tilt on hover (bonus)
+      section.querySelectorAll<HTMLElement>("[data-sc-tilt]").forEach((card) => {
+        card.addEventListener("pointermove", (e) => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          card.style.setProperty("--ry", `${px * 8}deg`);
+          card.style.setProperty("--rx", `${-py * 8}deg`);
+          card.classList.add("is-hover");
+        });
+        card.addEventListener("pointerleave", () => {
+          card.classList.remove("is-hover");
+          card.style.removeProperty("--rx");
+          card.style.removeProperty("--ry");
+        });
       });
-      card.addEventListener("pointerleave", () => {
-        card.classList.remove("is-hover");
-        card.style.removeProperty("--rx");
-        card.style.removeProperty("--ry");
-      });
-    });
+    }
   }
 </script>
