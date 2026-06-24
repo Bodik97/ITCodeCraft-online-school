@@ -3,11 +3,13 @@ import content from "@/data/main.json";
 
 const section = content.showcaseSection;
 const accent = ["text-neon-cyan", "text-neon-magenta", "text-neon-lime"] as const;
-const ring = [
-  "hover:border-neon-cyan/50",
-  "hover:border-neon-magenta/50",
-  "hover:border-neon-lime/50",
+const underlineBg = ["bg-neon-cyan", "bg-neon-magenta", "bg-neon-lime"] as const;
+const glow = [
+  "rgba(34,211,238,0.5)",
+  "rgba(244,63,94,0.5)",
+  "rgba(132,204,22,0.5)",
 ] as const;
+const borderC = ["#22d3ee", "#f43f5e", "#84cc16"] as const;
 ---
 
 <section id="showcase" class="py-24 bg-paper relative overflow-hidden">
@@ -15,7 +17,7 @@ const ring = [
     class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
   >
   </div>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <div class="max-w-[104rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="mb-16 max-w-2xl">
       <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
         {section.titlePrefix}
@@ -26,14 +28,13 @@ const ring = [
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
       {
         section.cards.map((card, i) => (
           <article
-            class:list={[
-              "group relative rounded-sm overflow-hidden border border-slate-200 bg-surface transition-colors duration-300",
-              ring[i % ring.length],
-            ]}
+            data-sc-card
+            class="sc-card group relative rounded-sm overflow-hidden border border-slate-200 bg-surface"
+            style={`--glow:${glow[i % glow.length]};--bc:${borderC[i % borderC.length]}`}
           >
             <div class="relative aspect-[4/3] overflow-hidden">
               <img
@@ -43,7 +44,7 @@ const ring = [
                 height="540"
                 loading="lazy"
                 decoding="async"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                class="sc-img w-full h-full object-cover"
               />
               <div class="absolute inset-0 bg-linear-to-t from-surface via-surface/30 to-transparent" />
             </div>
@@ -56,11 +57,135 @@ const ring = [
               >
                 {card.title}
               </h3>
+              <span
+                class:list={[
+                  "sc-underline block h-[3px] w-10 mb-3 rounded-full",
+                  underlineBg[i % underlineBg.length],
+                ]}
+              />
               <p class="text-slate-500 text-sm leading-relaxed">{card.text}</p>
             </div>
           </article>
         ))
       }
     </div>
+
+    <div class="mt-12 text-center sc-card">
+      <a
+        href="#courses"
+        class="inline-flex items-center gap-2 px-7 py-4 bg-neon-cyan text-paper font-bold rounded-xl shadow-neon-cyan hover:scale-[1.04] transition-transform duration-200"
+      >
+        Обрати напрямок для дитини
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 </section>
+
+<style>
+  .sc-card {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+    will-change: transform, opacity;
+  }
+  .sc-card.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .sc-card:hover {
+    box-shadow: 0 26px 60px -18px var(--glow);
+    border-color: var(--bc);
+  }
+  .sc-card.is-hover {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+      translateY(-8px);
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+  }
+  .sc-img {
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sc-card:hover .sc-img {
+    transform: scale(1.07);
+  }
+  .sc-underline {
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sc-card:hover .sc-underline {
+    width: 3.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sc-card {
+      opacity: 1;
+      transform: none;
+      transition: box-shadow 0.3s ease;
+    }
+    .sc-card.is-hover {
+      transform: none;
+    }
+    .sc-img,
+    .sc-underline {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const cards = Array.from(
+    document.querySelectorAll<HTMLElement>("#showcase [data-sc-card]"),
+  );
+  const section = document.getElementById("showcase");
+  const allCards = section
+    ? Array.from(section.querySelectorAll<HTMLElement>(".sc-card"))
+    : [];
+
+  // Staggered reveal on scroll
+  if (prefersReduced) {
+    allCards.forEach((c) => c.classList.add("is-in"));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const el = e.target as HTMLElement;
+            const idx = allCards.indexOf(el);
+            setTimeout(() => el.classList.add("is-in"), Math.max(0, idx) * 130);
+            io.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    allCards.forEach((c) => io.observe(c));
+  }
+
+  // 3D tilt on hover (image cards only)
+  if (!prefersReduced) {
+    cards.forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty("--ry", `${px * 8}deg`);
+        card.style.setProperty("--rx", `${-py * 8}deg`);
+        card.classList.add("is-hover");
+      });
+      card.addEventListener("pointerleave", () => {
+        card.classList.remove("is-hover");
+        card.style.removeProperty("--rx");
+        card.style.removeProperty("--ry");
+      });
+    });
+  }
+</script>
