@@ -133,26 +133,26 @@
           "stat": "70 млн",
           "sub": "дітей грають у Roblox щодня",
           "desc": "Найбільший ігровий майданчик світу",
-          "icon": "/assets/roblox/icons/wer.png"
+          "icon": "/assets/roblox/icons/wer.webp"
         },
         {
           "stat": "$1M+/рік",
           "sub": "заробляють топ-розробники",
           "desc": "Реальна IT-кар'єра вже з підліткового віку",
-          "icon": "/assets/roblox/icons/robux.png"
+          "icon": "/assets/roblox/icons/robux.webp"
         },
         {
           "stat": "Lua → Python",
           "sub": "справжнє програмування",
           "desc": "Місток до Python, JavaScript та C#",
-          "icon1": "/assets/roblox/icons/l.png",
-          "icon2": "/assets/roblox/icons/p.png"
+          "icon1": "/assets/roblox/icons/l.webp",
+          "icon2": "/assets/roblox/icons/p.webp"
         },
         {
           "stat": "Safe",
           "sub": "безпечне середовище",
           "desc": "Модерація платформи + контроль куратора на кожному уроці",
-          "icon": "/assets/roblox/icons/safe-block.png"
+          "icon": "/assets/roblox/icons/safe-block.webp"
         }
       ]
     },

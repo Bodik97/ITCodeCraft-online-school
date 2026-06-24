@@ -73,12 +73,9 @@ const organizationJsonLd = JSON.stringify({
     <script is:inline>
       (function () {
         try {
-          var t = localStorage.getItem("itcc-theme");
-          if (!t)
-            t = window.matchMedia("(prefers-color-scheme: light)").matches
-              ? "light"
-              : "dark";
-          if (t === "light") document.documentElement.classList.add("light");
+          // Default to dark mode; only switch to light if the user explicitly chose it.
+          if (localStorage.getItem("itcc-theme") === "light")
+            document.documentElement.classList.add("light");
         } catch (e) {}
       })();
     </script>
