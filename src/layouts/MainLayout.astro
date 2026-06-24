@@ -321,7 +321,7 @@ const organizationJsonLd = JSON.stringify({
         position: fixed;
         top: 0;
         bottom: 0;
-        left: max(1rem, calc((100vw - 108rem) / 2));
+        left: max(1rem, calc((100vw - 84rem) / 2));
         width: 2px;
         background: rgba(244, 63, 94, 0.1);
         z-index: -1;
@@ -369,6 +369,15 @@ const organizationJsonLd = JSON.stringify({
       html.light .sc-card,
       html.light .faq-item {
         box-shadow: 0 14px 30px -18px rgba(15, 23, 42, 0.25);
+      }
+      /* Footer is hardcoded dark in markup — flip it to light here */
+      html.light footer {
+        background: #eaeff7 !important;
+      }
+      /* Soften the bright neon glow shadows that look heavy on a light bg */
+      html.light .shadow-neon-cyan,
+      html.light .shadow-neon-magenta {
+        box-shadow: 0 8px 22px -10px rgba(15, 23, 42, 0.28);
       }
     </style>
   </body>
