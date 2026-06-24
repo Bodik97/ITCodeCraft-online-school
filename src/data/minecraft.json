@@ -327,7 +327,7 @@
         "short": "важіль",
         "icon": "lucide:toggle-left",
         "color": "#C0843E",
-        "img": "/assets/minecraft/lever.svg"
+        "img": "/assets/minecraft/lever.webp"
       },
       {
         "id": "wire",
@@ -335,7 +335,7 @@
         "short": "провід",
         "icon": "lucide:zap",
         "color": "#E0382B",
-        "img": "/assets/minecraft/redstone.svg"
+        "img": "/assets/minecraft/redstone.webp"
       },
       {
         "id": "repeater",
@@ -343,7 +343,7 @@
         "short": "повтор.",
         "icon": "lucide:chevrons-right",
         "color": "#C0392B",
-        "img": "/assets/minecraft/repeater.svg"
+        "img": "/assets/minecraft/repeater.webp"
       },
       {
         "id": "lamp",
@@ -351,7 +351,7 @@
         "short": "лампа",
         "icon": "lucide:lightbulb",
         "color": "#F39C12",
-        "img": "/assets/minecraft/lamp.svg"
+        "img": "/assets/minecraft/lamp.webp"
       }
     ],
     "buttonsOrder": [
