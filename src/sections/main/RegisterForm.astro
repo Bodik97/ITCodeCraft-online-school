@@ -6,7 +6,7 @@ import UseForm from "@/components/main/form/UseForm.astro";
 
 <section
   id="register"
-  class="py-24 bg-paper relative overflow-x-clip [overflow-y:visible]"
+  class="py-24 bg-transparent relative overflow-x-clip [overflow-y:visible]"
 >
   <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -23,7 +23,7 @@ import UseForm from "@/components/main/form/UseForm.astro";
 
         <p class="text-sm text-slate-600 mb-8 md:text-base xl:text-lg">{content.registerSection.description}</p>
 
-        <div class="bg-surface/50 border border-slate-200/70 rounded-lg p-6 mb-8 xl:mb-0">
+        <div class="bg-surface border border-slate-200/70 rounded-lg p-6 mb-8 xl:mb-0">
           <p class="text-ink font-bold mb-4 flex items-center gap-2">
             <span class="text-neon-lime">📅</span> {content.registerSection.socialProof}
           </p>
