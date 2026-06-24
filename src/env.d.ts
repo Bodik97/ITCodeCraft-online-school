@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly PUBLIC_GOOGLE_SCRIPT_URL?: string;
   readonly PUBLIC_ITCC_TRACK_ENDPOINT?: string;
+  readonly PUBLIC_FB_PIXEL_ID?: string;
 }
 
 interface ImportMeta {
@@ -20,4 +21,5 @@ interface Window {
   ) => void;
   __itccRegistrationClicks?: number;
   productName?: string;
+  fbq?: (...args: unknown[]) => void;
 }

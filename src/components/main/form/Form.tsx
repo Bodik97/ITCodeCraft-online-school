@@ -113,6 +113,9 @@ export default function FormComponent({
                 conversionId: uid(),
             });
 
+            // Meta Pixel lead conversion (no-op when pixel isn't loaded).
+            window.fbq?.('track', 'Lead');
+
 
             if (afterSendFunction) {
                 await afterSendFunction(mergedData);

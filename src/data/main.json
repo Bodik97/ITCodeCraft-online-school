@@ -17,15 +17,6 @@
     "closeMenuLabel": "Закрити меню",
     "openMenuLabel": "Відкрити меню"
   },
-  "urgencyBanner": {
-    "attentionLabel": "Увага",
-    "messagePrefix": "Набір на зимовий курс -",
-    "remainingLabel": "залишилось",
-    "remainingSpots": 7,
-    "totalSpots": 20,
-    "closeLabel": "Закрити банер",
-    "progressPercent": 65
-  },
   "hero": {
     "liveBadgePrefix": "Місце в якому діти стають творцями своїх ідей та технологій",
     "options": [
