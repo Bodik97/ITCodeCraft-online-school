@@ -25,7 +25,7 @@ const getInitialCounterValue = (rawValue: string): string => {
 
 <section
   id="hero-section"
-  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper pt-[160px] pb-20"
+  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper pt-40 pb-20"
 >
   <HeroBg />
 
@@ -34,7 +34,7 @@ const getInitialCounterValue = (rawValue: string): string => {
     data-parallax="0.05"
   >
     <h1
-      class="hero-reveal text-4xl font-bold md:text-5xl max-w-[400px] xl:text-6xl font-display text-ink mb-6 leading-tight xl:max-w-[1150px] md:max-w-[630px] lg:max-w-600px hero-title-shimmer"
+      class="hero-reveal text-4xl font-bold md:text-5xl max-w-100 xl:text-6xl font-display text-ink mb-6 leading-tight xl:max-w-287.5 md:max-w-157.5 lg:max-w-150 hero-title-shimmer"
       style="transition-delay: 0.1s"
     >
       {content.hero.liveBadgePrefix}
@@ -45,11 +45,11 @@ const getInitialCounterValue = (rawValue: string): string => {
       <div>
         <p
           set:html={content.hero.subtitle}
-          class="hero-reveal text-sm max-w-[460px] md:text-lg text-slate-600 mb-4 md:max-w-[500px] lg:max-w-[600px]"
+          class="hero-reveal text-sm max-w-115 md:text-lg text-slate-600 mb-4 md:max-w-125 lg:max-w-150"
           style="transition-delay: 0.25s"
         />
         <h2
-          class="hero-reveal text-lg md:text-2xl lg:text-4xl font-semibold font-display text-ink mb-10 leading-tight max-w-[460px] md:max-w-[430px] lg:max-w-[600px]"
+          class="hero-reveal text-lg md:text-2xl lg:text-4xl font-semibold font-display text-ink mb-10 leading-tight max-w-115 md:max-w-107.5 lg:max-w-150"
           style="transition-delay: 0.4s"
         >
           <div
@@ -89,7 +89,7 @@ const getInitialCounterValue = (rawValue: string): string => {
       <div class="hero-reveal" style="transition-delay: 0.5s">
         <div class="relative">
           <div
-            class="bg-surface min-h-[368px] md:min-h-[384px] xl:min-h-[230px] border border-slate-200 p-8 md:p-10 rounded-sm shadow-2xl relative animate-neon-pulse"
+            class="bg-surface min-h-92 md:min-h-96 xl:min-h-57.5 border border-slate-200 p-8 md:p-10 rounded-sm shadow-2xl relative animate-neon-pulse"
           >
             <div
               class="absolute -top-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
