@@ -35,7 +35,7 @@ function useCountUp(target: number, duration = 1600) {
 function Stat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const { count, ref } = useCountUp(value);
   return (
-    <div className="stat-pill flex flex-col items-center min-w-[130px]">
+    <div className="stat-pill flex flex-col items-center min-w-32.5">
       <span ref={ref} className="text-3xl font-display font-bold text-white">
         {count.toLocaleString("uk-UA")}
         {suffix}

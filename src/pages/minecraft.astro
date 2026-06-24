@@ -136,7 +136,7 @@ const particles = [
             </a>
             <a
               href="#projects"
-              class="inline-flex items-center rounded-[8px] border-2 border-[#1f2937] bg-white px-6 py-4 text-base font-bold text-[#1f2937] mc-block-sm hover:translate-y-[1px] transition-transform"
+              class="inline-flex items-center rounded-[8px] border-2 border-[#1f2937] bg-white px-6 py-4 text-base font-bold text-[#1f2937] mc-block-sm hover:translate-y-px transition-transform"
             >
               Дивитись проєкти
             </a>
@@ -235,7 +235,7 @@ const particles = [
                     <button
                       type="button"
                       data-comp={c.id}
-                      class="mc-pg-btn inline-flex items-center gap-2 rounded-[8px] px-3.5 py-2.5 text-sm font-bold text-white mc-block-sm hover:translate-y-[1px] transition-transform disabled:opacity-50"
+                      class="mc-pg-btn inline-flex items-center gap-2 rounded-[8px] px-3.5 py-2.5 text-sm font-bold text-white mc-block-sm hover:translate-y-px transition-transform disabled:opacity-50"
                       style={`background:${c.color}`}
                     >
                       <img src={c.img} alt="" class="size-5 mc-pixel" />
@@ -248,7 +248,7 @@ const particles = [
             <button
               type="button"
               data-pg-reset
-              class="mt-6 self-start inline-flex items-center gap-2 rounded-[8px] border-2 border-[#1f2937] bg-white px-4 py-2.5 text-sm font-bold text-[#1f2937] mc-block-sm hover:translate-y-[1px] transition-transform"
+              class="mt-6 self-start inline-flex items-center gap-2 rounded-[8px] border-2 border-[#1f2937] bg-white px-4 py-2.5 text-sm font-bold text-[#1f2937] mc-block-sm hover:translate-y-px transition-transform"
             >
               <Icon name="lucide:eraser" class="size-4" />
               {playground.resetLabel}
@@ -258,7 +258,7 @@ const particles = [
           {/* Stage: ready schema (gray → lit) + lamp result */}
           <div
             data-pg-stage
-            class="rounded-[12px] mc-block relative overflow-hidden p-6 min-h-[300px] md:min-h-[340px] bg-[#1a1f29] flex flex-col items-center justify-center gap-5"
+            class="rounded-[12px] mc-block relative overflow-hidden p-6 min-h-75 md:min-h-85 bg-[#1a1f29] flex flex-col items-center justify-center gap-5"
           >
             <p class="text-[10px] font-black uppercase tracking-[0.15em] text-[#5b6675]">
               Схема механізму
