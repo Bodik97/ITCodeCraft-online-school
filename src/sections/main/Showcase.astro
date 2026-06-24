@@ -37,25 +37,6 @@ const ticks = [
 
   {/* ---- Autonomous decorative moving layer ---- */}
   <div class="sc-deco-layer absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-    <svg
-      class="absolute inset-0 w-full h-full"
-      viewBox="0 0 1200 640"
-      preserveAspectRatio="none"
-    >
-      <line x1="-50" y1="120" x2="1250" y2="120" class="sc-dash sc-dash-cyan" />
-      <line x1="-50" y1="520" x2="1250" y2="520" class="sc-dash sc-dash-magenta" />
-      <path
-        d="M-60,330 Q300,250 640,350 T1260,300"
-        class="sc-flow sc-flow-lime"
-        fill="none"
-      />
-      <path
-        d="M-60,210 Q360,300 720,210 T1260,250"
-        class="sc-flow sc-flow-cyan"
-        fill="none"
-      />
-    </svg>
-
     {
       orbs.map((o) => (
         <span
@@ -145,39 +126,6 @@ const ticks = [
 </section>
 
 <style>
-  /* ---- Decorative moving lines ---- */
-  .sc-dash {
-    stroke-width: 2;
-    stroke-dasharray: 10 16;
-    opacity: 0.22;
-  }
-  .sc-dash-cyan {
-    stroke: #22d3ee;
-    animation: sc-march 16s linear infinite;
-  }
-  .sc-dash-magenta {
-    stroke: #f43f5e;
-    animation: sc-march 22s linear infinite reverse;
-  }
-  .sc-flow {
-    stroke-width: 2;
-    stroke-dasharray: 6 18;
-    opacity: 0.28;
-  }
-  .sc-flow-lime {
-    stroke: #84cc16;
-    animation: sc-march 26s linear infinite;
-  }
-  .sc-flow-cyan {
-    stroke: #22d3ee;
-    animation: sc-march 30s linear infinite reverse;
-  }
-  @keyframes sc-march {
-    to {
-      stroke-dashoffset: -260;
-    }
-  }
-
   /* ---- Travelling orbs ---- */
   .sc-orb {
     position: absolute;
