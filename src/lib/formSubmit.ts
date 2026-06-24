@@ -64,11 +64,35 @@ export async function submitLeadToGoogleSheet(
     import.meta.env.PUBLIC_GOOGLE_SCRIPT_URL?.trim() ||
     DEFAULT_GOOGLE_SCRIPT_URL;
 
-  await fetch(url, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(sendData),
-    keepalive: true,
-  });
+  // The Apps Script endpoint returns JSON with `access-control-allow-origin: *`,
+  // so we read the real status instead of firing blind (no-cors). text/plain keeps
+  // this a "simple" CORS request — Apps Script has no OPTIONS preflight handler.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(sendData),
+      keepalive: true,
+      signal: controller.signal,
+    });
+
+    const text = await response.text();
+    let data: { ok?: boolean } | null = null;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      // Non-JSON body means the script returned an HTML error page, not a saved lead.
+    }
+
+    if (!response.ok || data === null || data.ok === false) {
+      throw new Error(
+        `Lead was not saved (HTTP ${response.status}): ${text.slice(0, 200)}`,
+      );
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
 }

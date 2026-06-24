@@ -128,19 +128,14 @@ const modal = data.modal;
             : "невідомо";
       const productLabel =
         (typeof productName === "string" && productName.trim()) || "—";
-      const detail =
-        "натискання #" +
-        clickNum +
-        " | джерело: " +
-        sourceLabel +
-        " | курс: " +
-        productLabel;
-      if (typeof window.itccTrack === "function") {
-        window.itccTrack("registration_cta_click", detail, {
-          skipThrottle: true,
-        });
-        window.itccTrack("modal_open", detail, { skipThrottle: true });
-      }
+      // Lead-intent signal → push to dataLayer so GTM/GA4 capture the funnel step.
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "registration_modal_open",
+        cta_source: sourceLabel,
+        course: productLabel,
+        click_number: clickNum,
+      });
 
       modalRoot.removeAttribute("inert");
       modalRoot.setAttribute("aria-hidden", "false");

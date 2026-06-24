@@ -69,72 +69,27 @@ export default function FormComponent({
         reset,
         setValue,
         getValues,
-        watch,
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(formSchema)
     });
 
-    const progressDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    useEffect(() => {
-        const sub = watch((value) => {
-            if (progressDebounceRef.current) {
-                clearTimeout(progressDebounceRef.current);
-            }
-            progressDebounceRef.current = setTimeout(() => {
-                const entries = formFields.inputs
-                    .map((f: InputField) => {
-                        const raw = value[f.name];
-                        const str =
-                            raw === undefined || raw === null ? '' : String(raw);
-                        return (
-                            f.name +
-                            '=' +
-                            (str.length > 120 ? str.slice(0, 120) + '…' : str)
-                        );
-                    })
-                    .join(' | ');
-                const hasAny = formFields.inputs.some((f: InputField) => {
-                    const raw = value[f.name];
-                    if (raw === undefined || raw === null) return false;
-                    return String(raw).trim().length > 0;
-                });
-                if (!hasAny) return;
-                const ctx = crmParams.isModalForm ? 'модалка' : 'блок_на_сайті';
-                const productHint =
-                    typeof window !== 'undefined' && window.productName
-                        ? window.productName
-                        : crmParams.isModalForm
-                          ? '—'
-                          : 'сторінка_реєстрації';
-                window.itccTrack?.(
-                    'form_fill_progress',
-                    `${ctx} | курс: ${productHint} | ${entries}`,
-                    { skipThrottle: true },
-                );
-            }, 1500);
-        });
-        return () => {
-            sub.unsubscribe();
-            if (progressDebounceRef.current) {
-                clearTimeout(progressDebounceRef.current);
-            }
-        };
-    }, [watch, formFields.inputs, crmParams.isModalForm]);
+    // Honeypot input: hidden from users, commonly auto-filled by bots.
+    const honeypotRef = useRef<HTMLInputElement>(null);
 
     const onSubmit = async (formData: Record<string, any>) => {
+        // Bot trap: real users never fill the hidden honeypot. If it's set, silently
+        // drop the submission (show success) without touching the lead endpoint.
+        if (honeypotRef.current?.value) {
+            reset();
+            document.dispatchEvent(new CustomEvent('itcc:form-success'));
+            return;
+        }
+
         const resolvedProductName =
             typeof window !== 'undefined' && (window as { productName?: string }).productName != null
                 ? (window as { productName?: string }).productName
                 : product_name;
-
-        const trackCtx = crmParams.isModalForm ? 'модалка' : 'блок_на_сайті';
-        const leadSummary = JSON.stringify({
-            context: trackCtx,
-            course: resolvedProductName || 'Консультація',
-            ...formData,
-        });
-        window.itccTrack?.('form_submit_lead', leadSummary, { skipThrottle: true });
 
         const sendData = buildGoogleSheetLeadPayload({
             course: resolvedProductName || 'Консультація',
@@ -210,6 +165,15 @@ export default function FormComponent({
                     autoComplete="on"
                     onSubmit={handleSubmit(onSubmit)}
                 >
+                    <input
+                        ref={honeypotRef}
+                        type="text"
+                        name="company_website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="absolute -left-[9999px] h-px w-px opacity-0"
+                    />
                     {formFields.inputs.map((fields: any, index: number) => (
                         <Inputs
                             key={index}
