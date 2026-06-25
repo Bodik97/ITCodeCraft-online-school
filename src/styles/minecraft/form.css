@@ -1,3 +1,52 @@
 #minecraft-modal {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#minecraft-landing .input-field,
+#minecraft-landing .iti__tel-input {
+  background-color: #f5f5f5;
+  border-color: #e5e7eb;
+  color: #1f2937;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+#minecraft-landing .input-field::placeholder,
+#minecraft-landing .iti__tel-input::placeholder {
+  color: #999999;
+}
+#minecraft-landing .input-field:focus,
+#minecraft-landing .iti__tel-input:focus {
+  border-color: #5dae3f;
+  box-shadow: 0 0 0 1px #5dae3f;
+}
+#minecraft-landing .input-field:focus::placeholder,
+#minecraft-landing .iti__tel-input:focus::placeholder {
+  color: #999999;
+}
+
+.lead-modal-panel {
+  background-color: #f5f5f5;
+  border-color: #e5e7eb;
+
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+#minecraft-modal .input-field,
+#minecraft-modal .iti__tel-input {
+  background-color: #f5f5f5;
+  border-color: #e5e7eb;
+  color: #1f2937;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+#minecraft-modal .input-field::placeholder,
+#minecraft-modal .iti__tel-input::placeholder {
+  color: #999999;
+}
+#minecraft-modal .input-field:focus,
+#minecraft-modal .iti__tel-input:focus {
+  border-color: #5dae3f;
+  box-shadow: 0 0 0 1px #5dae3f;
+}
+#minecraft-modal .input-field:focus::placeholder,
+#minecraft-modal .iti__tel-input:focus::placeholder {
+  color: #999999;
 }
