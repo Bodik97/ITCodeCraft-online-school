@@ -2,11 +2,35 @@
 import content from "@/data/main.json";
 
 const fab = content.messengerFab;
+
+interface Props {
+  /** Accent colour of the floating toggle, glow and pulse — match the page theme. */
+  accent?: string;
+  /** Same accent as "r, g, b" for the translucent glow/pulse layers. */
+  accentRgb?: string;
+  /** Gradient end of the toggle (a darker shade of the accent). */
+  accentDark?: string;
+  /** Icon colour on the toggle (dark for light accents, white for saturated ones). */
+  fg?: string;
+  /** Positioning utilities; defaults clear the home page's mobile sticky CTA. */
+  position?: string;
+}
+
+const {
+  accent = "#22d3ee",
+  accentRgb = "34, 211, 238",
+  accentDark = "#2563eb",
+  fg = "#0f172a",
+  position = "bottom-24 right-5 sm:right-6 lg:bottom-6",
+} = Astro.props;
+
+const rootStyle = `--fab-accent:${accent};--fab-accent-rgb:${accentRgb};--fab-accent-2:${accentDark};--fab-fg:${fg};`;
 ---
 
 <div
   id="messenger-fab-root"
-  class="fixed bottom-24 right-5 z-[60] flex flex-col items-end gap-3 sm:right-6 lg:bottom-6"
+  class:list={["fixed z-[60] flex flex-col items-end gap-3", position]}
+  style={rootStyle}
 >
   <div
     id="messenger-fab-panel"
@@ -17,7 +41,7 @@ const fab = content.messengerFab;
   >
     <a
       href={fab.viberUrl}
-      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#7360f2] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#7360f2] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
       aria-label={fab.viberLabel}
       target="_blank"
       rel="noopener noreferrer"
@@ -36,7 +60,7 @@ const fab = content.messengerFab;
     </a>
     <a
       href={fab.telegramUrl}
-      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#229ED9] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#229ED9] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
       aria-label={fab.telegramLabel}
       target="_blank"
       rel="noopener noreferrer"
@@ -54,7 +78,7 @@ const fab = content.messengerFab;
     </a>
     <a
       href={fab.whatsappUrl}
-      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+      class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
       aria-label={fab.whatsappLabel}
       target="_blank"
       rel="noopener noreferrer"
@@ -74,15 +98,15 @@ const fab = content.messengerFab;
 
   <div class="relative flex h-14 w-14 shrink-0 items-center justify-center">
     <span
-      class="messenger-fab-pulse-ring pointer-events-none absolute inset-[-6px] rounded-full border-2 border-neon-cyan/50"
+      class="messenger-fab-pulse-ring pointer-events-none absolute inset-[-6px] rounded-full border-2"
       aria-hidden="true"></span>
     <span
-      class="messenger-fab-pulse pointer-events-none absolute inset-0 rounded-full bg-neon-cyan/35"
+      class="messenger-fab-pulse pointer-events-none absolute inset-0 rounded-full"
       aria-hidden="true"></span>
     <button
       type="button"
       id="messenger-fab-toggle"
-      class="messenger-fab-toggle relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-neon-cyan to-blue-600 text-ink shadow-[0_0_24px_rgba(34,211,238,0.45)] ring-2 ring-neon-cyan/40 transition-[transform,box-shadow] duration-300 ease-out hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      class="messenger-fab-toggle relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full transition-[transform,box-shadow] duration-300 ease-out hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       aria-expanded="false"
       aria-controls="messenger-fab-panel"
       aria-label={fab.toggleLabel}
@@ -125,15 +149,27 @@ const fab = content.messengerFab;
 
 <style>
   .messenger-fab-pulse {
+    background-color: rgba(var(--fab-accent-rgb), 0.35);
     animation: messenger-fab-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .messenger-fab-pulse-ring {
+    border-color: rgba(var(--fab-accent-rgb), 0.5);
     animation: messenger-fab-ring 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .messenger-fab-toggle {
+    background: linear-gradient(
+      135deg,
+      var(--fab-accent),
+      var(--fab-accent-2)
+    );
+    color: var(--fab-fg);
     animation: messenger-fab-breathe 2.2s ease-in-out infinite;
+  }
+
+  .messenger-fab-link:focus-visible {
+    outline-color: var(--fab-accent);
   }
 
   #messenger-fab-root.is-open .messenger-fab-pulse,
@@ -266,14 +302,16 @@ const fab = content.messengerFab;
     100% {
       transform: scale(1) rotate(0deg);
       box-shadow:
-        0 0 20px rgba(34, 211, 238, 0.4),
-        0 0 32px rgba(34, 211, 238, 0.12);
+        inset 0 0 0 2px rgba(var(--fab-accent-rgb), 0.4),
+        0 0 20px rgba(var(--fab-accent-rgb), 0.4),
+        0 0 32px rgba(var(--fab-accent-rgb), 0.12);
     }
     50% {
       transform: scale(1.04) rotate(0deg);
       box-shadow:
-        0 0 28px rgba(34, 211, 238, 0.55),
-        0 0 44px rgba(34, 211, 238, 0.2);
+        inset 0 0 0 2px rgba(var(--fab-accent-rgb), 0.5),
+        0 0 28px rgba(var(--fab-accent-rgb), 0.55),
+        0 0 44px rgba(var(--fab-accent-rgb), 0.2);
     }
   }
 </style>

@@ -107,7 +107,8 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
 <style>
   .ic-logo {
     --ic-cyan: var(--color-neon-cyan, #22d3ee);
-    --ic-text: var(--color-ink, #e6eef9);
+    /* Pinned to the dark-theme colour so the school name never recolours. */
+    --ic-text: #e6eef9;
     --ic-name-size: 26px;
   }
 
@@ -119,6 +120,14 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
     white-space: nowrap;
   }
 
+  /* Light theme: keep the wordmark's fixed colours readable on a light heading
+     by placing it on a small dark plate (same idea as the logo). */
+  html.light .ic-name {
+    background: #0e1629;
+    padding: 0.06em 0.42em;
+    border-radius: 0.4em;
+  }
+
   .ic-name-prefix {
     color: var(--ic-cyan);
     text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
@@ -126,7 +135,7 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
   }
 
   .ic-name-base {
-    color: var(--ic-text);
+    color: #ffffff;
   }
 
   .ic-name-accent {
@@ -162,6 +171,28 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
     stroke: #22d3ee;
     animation: why-march 30s linear infinite reverse;
   }
+
+  /* Light theme: the faint bright lines wash out — make them crisp with darker,
+     saturated strokes and higher opacity. */
+  html.light .why-dash {
+    opacity: 0.55;
+    stroke-width: 2.5;
+  }
+  html.light .why-flow {
+    opacity: 0.5;
+    stroke-width: 2.5;
+  }
+  html.light .why-dash-cyan,
+  html.light .why-flow-cyan {
+    stroke: #0891b2;
+  }
+  html.light .why-dash-magenta {
+    stroke: #db2777;
+  }
+  html.light .why-flow-lime {
+    stroke: #4d7c0f;
+  }
+
   @keyframes why-march {
     to {
       stroke-dashoffset: -260;

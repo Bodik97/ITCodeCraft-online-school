@@ -71,11 +71,19 @@ const { navigation, brand } = content;
           {link.label}
         </a>
       ))}
+      <a
+        href={brand.homeUrl}
+        class="mobile-menu-link"
+        style={`--item-index: ${navigation.links.length}`}
+      >
+        <span class="mobile-menu-link__dot" aria-hidden="true"></span>
+        ← Усі курси
+      </a>
       <button
         type="button"
         data-open-register-modal
         class="mobile-menu-cta btn-3d-amber"
-        style={`--item-index: ${navigation.links.length}`}
+        style={`--item-index: ${navigation.links.length + 1}`}
       >
         {navigation.ctaLabel}
       </button>

@@ -1,14 +1,24 @@
 ---
 import content from "@/data/main.json";
 import Logo from "@/components/shared/Logo.astro";
+
+// Mobile menu adds the landing-page courses (grouped right after "Всі курси");
+// the desktop nav stays compact without the course pages.
+type NavLink = { name: string; href: string; isCourse?: boolean };
+const courseLinks: NavLink[] = (content.navigation.mobileCourseLinks ?? []).map(
+  (link) => ({ ...link, isCourse: true }),
+);
+const mobileLinks: NavLink[] = content.footerSection.navigationLinks.flatMap(
+  (link) => (link.href === "#courses" ? [link, ...courseLinks] : [link]),
+);
 ---
 
 <header
   id="site-header"
-  class="header-shell py-6 fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300"
+  class="header-shell  fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between h-14">
       <Logo href="https://itcodecraft.tech/" />
 
       <nav class="hidden lg:flex items-center gap-7 ml-6">
@@ -108,10 +118,15 @@ import Logo from "@/components/shared/Logo.astro";
     >
       <nav class="flex flex-col gap-3">
         {
-          content.footerSection.navigationLinks.map((link) => (
+          mobileLinks.map((link) => (
             <a
               href={link.href}
-              class="text-sm font-medium text-slate-300 hover:text-neon-cyan transition-colors duration-200"
+              class:list={[
+                "text-sm font-medium transition-colors duration-200",
+                link.isCourse
+                  ? "text-neon-cyan underline decoration-neon-cyan/50 decoration-2 underline-offset-4 hover:decoration-neon-cyan"
+                  : "text-slate-300 hover:text-neon-cyan",
+              ]}
             >
               {link.name}
             </a>

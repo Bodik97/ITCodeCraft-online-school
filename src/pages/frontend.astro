@@ -1,5 +1,9 @@
 ---
 import FrontendLayout from "@/layouts/FrontendLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import LeadModal from "@/components/shared/LeadModal.astro";
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
 import { Icon } from "astro-icon/components";
 import content from "@/data/frontend.json";
@@ -21,6 +25,10 @@ const {
   brand,
 } = content;
 const year = new Date().getFullYear();
+
+// Canonical school wordmark — same fixed colours on every page.
+const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
+const brandBase = brand.primary.slice(brandPrefix.length);
 
 const particleTokens = [
   { t: "</>", left: "8%", delay: "0s", duration: "16s", color: "#82aaff", size: 18 },
@@ -46,12 +54,9 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
     >
       <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
-        <span
-          class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-[#6366f1] to-[#8b5cf6] text-white text-sm font-bold fe-mono"
-          >&lt;/&gt;</span
-        >
-        <span class="font-display font-bold text-lg leading-none text-[#0f172a]">
-          {brand.primary}<span class="text-[#6366f1]">{brand.accent}</span>
+        
+        <span class="font-display font-bold text-lg leading-none bg-[#0e1629] px-2.5 py-2.5 rounded-lg">
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </span>
       </a>
 
@@ -71,15 +76,27 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
       <div class="flex items-center gap-3">
         <a
           href={brand.homeUrl}
-          class="hidden sm:inline-flex text-sm font-semibold text-slate-600 hover:text-[#6366f1] transition-colors"
+          class="hidden lg:inline-flex text-sm font-semibold text-slate-600 hover:text-[#6366f1] transition-colors"
           >← {navigation.backToMain}</a
         >
-        <a
-          href="#register"
-          class="fe-btn fe-btn-primary inline-flex items-center rounded-lg px-4 py-2 text-sm font-bold"
+        <button
+          type="button"
+          data-lead-modal-open
+          class="fe-btn fe-btn-primary hidden lg:inline-flex items-center rounded-lg px-4 py-2 text-sm font-bold"
         >
           {navigation.ctaLabel}
-        </a>
+        </button>
+        <LandingMobileNav
+          links={navigation.links}
+          backUrl={brand.homeUrl}
+          backLabel={navigation.backToMain}
+          ctaLabel={navigation.ctaLabel}
+          toggleClass="border-[#6366f1] text-[#6366f1] hover:bg-[#6366f1]/10"
+          panelClass="bg-white border-slate-200"
+          linkClass="bg-[#f4f5fb] border-[#e2e5f3] text-[#475569] hover:bg-[#eef0fb] hover:border-[#6366f1]"
+          dotColor="#6366f1"
+          ctaClass="fe-btn fe-btn-primary"
+        />
       </div>
     </div>
   </header>
@@ -623,7 +640,10 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           </ul>
         </div>
 
-        <div class="fe-reveal rounded-2xl bg-surface p-6 md:p-8 shadow-2xl">
+        <div
+          class="fe-reveal rounded-2xl bg-surface p-6 md:p-8 shadow-2xl"
+          style="--form-accent:#6366f1;--form-accent-rgb:99, 102, 241;--form-accent-fg:#ffffff;"
+        >
           <div data-fe-form>
             <UseForm formId="frontend-landing" />
           </div>
@@ -654,7 +674,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
     >
       <div>
         <div class="font-display font-bold text-xl mb-3">
-          {brand.primary}<span class="text-[#818cf8]">{brand.accent}</span>
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </div>
         <p class="text-white/60 text-sm leading-relaxed max-w-xs">
           {footer.about}
@@ -884,4 +904,25 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
       });
     }
   </script>
+  <div class="lg:hidden h-20" aria-hidden="true"></div>
+  <MobileStickyCta
+    label="Записати на безоплатний урок"
+    barClass="bg-white/92 border-t border-slate-200"
+    btnClass="fe-btn fe-btn-primary"
+  />
+  <MessengerFab
+    accent="#6366f1"
+    accentRgb="99, 102, 241"
+    accentDark="#4f46e5"
+    fg="#ffffff"
+    position="bottom-24 right-5 sm:right-6"
+  />
+  <LeadModal
+    formId="frontend-modal"
+    title={register.title}
+    accent="#6366f1"
+    accentRgb="99, 102, 241"
+    accentFg="#ffffff"
+    phone={footer.phone}
+  />
 </FrontendLayout>

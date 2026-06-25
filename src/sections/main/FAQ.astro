@@ -58,6 +58,15 @@ const faqJsonLd = JSON.stringify({
   </div>
 </section>
 
+<style>
+  /* The "+" indicator is white for the dark theme; on light cards it would be
+     invisible, so make it dark in light mode (hover/active stay neon-orange). */
+  html.light .faq-indicator {
+    color: #0f172a;
+    stroke: #0f172a;
+  }
+</style>
+
 <script>
   const faqItems = Array.from(document.querySelectorAll(".faq-item"));
   faqItems.forEach((item) => {

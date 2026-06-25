@@ -1,5 +1,6 @@
 ---
 import RobloxLayout from "@/layouts/RobloxLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
 import Header from "@/sections/roblox/Header.astro";
 import Hero from "@/sections/roblox/Hero.astro";
 import SocialProof from "@/sections/roblox/SocialProof.astro";
@@ -38,4 +39,11 @@ import content from "@/data/roblox.json";
   <ModalQuestion />
   <ModalSuccess />
   <ModalError />
+  <MessengerFab
+    accent="#6366F1"
+    accentRgb="99, 102, 241"
+    accentDark="#4f46e5"
+    fg="#ffffff"
+    position="bottom-6 right-5 sm:right-6"
+  />
 </RobloxLayout>

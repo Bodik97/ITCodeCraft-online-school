@@ -198,7 +198,7 @@ export default function FormComponent({
                     ))}
                     <button
 
-                        className={cn('form-btn group relative px-4 py-4 bg-neon-cyan text-[#062a31] font-bold text-base rounded-xl shadow-neon-cyan hover:scale-[1.03] transition-transform duration-200 overflow-hidden w-full sm:w-auto xl:px-1 xl:rounded-none ')}
+                        className={cn('form-btn group relative px-4 py-4 font-bold text-base rounded-xl hover:scale-[1.03] transition-transform duration-200 overflow-hidden w-full sm:w-auto xl:px-1 xl:rounded-none ')}
                         type="submit"
                         disabled={isSubmitting}
                         aria-busy={isSubmitting}

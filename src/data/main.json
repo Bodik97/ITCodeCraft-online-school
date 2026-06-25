@@ -15,7 +15,25 @@
     "onlineLabel": "online",
     "initialOnlineCount": 23,
     "closeMenuLabel": "Закрити меню",
-    "openMenuLabel": "Відкрити меню"
+    "openMenuLabel": "Відкрити меню",
+    "mobileCourseLinks": [
+      {
+        "name": "Roblox",
+        "href": "/roblox"
+      },
+      {
+        "name": "Frontend",
+        "href": "/frontend"
+      },
+      {
+        "name": "Minecraft",
+        "href": "/minecraft"
+      },
+      {
+        "name": "Scratch",
+        "href": "/scratch"
+      }
+    ]
   },
   "hero": {
     "liveBadgePrefix": "Місце в якому діти стають творцями своїх ідей та технологій",
@@ -134,18 +152,18 @@
         "alt": "Frontend"
       },
       {
-        "title": "Python",
-        "age": "13+ років",
-        "description": "Python — мова, якою створюють Spotify, ChatGPT і Dropbox. Підлітки навчаться писати справжній код, розв'язувати задачі та створювати власні проєкти, які можна показати роботодавцю.",
-        "image": "python",
-        "alt": "Python"
-      },
-      {
         "title": "Scratch",
         "age": "7-8 років",
         "description": "Scratch — середовище, з якого починають майбутні програмісти. Діти навчаться мислити як розробники: складати алгоритми, створювати анімації та власні ігри — без єдиного рядка складного коду.",
         "image": "scratch",
         "alt": "Scratch"
+      },
+      {
+        "title": "Python",
+        "age": "13+ років",
+        "description": "Python — мова, якою створюють Spotify, ChatGPT і Dropbox. Підлітки навчаться писати справжній код, розв'язувати задачі та створювати власні проєкти, які можна показати роботодавцю.",
+        "image": "python",
+        "alt": "Python"
       },
       {
         "title": "C++",
@@ -436,10 +454,6 @@
       {
         "name": "Всі курси",
         "href": "#courses"
-      },
-      {
-        "name": "Курс Roblox",
-        "href": "/roblox"
       },
       {
         "name": "Роботи учнів",

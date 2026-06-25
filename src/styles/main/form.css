@@ -60,7 +60,30 @@
 }
 
 .input-label .input-field {
-  @apply w-full bg-paper border border-slate-200 rounded-sm px-4 py-4 text-base text-ink placeholder-gray-600 focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_10px_rgba(0,245,255,0.3)] transition-all duration-300;
+  @apply w-full bg-paper border border-slate-200 rounded-sm px-4 py-4 text-base text-ink placeholder-gray-600 focus:outline-none transition-all duration-300;
+}
+
+/* Themeable form accent. Defaults to neon-cyan (home form unchanged); landings set
+   --form-accent / --form-accent-rgb / --form-accent-fg on a wrapper to match the page. */
+.input-label .input-field:focus {
+  border-color: var(--form-accent, #22d3ee);
+  box-shadow: 0 0 10px rgba(var(--form-accent-rgb, 0, 245, 255), 0.3);
+}
+
+.input-label:has(.input-field:focus) .input-label-title {
+  color: var(--form-accent, #653cd9);
+}
+
+.form-btn {
+  background: var(--form-accent, #22d3ee);
+  color: var(--form-accent-fg, #062a31);
+  box-shadow:
+    0 0 24px rgba(var(--form-accent-rgb, 34, 211, 238), 0.4),
+    0 0 8px rgba(var(--form-accent-rgb, 34, 211, 238), 0.25);
+}
+
+.form-spinner {
+  border-top-color: var(--form-accent, #22d3ee);
 }
 
 /* .input-label .input-field::placeholder {

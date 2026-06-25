@@ -1,5 +1,9 @@
 ---
 import ScratchLayout from "@/layouts/ScratchLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import LeadModal from "@/components/shared/LeadModal.astro";
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
 import { Icon } from "astro-icon/components";
 import content from "@/data/scratch.json";
@@ -24,6 +28,10 @@ const {
   brand,
 } = content;
 const year = new Date().getFullYear();
+
+// Canonical school wordmark — same fixed colours on every page.
+const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
+const brandBase = brand.primary.slice(brandPrefix.length);
 
 const blockColors = ["#4C97FF", "#9966FF", "#CF63CF", "#FFBF00", "#4CBF56", "#FF8C1A"];
 const heroStatColors = ["#4C97FF", "#9966FF", "#FF8C1A"] as const;
@@ -58,13 +66,9 @@ const blockStack = [
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
     >
       <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
-        <span
-          class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#ff8c1a] text-white shadow-[0_3px_0_0_#cf6a00]"
-        >
-          <Icon name="lucide:cat" class="size-5" />
-        </span>
-        <span class="font-display font-bold text-lg leading-none text-[#2b2440]">
-          {brand.primary}<span class="text-[#ff8c1a]">{brand.accent}</span>
+        
+        <span class="font-display font-bold text-lg leading-none bg-[#0e1629] px-2.5 py-2.5 rounded-lg">
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </span>
       </a>
 
@@ -84,15 +88,27 @@ const blockStack = [
       <div class="flex items-center gap-3">
         <a
           href={brand.homeUrl}
-          class="hidden sm:inline-flex text-sm font-semibold text-[#6b6480] hover:text-[#ff8c1a] transition-colors"
+          class="hidden lg:inline-flex text-sm font-semibold text-[#6b6480] hover:text-[#ff8c1a] transition-colors"
           >← {navigation.backToMain}</a
         >
-        <a
-          href="#register"
-          class="sc-btn sc-btn-primary inline-flex items-center rounded-xl px-4 py-2 text-sm font-bold"
+        <button
+          type="button"
+          data-lead-modal-open
+          class="sc-btn sc-btn-primary hidden lg:inline-flex items-center rounded-xl px-4 py-2 text-sm font-bold"
         >
           {navigation.ctaLabel}
-        </a>
+        </button>
+        <LandingMobileNav
+          links={navigation.links}
+          backUrl={brand.homeUrl}
+          backLabel={navigation.backToMain}
+          ctaLabel={navigation.ctaLabel}
+          toggleClass="border-[#ff8c1a] text-[#ff8c1a] hover:bg-[#ff8c1a]/10"
+          panelClass="bg-white border-[#f0e6d6]"
+          linkClass="bg-[#fff7ec] border-[#ffe0bf] text-[#5b5470] hover:bg-[#fff0dd] hover:border-[#ff8c1a]"
+          dotColor="#ff8c1a"
+          ctaClass="sc-btn sc-btn-primary"
+        />
       </div>
     </div>
   </header>
@@ -756,7 +772,10 @@ const blockStack = [
           </ul>
         </div>
 
-        <div class="sc-reveal rounded-[24px] bg-[#0e172b] p-6 md:p-8 shadow-2xl">
+        <div
+          class="sc-reveal rounded-[24px] bg-[#0e172b] p-6 md:p-8 shadow-2xl"
+          style="--form-accent:#ff8c1a;--form-accent-rgb:255, 140, 26;--form-accent-fg:#ffffff;"
+        >
           <div data-sc-form>
             <UseForm formId="scratch-landing" />
           </div>
@@ -787,7 +806,7 @@ const blockStack = [
     >
       <div>
         <div class="font-display font-bold text-xl mb-3">
-          {brand.primary}<span class="text-[#ff8c1a]">{brand.accent}</span>
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </div>
         <p class="text-white/60 text-sm leading-relaxed max-w-xs">
           {footer.about}
@@ -1071,4 +1090,25 @@ const blockStack = [
       });
     }
   </script>
+  <div class="lg:hidden h-20" aria-hidden="true"></div>
+  <MobileStickyCta
+    label="Записати на безоплатний урок"
+    barClass="bg-white/92 border-t border-[#f0e6d6]"
+    btnClass="sc-btn sc-btn-primary"
+  />
+  <MessengerFab
+    accent="#ff8c1a"
+    accentRgb="255, 140, 26"
+    accentDark="#d96b00"
+    fg="#ffffff"
+    position="bottom-24 right-5 sm:right-6"
+  />
+  <LeadModal
+    formId="scratch-modal"
+    title={register.title}
+    accent="#ff8c1a"
+    accentRgb="255, 140, 26"
+    accentFg="#ffffff"
+    phone={footer.phone}
+  />
 </ScratchLayout>

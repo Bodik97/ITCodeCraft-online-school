@@ -1,7 +1,10 @@
 @layer components {
   .ic-logo {
-    --ic-cyan: var(--color-neon-cyan, #22d3ee);
-    --ic-text: var(--color-ink, #e6eef9);
+    /* Logo colours are pinned to the dark-theme palette and never follow the
+       page theme. On light pages readability comes from the backing plate below
+       (see html.light .ic-logo), not from recolouring the wordmark. */
+    --ic-cyan: #22d3ee;
+    --ic-text: #ffffff;
     --ic-muted: rgba(230, 238, 249, 0.5);
     --ic-name-size: 26px;
     --ic-sub-size: 8px;
@@ -67,6 +70,20 @@
   .ic-logo:hover .ic-name-prefix,
   .ic-logo:focus-visible .ic-name-prefix {
     color: #67e8f9;
+  }
+
+  /* Light footer: the header keeps its own dark backdrop, but the footer turns
+     light — so sit the (unchanged) wordmark on a dark plate to keep it readable. */
+  html.light footer .ic-logo {
+    background: #0e1629;
+    padding: 7px 14px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px -12px rgba(15, 23, 42, 0.5);
+  }
+
+  html.light footer .ic-logo--sm {
+    padding: 6px 12px;
+    border-radius: 10px;
   }
 
   @media (max-width: 768px) {

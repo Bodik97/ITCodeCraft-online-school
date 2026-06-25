@@ -1,18 +1,6 @@
 ---
 import content from "@/data/main.json";
-import Arrow from "@/icons/arrow.svg";
-
-const reviewBorders = [
-  "border-l-neon-cyan",
-  "border-l-neon-magenta",
-  "border-l-neon-orange",
-] as const;
-
-const highlightReviewText = (text: string, highlight: string): string =>
-  text.replace(
-    highlight,
-    `<span class="text-neon-cyan font-bold not-italic">${highlight}</span>`,
-  );
+import ReviewsCarousel from "@/components/main/ReviewsCarousel";
 
 const brandPrimary = content.brand.primary ?? "ITCode";
 const brandAccent = content.brand.accent ?? "Craft";
@@ -42,117 +30,31 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
       </h2>
     </div>
 
-    <div class="relative">
-      <div
-        data-scroller
-        class="reviews-scroll flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
-      >
-        {
-          content.reviewsSection.reviews.map((review, index) => (
-            <article
-              class:list={[
-                "snap-start shrink-0 basis-[90%] md:basis-[48%] xl:basis-[34%] bg-surface min-h-[300px] p-8 rounded-sm border-l-4 group hover:bg-surface-light transition-colors duration-300 flex flex-col",
-                reviewBorders[index % reviewBorders.length],
-              ]}
-            >
-              <div
-                class="text-ink/15 font-display text-5xl leading-none mb-3"
-                aria-hidden="true"
-              >
-                "
-              </div>
-
-              <p
-                class="text-slate-600 leading-relaxed mb-6 flex-1"
-                set:html={`${highlightReviewText(review.text, review.highlight)}`}
-              />
-
-              <div class="flex items-center gap-3 border-t border-slate-200/70 pt-4 mt-auto">
-                <img
-                  src={`./assets/reviews/${review.img}.webp`}
-                  alt={review.name}
-                  width="44"
-                  height="44"
-                  class="w-11 h-11 rounded-full object-cover shrink-0"
-                />
-                <div>
-                  <p class="text-ink font-bold font-display leading-tight">
-                    {review.name}
-                  </p>
-                  <p class="text-sm text-slate-500">{review.role}</p>
-                  <p class="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wider font-mono">
-                    {review.course}
-                  </p>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-      <div
-        class="hidden md:flex md:items-center md:flex-row-reverse md:gap-3 md:absolute md:-top-16 md:right-0"
-      >
-        <button
-          type="button"
-          data-scroll-next
-          aria-label="Наступні відгуки"
-          class="slider-arrow"
-        >
-          <Arrow />
-        </button>
-        <button
-          type="button"
-          data-scroll-prev
-          aria-label="Попередні відгуки"
-          class="slider-arrow slider-arrow--prev"
-        >
-          <Arrow />
-        </button>
-      </div>
-    </div>
+    <ReviewsCarousel client:visible items={content.reviewsSection.reviews} />
   </div>
 </section>
 
-<style>
-  .reviews-scroll {
-    scrollbar-width: none;
-    scroll-padding-left: 1rem;
-  }
-  .reviews-scroll::-webkit-scrollbar {
-    display: none;
-  }
-  @media (pointer: fine) {
-    .reviews-scroll {
-      cursor: grab;
+<style is:global>
+  @keyframes reviewsSoftFade {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
     }
-    .reviews-scroll.is-grabbing {
-      cursor: grabbing;
-      scroll-snap-type: none;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
-  .slider-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    background: #1f2937;
-    color: #fff;
-    transition: background 0.15s ease;
-  }
-  .slider-arrow:hover {
-    background: #273549;
-  }
-  .slider-arrow--prev {
-    transform: rotate(180deg);
+  .reviews-soft-fade {
+    animation: reviewsSoftFade 0.4s ease-out forwards;
   }
 </style>
 
 <style>
   .ic-logo {
     --ic-cyan: var(--color-neon-cyan, #22d3ee);
-    --ic-text: var(--color-ink, #e6eef9);
+    /* Pinned to the dark-theme colour so the school name never recolours. */
+    --ic-text: #e6eef9;
     --ic-name-size: 26px;
   }
 
@@ -164,6 +66,14 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
     white-space: nowrap;
   }
 
+  /* Light theme: keep the wordmark's fixed colours readable on a light heading
+     by placing it on a small dark plate (same idea as the logo). */
+  html.light .ic-name {
+    background: #0e1629;
+    padding: 0.06em 0.42em;
+    border-radius: 0.4em;
+  }
+
   .ic-name-prefix {
     color: var(--ic-cyan);
     text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
@@ -171,7 +81,7 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
   }
 
   .ic-name-base {
-    color: var(--ic-text);
+    color: #ffffff;
   }
 
   .ic-name-accent {

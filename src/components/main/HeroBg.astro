@@ -563,20 +563,20 @@ const layerThreeStyle = (brick: Brick): string =>
       }, root);
 
       const pointerPower = useLite
-        ? { x: 8, y: 6, glowX: 90, glowY: 70 }
-        : { x: 12, y: 8, glowX: 150, glowY: 110 };
+        ? { x: 11, y: 8, glowX: 110, glowY: 85 }
+        : { x: 17, y: 12, glowX: 180, glowY: 130 };
 
       const sceneRotateX =
         scene instanceof HTMLElement
           ? gsap.quickTo(scene, "rotationX", {
-              duration: 0.45,
+              duration: 0.38,
               ease: "power3.out",
             })
           : null;
       const sceneRotateY =
         scene instanceof HTMLElement
           ? gsap.quickTo(scene, "rotationY", {
-              duration: 0.45,
+              duration: 0.38,
               ease: "power3.out",
             })
           : null;
@@ -629,15 +629,21 @@ const layerThreeStyle = (brick: Brick): string =>
 
       };
 
-      root.addEventListener("pointermove", onPointerMove, { passive: true });
-      root.addEventListener("pointerleave", onPointerLeave);
+      // Listen on the whole hero section (ancestor of both the bg and the
+      // content) so the parallax keeps tracking the cursor even over the form,
+      // title and subtitle. Pointer is still normalised against the bg rect.
+      const pointerTarget = root.closest("#hero-section") || root;
+      pointerTarget.addEventListener("pointermove", onPointerMove, {
+        passive: true,
+      });
+      pointerTarget.addEventListener("pointerleave", onPointerLeave);
 
       return () => {
         if (pointerFrame) {
           window.cancelAnimationFrame(pointerFrame);
         }
-        root.removeEventListener("pointermove", onPointerMove);
-        root.removeEventListener("pointerleave", onPointerLeave);
+        pointerTarget.removeEventListener("pointermove", onPointerMove);
+        pointerTarget.removeEventListener("pointerleave", onPointerLeave);
         context.revert();
       };
     };
@@ -805,5 +811,41 @@ const layerThreeStyle = (brick: Brick): string =>
   [data-hero-bg][data-mode="full"] .hb-particle-layer,
   [data-hero-bg][data-mode="reduced"] .hb-particle-layer {
     opacity: 0;
+  }
+
+  /* ---- Light theme: re-skin the dark code bricks into crisp light code cards ---- */
+  :global(html.light) .hb-brick {
+    background: #ffffff !important;
+    background-image: none !important;
+    border: 1px solid #dbe4f0 !important;
+    box-shadow: 0 12px 26px -16px rgba(15, 23, 42, 0.28) !important;
+    backdrop-filter: none !important;
+  }
+
+  :global(html.light) .hb-brick > div:first-child {
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(15, 23, 42, 0.08),
+      transparent
+    ) !important;
+  }
+
+  :global(html.light) .hb-code-line {
+    opacity: 1 !important;
+  }
+
+  /* Readable slate syntax on the light cards (overrides the per-token light colours) */
+  :global(html.light) .hb-token {
+    color: #475569 !important;
+  }
+  :global(html.light) .hb-brick:nth-child(3n) .hb-token:first-child {
+    color: #2563eb !important;
+  }
+  :global(html.light) .hb-brick:nth-child(3n + 1) .hb-token:first-child {
+    color: #db2777 !important;
+  }
+  :global(html.light) .hb-brick:nth-child(3n + 2) .hb-token:first-child {
+    color: #0891b2 !important;
   }
 </style>

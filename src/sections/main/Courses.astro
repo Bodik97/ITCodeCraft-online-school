@@ -152,21 +152,21 @@ const coursesJsonLd = JSON.stringify({
         }
       </div>
       <div
-        class="hidden md:flex md:items-center md:flex-row-reverse md:gap-3 md:absolute md:-top-16 md:right-0"
+        class="hidden md:flex md:items-center md:gap-3 md:absolute md:-top-16 md:right-0"
       >
         <button
           type="button"
-          data-scroll-next
-          aria-label="Наступні курси"
+          data-scroll-prev
+          aria-label="Попередні курси"
           class="slider-arrow"
         >
           <Arrow />
         </button>
         <button
           type="button"
-          data-scroll-prev
-          aria-label="Попередні курси"
-          class="slider-arrow slider-arrow--prev"
+          data-scroll-next
+          aria-label="Наступні курси"
+          class="slider-arrow slider-arrow--flip"
         >
           <Arrow />
         </button>
@@ -206,7 +206,8 @@ const coursesJsonLd = JSON.stringify({
   .slider-arrow:hover {
     background: #273549;
   }
-  .slider-arrow--prev {
+  /* Base arrow.svg points left (‹); flip it for the right/next button (›). */
+  .slider-arrow--flip {
     transform: rotate(180deg);
   }
 </style>

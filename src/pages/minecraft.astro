@@ -1,5 +1,9 @@
 ---
 import MinecraftLayout from "@/layouts/MinecraftLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import LeadModal from "@/components/shared/LeadModal.astro";
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
 import { Icon } from "astro-icon/components";
 import content from "@/data/minecraft.json";
@@ -25,6 +29,10 @@ const {
 } = content;
 const year = new Date().getFullYear();
 
+// Canonical school wordmark — same fixed colours on every page.
+const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
+const brandBase = brand.primary.slice(brandPrefix.length);
+
 // Decorative drifting blocks in hero
 const particles = [
   { size: 18, left: "6%", delay: "0s", duration: "15s", color: "#5dae3f" },
@@ -49,8 +57,8 @@ const particles = [
           class="inline-flex h-9 w-9 items-center justify-center rounded-[4px] bg-[#5dae3f] text-white text-lg mc-block-sm"
           >⛏️</span
         >
-        <span class="font-display font-bold text-white text-lg leading-none">
-          {brand.primary}<span class="text-[#fde047]">{brand.accent}</span>
+        <span class="font-display font-bold text-lg leading-none">
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </span>
       </a>
 
@@ -70,15 +78,27 @@ const particles = [
       <div class="flex items-center gap-2">
         <a
           href={brand.homeUrl}
-          class="hidden sm:inline-flex text-sm font-semibold text-white/90 hover:text-[#fde047] transition-colors"
+          class="hidden lg:inline-flex text-sm font-semibold text-white/90 hover:text-[#fde047] transition-colors"
           >← {navigation.backToMain}</a
         >
-        <a
-          href="#register"
-          class="mc-btn mc-btn-gold inline-flex items-center rounded-[6px] px-4 py-2 text-sm font-bold"
+        <button
+          type="button"
+          data-lead-modal-open
+          class="mc-btn mc-btn-gold hidden lg:inline-flex items-center rounded-[6px] px-4 py-2 text-sm font-bold"
         >
           {navigation.ctaLabel}
-        </a>
+        </button>
+        <LandingMobileNav
+          links={navigation.links}
+          backUrl={brand.homeUrl}
+          backLabel={navigation.backToMain}
+          ctaLabel={navigation.ctaLabel}
+          toggleClass="border-white/40 text-white hover:border-[#fde047] hover:text-[#fde047]"
+          panelClass="bg-[#3a7d20] border-[#1f2937]"
+          linkClass="bg-white/5 border-white/15 text-white hover:bg-white/10 hover:border-[#fde047]"
+          dotColor="#fde047"
+          ctaClass="mc-btn mc-btn-gold"
+        />
       </div>
     </div>
   </header>
@@ -801,7 +821,10 @@ const particles = [
           </ul>
         </div>
 
-        <div class="mc-reveal rounded-[12px] bg-[#0e172b] p-6 md:p-8 mc-block">
+        <div
+          class="mc-reveal rounded-[12px] bg-[#0e172b] p-6 md:p-8 mc-block"
+          style="--form-accent:#5dae3f;--form-accent-rgb:93, 174, 63;--form-accent-fg:#ffffff;"
+        >
           <div data-mc-form>
             <UseForm formId="minecraft-landing" />
           </div>
@@ -832,7 +855,7 @@ const particles = [
     >
       <div>
         <div class="font-display font-bold text-xl mb-3">
-          {brand.primary}<span class="text-[#74c043]">{brand.accent}</span>
+          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </div>
         <p class="text-white/70 text-sm leading-relaxed max-w-xs">
           {footer.about}
@@ -1137,4 +1160,25 @@ const particles = [
       });
     }
   </script>
+  <div class="lg:hidden h-20" aria-hidden="true"></div>
+  <MobileStickyCta
+    label="Записати на безоплатний урок"
+    barClass="bg-[#3a7d20]/95 border-t-2 border-[#1f2937]"
+    btnClass="mc-btn mc-btn-gold"
+  />
+  <MessengerFab
+    accent="#5dae3f"
+    accentRgb="93, 174, 63"
+    accentDark="#3a7d20"
+    fg="#ffffff"
+    position="bottom-24 right-5 sm:right-6"
+  />
+  <LeadModal
+    formId="minecraft-modal"
+    title={register.title}
+    accent="#5dae3f"
+    accentRgb="93, 174, 63"
+    accentFg="#ffffff"
+    phone={footer.phone}
+  />
 </MinecraftLayout>

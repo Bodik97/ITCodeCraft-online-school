@@ -4,6 +4,27 @@
   }
 }
 
+/* The modal panel is always dark. In light mode the theme flips text to dark,
+   so its title/form would be invisible — re-pin the dark-theme tokens inside the
+   modal so it stays identical to its (working) dark-mode appearance. */
+html.light .modal {
+  --color-paper: #070d18;
+  --color-card: #0e1629;
+  --color-ink: #e6eef9;
+  --color-muted: #9fb0c7;
+  --color-line: #25324a;
+  --color-surface: #14223e;
+  --color-surface-light: #1b2c4b;
+  --color-slate-200: #37496b;
+  --color-slate-300: #b7c8dc;
+  --color-slate-400: #a1b5cc;
+  --color-slate-500: #96a9be;
+  --color-slate-600: #c2d1e2;
+  --color-slate-700: #32445f;
+  --color-gray-500: #96a9be;
+  --color-gray-600: #b6c5d7;
+}
+
 .modal-overlay {
   background: var(--theme-modal-overlay, rgba(7, 13, 24, 0.45));
   backdrop-filter: blur(12px);

@@ -383,8 +383,18 @@ const organizationJsonLd = JSON.stringify({
           linear-gradient(to right, rgba(100, 116, 139, 0.12) 1px, transparent 1px),
           linear-gradient(to bottom, rgba(100, 116, 139, 0.12) 1px, transparent 1px);
       }
-      html.light .header-shell.is-scrolled {
-        background: rgba(244, 247, 252, 0.92);
+      /* Header never follows the light theme — it keeps its dark-theme look so the
+         logo and nav read identically. Dark tokens are re-pinned within the header. */
+      html.light .header-shell {
+        --color-slate-200: #37496b;
+        --color-slate-300: #b7c8dc;
+        --color-slate-400: #a1b5cc;
+        --color-slate-500: #96a9be;
+        --color-surface: #14223e;
+        --color-surface-light: #1b2c4b;
+        --color-line: #25324a;
+        background: rgba(7, 13, 24, 0.9);
+        backdrop-filter: blur(12px);
       }
       html.light .page-margin-line {
         background: rgba(244, 63, 94, 0.18);
