@@ -34,14 +34,16 @@ dataLayer-події, які вже шле сайт (їх підхоплює GTM
 - [ ] **2.4** Custom Event trigger `registration_modal_open` → GA4 Event tag `registration_modal_open`
 - [ ] **2.5** Custom Event trigger `cta_click` → GA4 Event tag `cta_click`
       (параметри `cta_text`, `cta_location`, `cta_href` через однойменні DLV)
-- [ ] **2.6** Google Ads Conversion tag (Conversion ID + Label з Кроку 4), trigger `lead`
+- [ ] **2.6** Conversion Linker tag → trigger **All Pages** (без нього Google Ads недораховує конверсії)
+- [ ] **2.6** Google Ads Conversion Tracking tag → Conversion ID `18135456615`,
+      Label `SYizCPutn70cEOe21MdD`, trigger **`evt - lead`** (успішна заявка, не клік)
 
 ## 📊 Крок 3 — GA4
 - [ ] Custom dimension: Name `page_group`, Scope **Event**, Parameter `content_group`
 - [ ] Позначити `generate_lead` як **Key event / Conversion**
 
-## 💰 Крок 4 — Google Ads
-- [ ] New conversion action (Website) «Заявка з сайту» → взяти **Conversion ID + Label** (для 2.6)
+## 💰 Крок 4 — Google Ads ✅ дані отримано
+- Conversion action: «Заявка з сайту» → `AW-18135456615` / Label `SYizCPutn70cEOe21MdD`
 - [ ] Перевірити лінк акаунта `AW-18135456615` ↔ GA4 `G-00YT0R9QFP`
 
 ## ✅ Крок 5 — Тест і публікація
