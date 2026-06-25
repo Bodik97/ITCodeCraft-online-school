@@ -1,0 +1,17 @@
+---
+// GTM <noscript> fallback — must sit immediately after <body>. Gated like Analytics.astro.
+const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim();
+---
+{
+  gtmId && (
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="gtm"
+      />
+    </noscript>
+  )
+}

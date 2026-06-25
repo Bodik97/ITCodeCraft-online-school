@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_GOOGLE_SCRIPT_URL?: string;
   readonly PUBLIC_ITCC_TRACK_ENDPOINT?: string;
   readonly PUBLIC_FB_PIXEL_ID?: string;
+  readonly PUBLIC_GTM_ID?: string;
 }
 
 interface ImportMeta {

@@ -2,6 +2,8 @@
 // import "../index.css";
 import "@/styles/global.css";
 import data from "@/data/main.json";
+import Analytics from "@/components/shared/Analytics.astro";
+import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
 type NotificationItem = {
   name: string;
   action: string;
@@ -128,22 +130,7 @@ const organizationJsonLd = JSON.stringify({
     />
     <link rel="manifest" href="./assets/favicon/site.webmanifest" />
 
-    <!-- Google Analytics 4 (gtag.js) — main site property G-00YT0R9QFP.
-         Direct gtag for now; can migrate to a dedicated main GTM container later
-         without losing data (events also pushed to dataLayer). -->
-    <script
-      is:inline
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-00YT0R9QFP"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-00YT0R9QFP");
-    </script>
-    <!-- End Google Analytics 4 -->
+    <Analytics pageGroup="main" />
 
     {
       fbPixelId && (
@@ -169,6 +156,7 @@ const organizationJsonLd = JSON.stringify({
   <body
     class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"
   >
+    <AnalyticsNoscript />
     <div class="page-margin-line" aria-hidden="true"></div>
     <slot />
 
