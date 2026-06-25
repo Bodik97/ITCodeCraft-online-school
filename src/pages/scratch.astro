@@ -67,8 +67,8 @@ const blockStack = [
     >
       <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
         
-        <span class="font-display font-bold text-lg leading-none bg-[#0e1629] px-2.5 py-2.5 rounded-lg">
-          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
+        <span class="font-display font-bold text-lg leading-none bg-card px-2.5 py-2.5 rounded-lg">
+          <span class="text-neon-cyan">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </span>
       </a>
 
@@ -116,7 +116,7 @@ const blockStack = [
   <main id="main-content" class="flex-1">
     {/* ---------- HERO ---------- */}
     <section
-      class="relative overflow-hidden bg-gradient-to-b from-[#fff3df] via-[#fff9f0] to-[#fdf0ff]"
+      class="relative overflow-hidden bg-linear-to-b from-[#fff3df] via-[#fff9f0] to-[#fdf0ff]"
     >
       <div class="sc-particles" aria-hidden="true">
         {
@@ -203,11 +203,11 @@ const blockStack = [
               height="450"
               loading="eager"
               decoding="async"
-              class="w-full h-full object-cover aspect-[4/3]"
+              class="w-full h-full object-cover aspect-4/3"
             />
           </div>
           <div
-            class="absolute -bottom-4 -left-4 rounded-2xl bg-[#FFBF00] px-4 py-3 shadow-lg rotate-[-3deg]"
+            class="absolute -bottom-4 -left-4 rounded-2xl bg-[#FFBF00] px-4 py-3 shadow-lg -rotate-3"
           >
             <p class="font-display font-bold text-sm text-[#3d2200]">
               🐱 для наймолодших
@@ -303,7 +303,7 @@ const blockStack = [
 
           {/* Stage */}
           <div
-            class="sc-card relative overflow-hidden p-0 min-h-70 md:min-h-85 bg-gradient-to-b from-[#eaf6ff] to-[#f3eaff]"
+            class="sc-card relative overflow-hidden p-0 min-h-70 md:min-h-85 bg-linear-to-b from-[#eaf6ff] to-[#f3eaff]"
           >
             <div
               class="absolute inset-x-0 bottom-0 h-10 bg-[#cdebc5] border-t-2 border-[#9fd897]"
@@ -382,7 +382,7 @@ const blockStack = [
                   </div>
                   <div class="h-3.5 w-full rounded-full bg-[#fde9d2] overflow-hidden">
                     <div
-                      class="sc-bar-fill h-full rounded-full bg-gradient-to-r from-[#ff8c1a] to-[#ffbf00]"
+                      class="sc-bar-fill h-full rounded-full bg-linear-to-r from-[#ff8c1a] to-[#ffbf00]"
                       data-sc-level={item.level}
                     />
                   </div>
@@ -428,7 +428,7 @@ const blockStack = [
 
         <div class="relative grid md:grid-cols-3 gap-6 md:gap-4">
           <div
-            class="hidden md:block absolute top-9 left-[16%] right-[16%] h-1 bg-gradient-to-r from-[#4C97FF] via-[#9966FF] to-[#FF8C1A] rounded-full"
+            class="hidden md:block absolute top-9 left-[16%] right-[16%] h-1 bg-linear-to-r from-[#4C97FF] via-[#9966FF] to-[#FF8C1A] rounded-full"
             aria-hidden="true"
           >
           </div>
@@ -479,7 +479,7 @@ const blockStack = [
           <div class="h-3 w-full rounded-full bg-[#fde9d2] overflow-hidden mb-6">
             <div
               data-quiz-fill
-              class="h-full bg-gradient-to-r from-[#ff8c1a] to-[#ffbf00] transition-[width] duration-300"
+              class="h-full bg-linear-to-r from-[#ff8c1a] to-[#ffbf00] transition-[width] duration-300"
               style={`width:${100 / quiz.questions.length}%`}
             >
             </div>
@@ -748,7 +748,7 @@ const blockStack = [
     {/* ---------- REGISTER ---------- */}
     <section
       id="register"
-      class="py-16 md:py-24 bg-gradient-to-br from-[#ff8c1a] to-[#ffbf00]"
+      class="py-16 md:py-24 bg-linear-to-br from-[#ff8c1a] to-[#ffbf00]"
     >
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
@@ -773,7 +773,7 @@ const blockStack = [
         </div>
 
         <div
-          class="sc-reveal rounded-[24px] bg-[#0e172b] p-6 md:p-8 shadow-2xl"
+          class="sc-reveal rounded-3xl bg-[#0e172b] p-6 md:p-8 shadow-2xl"
           style="--form-accent:#ff8c1a;--form-accent-rgb:255, 140, 26;--form-accent-fg:#ffffff;"
         >
           <div data-sc-form>
@@ -806,7 +806,7 @@ const blockStack = [
     >
       <div>
         <div class="font-display font-bold text-xl mb-3">
-          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
+          <span class="text-neon-cyan">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
         </div>
         <p class="text-white/60 text-sm leading-relaxed max-w-xs">
           {footer.about}
