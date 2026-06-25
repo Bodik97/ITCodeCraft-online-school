@@ -65,7 +65,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           navigation.links.map((link) => (
             <a
               href={`#${link.id}`}
-              class="text-sm font-semibold text-slate-600 hover:text-[#6366f1] transition-colors"
+              class="text-sm font-semibold text-slate-700 hover:text-[#6366f1] transition-colors"
             >
               {link.label}
             </a>
@@ -76,7 +76,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
       <div class="flex items-center gap-3">
         <a
           href={brand.homeUrl}
-          class="hidden lg:inline-flex text-sm font-semibold text-slate-600 hover:text-[#6366f1] transition-colors"
+          class="hidden lg:inline-flex text-sm font-semibold text-slate-700 hover:text-[#6366f1] transition-colors"
           >← {navigation.backToMain}</a
         >
         <button
@@ -257,7 +257,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
             {why.title}
           </h2>
-          <p class="text-slate-500 text-lg">{why.subtitle}</p>
+          <p class="text-slate-700 text-lg">{why.subtitle}</p>
         </div>
         <div class="grid sm:grid-cols-2 gap-6">
           {
@@ -267,7 +267,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                   <Icon name={item.icon} class="size-6" />
                 </div>
                 <h3 class="font-display text-xl font-bold mb-2">{item.title}</h3>
-                <p class="text-slate-600 leading-relaxed">{item.text}</p>
+                <p class="text-slate-700 leading-relaxed">{item.text}</p>
               </div>
             ))
           }
@@ -283,7 +283,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
             {skills.title}
           </h2>
-          <p class="text-slate-500 text-lg">{skills.subtitle}</p>
+          <p class="text-slate-700 text-lg">{skills.subtitle}</p>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
@@ -309,7 +309,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                 </div>
               ))
             }
-            <p class="text-sm text-slate-500 pt-2">✨ {skills.note}</p>
+            <p class="text-sm text-slate-700 pt-2">✨ {skills.note}</p>
           </div>
 
           {/* Image in browser frame + live typing console */}
@@ -351,7 +351,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
             {quiz.title}
           </h2>
-          <p class="text-slate-600 text-lg">{quiz.subtitle}</p>
+          <p class="text-slate-700 text-lg">{quiz.subtitle}</p>
         </div>
 
         <div id="fe-quiz" class="fe-reveal fe-card p-6 md:p-8">
@@ -398,7 +398,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
             <h3 class="font-display text-2xl md:text-3xl font-bold mb-2">
               {quiz.result.title}
             </h3>
-            <p class="text-slate-500 mb-5">{quiz.result.lead}</p>
+            <p class="text-slate-700 mb-5">{quiz.result.lead}</p>
             <ul data-quiz-tags class="space-y-2 mb-7"></ul>
             <div class="flex flex-wrap items-center gap-4">
               <a
@@ -428,7 +428,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
             {how.title}
           </h2>
-          <p class="text-slate-500 text-lg">{how.subtitle}</p>
+          <p class="text-slate-700 text-lg">{how.subtitle}</p>
         </div>
 
         <div class="space-y-4">
@@ -458,13 +458,13 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                       +
                     </span>
                   </div>
-                  <p class="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
+                  <p class="text-slate-700 text-sm sm:text-base mt-2 leading-relaxed">
                     {item.text}
                   </p>
                   <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
                     <div class="overflow-hidden">
                       <div class="pt-5 mt-5 border-t border-slate-100">
-                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-4">
                           {item.details}
                         </p>
                         <div class="flex items-start gap-3 bg-[#6366f1]/5 border border-[#6366f1]/20 p-3 rounded-xl">
@@ -595,7 +595,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
           <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
             {parentPerks.title}
           </h2>
-          <p class="text-slate-500 text-lg">{parentPerks.subtitle}</p>
+          <p class="text-slate-700 text-lg">{parentPerks.subtitle}</p>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {
@@ -605,7 +605,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
                   <Icon name={item.icon} class="size-6" />
                 </div>
                 <h3 class="font-display text-lg font-bold mb-2">{item.title}</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">{item.text}</p>
+                <p class="text-slate-700 text-sm leading-relaxed">{item.text}</p>
               </div>
             ))
           }

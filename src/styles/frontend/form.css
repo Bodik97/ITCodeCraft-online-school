@@ -1,0 +1,17 @@
+#frontend-modal {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#frontend-modal .input-field, #frontend-modal .iti__tel-input {
+    background-color: #f5f5f5;
+    border-color: #e5e7eb;
+    color: #1f2937;
+    box-shadow: 0 0 0 1px #e5e7eb;
+}
+#frontend-modal .input-field::placeholder, #frontend-modal .iti__tel-input::placeholder {
+    color: #999999;
+}
+#frontend-modal .input-field:focus, #frontend-modal .iti__tel-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1;
+}
