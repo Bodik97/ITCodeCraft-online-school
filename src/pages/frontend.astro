@@ -160,13 +160,14 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
             {hero.subtitle}
           </p>
           <div class="flex flex-wrap items-center gap-4">
-            <a
-              href="#register"
+            <button
+              type="button"
+              data-lead-modal-open
               class="fe-btn fe-btn-primary inline-flex items-center gap-2 rounded-xl px-7 py-4 text-base font-bold"
             >
               {hero.ctaPrimary}
               <span aria-hidden="true">→</span>
-            </a>
+            </button>
             <a
               href="#projects"
               class="fe-btn fe-btn-ghost inline-flex items-center rounded-xl px-6 py-4 text-base font-bold"
