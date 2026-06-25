@@ -5,6 +5,7 @@ import LeadModal from "@/components/shared/LeadModal.astro";
 import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
 import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
+import Footer from "@/sections/main/Footer.astro";
 import { Icon } from "astro-icon/components";
 import content from "@/data/minecraft.json";
 
@@ -27,7 +28,6 @@ const {
   navigation,
   brand,
 } = content;
-const year = new Date().getFullYear();
 
 // Canonical school wordmark — same fixed colours on every page.
 const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
@@ -849,58 +849,7 @@ const particles = [
     </section>
   </main>
 
-  {/* ---------- FOOTER ---------- */}
-  <footer class="bg-[#1f2937] text-white">
-    <div
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-8 md:grid-cols-3"
-    >
-      <div>
-        <div class="font-display font-bold text-xl mb-3">
-          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
-        </div>
-        <p class="text-white/70 text-sm leading-relaxed max-w-xs">
-          {footer.about}
-        </p>
-      </div>
-      <div>
-        <h3 class="font-bold mb-3">Навігація</h3>
-        <ul class="space-y-2 text-sm text-white/70">
-          <li>
-            <a href={brand.homeUrl} class="hover:text-[#74c043]">Усі курси</a>
-          </li>
-          <li><a href="/roblox" class="hover:text-[#74c043]">Курс Roblox</a></li>
-          <li><a href="/frontend" class="hover:text-[#74c043]">Курс Frontend</a></li>
-          {
-            navigation.links.map((link) => (
-              <li>
-                <a href={`#${link.id}`} class="hover:text-[#74c043]">
-                  {link.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-bold mb-3">Контакти</h3>
-        <ul class="space-y-2 text-sm text-white/70">
-          <li>
-            <a href={footer.linkPhone} class="hover:text-[#74c043]"
-              >{footer.phone}</a
-            >
-          </li>
-          <li>
-            <a href={`mailto:${footer.email}`} class="hover:text-[#74c043]"
-              >{footer.email}</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="border-t border-white/10 py-4 text-center text-xs text-white/50">
-      © {year} {brand.primary}{brand.accent}. Всі права захищені.
-    </div>
-  </footer>
+  <Footer />
 
   {/* ---------- PAGE SCRIPTS ---------- */}
   <script>
