@@ -128,14 +128,16 @@ const modal = data.modal;
             : "невідомо";
       const productLabel =
         (typeof productName === "string" && productName.trim()) || "—";
-      // Lead-intent signal → push to dataLayer so GTM/GA4 capture the funnel step.
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "registration_modal_open",
+      // Lead-intent signal → funnel step in GA4. dataLayer push kept for a future
+      // main GTM container; gtag event sends it to GA4 (G-00YT0R9QFP) right now.
+      const modalOpenData = {
         cta_source: sourceLabel,
         course: productLabel,
         click_number: clickNum,
-      });
+      };
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "registration_modal_open", ...modalOpenData });
+      window.gtag?.("event", "registration_modal_open", modalOpenData);
 
       modalRoot.removeAttribute("inert");
       modalRoot.setAttribute("aria-hidden", "false");

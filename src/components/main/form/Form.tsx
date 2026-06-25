@@ -113,6 +113,12 @@ export default function FormComponent({
                 conversionId: uid(),
             });
 
+            // GA4 lead conversion (recommended event) on the main property.
+            window.gtag?.('event', 'generate_lead', {
+                course: mergedData.Course,
+                form_id: crmParams.formId,
+            });
+
             // Meta Pixel lead conversion (no-op when pixel isn't loaded).
             window.fbq?.('track', 'Lead');
 

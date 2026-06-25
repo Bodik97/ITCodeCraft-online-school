@@ -22,4 +22,5 @@ interface Window {
   __itccRegistrationClicks?: number;
   productName?: string;
   fbq?: (...args: unknown[]) => void;
+  gtag?: (...args: unknown[]) => void;
 }
