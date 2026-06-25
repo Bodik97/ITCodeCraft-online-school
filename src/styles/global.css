@@ -105,7 +105,8 @@
 }
 
 @import "./main/layouts.css";
-@import "./utils/intTelInput.css";
+@import "intl-tel-input/styles";
+@import "./shared/iti-lead-form.css";
 @import "./main/logo.css";
 @import "./main/form.css";
 @import "./main/modal.css";

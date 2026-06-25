@@ -1,22 +1,19 @@
 import { z } from "zod";
 import { intlTelInput } from "@intl-tel-input/react";
+import type { ValidationError } from "intl-tel-input";
 
-/**
- * intl-tel-input validation error codes (stable libphonenumber ValidationResult
- * indexes). Declared explicitly so we don't depend on the runtime enum, whose
- * type isn't reliably exported across intl-tel-input versions.
- */
-const ERROR_MESSAGES: Record<number, string> = {
-  1: "Невірний код країни", // INVALID_COUNTRY_CODE
-  2: "Номер занадто короткий", // TOO_SHORT
-  3: "Номер занадто довгий", // TOO_LONG
-  4: "Невірний номер для обраної країни", // IS_POSSIBLE_LOCAL_ONLY
-  5: "Невірна довжина номера", // INVALID_LENGTH
+const ERROR_MESSAGES: Record<ValidationError, string> = {
+  IS_POSSIBLE: "Невірний номер для обраної країни",
+  INVALID_COUNTRY_CODE: "Невірний код країни",
+  TOO_SHORT: "Номер занадто короткий",
+  TOO_LONG: "Номер занадто довгий",
+  IS_POSSIBLE_LOCAL_ONLY: "Невірний номер для обраної країни",
+  INVALID_LENGTH: "Невірна довжина номера",
 };
 
 export function getPhoneErrorMessage(
   value: string,
-  errorCode: number | null | undefined,
+  errorCode: ValidationError | null | undefined,
 ): string {
   if (!value) return "Введіть номер телефону";
   if (errorCode == null) return "Невірний номер для обраної країни";

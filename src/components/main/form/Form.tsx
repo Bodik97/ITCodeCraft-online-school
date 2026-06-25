@@ -67,8 +67,6 @@ export default function FormComponent({
         handleSubmit,
         control,
         reset,
-        setValue,
-        getValues,
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(formSchema)
@@ -189,16 +187,14 @@ export default function FormComponent({
                             {...fields}
                             register={register}
                             errors={errors}
-                            setValue={setValue}
                             country={country}
-                            getValues={getValues}
                             setCountry={setCountry}
                             control={control}
                         />
                     ))}
                     <button
 
-                        className={cn('form-btn group relative px-4 py-4 font-bold text-base rounded-xl hover:scale-[1.03] transition-transform duration-200 overflow-hidden w-full sm:w-auto xl:px-1 xl:rounded-none ')}
+                        className={cn('form-btn z-0 group relative px-4 py-4 font-bold text-base rounded-xl hover:scale-[1.03] transition-transform duration-200 overflow-hidden w-full sm:w-auto xl:px-1 xl:rounded-none ')}
                         type="submit"
                         disabled={isSubmitting}
                         aria-busy={isSubmitting}

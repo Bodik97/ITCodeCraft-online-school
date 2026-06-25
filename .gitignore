@@ -24,6 +24,8 @@ dist-ssr
 *.sw?
 .vercel
 .env
+data-store.json
+types.d.ts
 
 # Claude Code local settings (personal permissions; may contain secrets)
 .claude/settings.local.json

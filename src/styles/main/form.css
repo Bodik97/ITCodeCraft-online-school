@@ -98,10 +98,6 @@
   @apply border border-[#e53935];
 }
 
-.input-label .input-field[type="tel"] {
-  @apply pl-14;
-}
-
 .input-label .input-field[data-selected="false"] {
   @apply text-[#999999];
 }
@@ -211,3 +207,26 @@
   @apply ring-2 ring-[#fec830];
 }
 
+/* intl-tel-input v29 — main forms (dark theme input) */
+.input-label .iti--lead-form .iti__search-input:focus {
+  outline: none;
+  border-color: var(--form-accent, #22d3ee);
+  box-shadow: 0 0 0 2px rgba(var(--form-accent-rgb, 34, 211, 238), 0.18);
+}
+
+.input-label .iti--lead-form .iti__country-check {
+  color: var(--form-accent, #22d3ee);
+}
+
+.input-label .iti--lead-form input.iti__tel-input {
+  @apply w-full rounded-sm border border-slate-200 bg-paper px-4 py-4 text-base text-ink outline-none transition-all duration-300;
+}
+
+.input-label .iti--lead-form:focus-within input.iti__tel-input {
+  border-color: var(--form-accent, #22d3ee);
+  box-shadow: 0 0 10px rgba(var(--form-accent-rgb, 34, 211, 238), 0.3);
+}
+
+.input-label .iti--lead-form input.iti__tel-input.input-field--error {
+  @apply border-[#e53935];
+}

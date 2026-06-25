@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import IntlTelInput from "@intl-tel-input/react";
 import type { IntlTelInputRef } from "@intl-tel-input/react";
-import "intl-tel-input/styles";
 import type {
   Control,
   FieldError,
@@ -42,16 +41,16 @@ export default function PhoneField<TFieldValues extends FieldValues>({
             ref={itiRef}
             initialCountry="ua"
             countryNameLocale="uk"
-            i18n={{
+            uiTranslations={{
               searchPlaceholder: "Пошук",
               noCountrySelected: "Оберіть країну",
               countryListAriaLabel: "Список країн",
             }}
             containerClass="iti--lead-form"
+            countrySelectorMode="DROPDOWN"
             separateDialCode={false}
-            nationalMode
-            fixDropdownWidth
-            useFullscreenPopup={false}
+            numberDisplayFormat="NATIONAL"
+            matchDropdownWidth
             loadUtils={() => import("intl-tel-input/utils")}
             value={field.value}
             onChangeNumber={field.onChange}

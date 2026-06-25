@@ -18,10 +18,8 @@ interface FormInput {
   }[];
   register: any;
   errors: any;
-  setValue: any;
-  getValues: any;
-  country: any;
-  setCountry: any;
+  country: string;
+  setCountry: (country: string) => void;
   control: any;
   defaultValue?: any;
 }
@@ -34,8 +32,6 @@ function Input({
   title,
   register,
   errors,
-  setValue,
-  getValues,
   country,
   setCountry,
   control,
@@ -51,8 +47,6 @@ function Input({
             setCountry={setCountry}
             name="phone"
             country={country}
-            setValue={setValue}
-            getValues={getValues}
           />
         );
       case 'select':
