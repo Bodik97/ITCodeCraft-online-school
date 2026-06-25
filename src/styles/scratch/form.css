@@ -1,0 +1,17 @@
+#scratch-modal {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#scratch-modal .input-field, #scratch-modal .iti__tel-input {
+    background-color: #f5f5f5;
+    border-color: #e5e7eb;
+    color: #1f2937;
+    box-shadow: 0 0 0 1px #e5e7eb;
+}
+#scratch-modal .input-field::placeholder, #scratch-modal .iti__tel-input::placeholder {
+    color: #999999;
+}
+#scratch-modal .input-field:focus, #scratch-modal .iti__tel-input:focus {
+    border-color: #ff8c1a;
+    box-shadow: 0 0 0 1px #ff8c1a;
+}
