@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Montenegrin Gothic One";
+  src: url("/fonts/montenegrin-gothic-one.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer components {
   .ic-logo {
     /* Logo colours are pinned to the dark-theme palette and never follow the
@@ -32,9 +40,9 @@
   }
 
   .ic-name {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Montenegrin Gothic One", serif;
     font-size: var(--ic-name-size);
-    font-weight: 800;
+    font-weight: 400;
     letter-spacing: -0.02em;
     white-space: nowrap;
   }
@@ -57,13 +65,6 @@
   .ic-subline {
     font-family: "Space Grotesk", sans-serif;
     @apply text-[9px] tracking-[0.25em] font-medium uppercase text-[#5a8ba0];
-    /* 
-    font-weight: 500;
-    font-size: var(--ic-sub-size);
-    letter-spacing: 0.28em;
-    color: var(--ic-muted);
-    text-transform: uppercase;
-    white-space: nowrap; */
   }
 
   .ic-logo--sm .ic-subline {
@@ -75,16 +76,16 @@
     color: #67e8f9;
   }
 
-  /* Light footer: the header keeps its own dark backdrop, but the footer turns
-     light — so sit the (unchanged) wordmark on a dark plate to keep it readable. */
-  html.light footer .ic-logo {
-    background: #0e1629;
-    padding: 7px 14px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px -12px rgba(15, 23, 42, 0.5);
+  /* Light theme: wordmark base text turns dark */
+  html.light .ic-name-base,
+  body.frontend-site header .ic-name-base,
+  body.scratch-site header .ic-name-base {
+    color: #0e1629;
   }
 
-  html.light footer .ic-logo--sm {
+  html.light .ic-logo--sm,
+  body.frontend-site header .ic-logo--sm,
+  body.scratch-site header .ic-logo--sm {
     padding: 6px 12px;
     border-radius: 10px;
   }

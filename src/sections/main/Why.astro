@@ -25,36 +25,39 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
 
 <section id="why-us" class="py-24 bg-transparent relative overflow-hidden">
   {/* ---- Autonomous moving lines ---- */}
-  <div class="why-deco absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+  <div
+    class="why-deco absolute inset-0 z-0 pointer-events-none"
+    aria-hidden="true"
+  >
     <svg
       class="absolute inset-0 w-full h-full"
       viewBox="0 0 1200 640"
       preserveAspectRatio="none"
     >
-      <line x1="-50" y1="130" x2="1250" y2="130" class="why-dash why-dash-cyan" />
+      <line x1="-50" y1="130" x2="1250" y2="130" class="why-dash why-dash-cyan"
+      ></line>
       <line
         x1="-50"
         y1="510"
         x2="1250"
         y2="510"
-        class="why-dash why-dash-magenta"
-      />
+        class="why-dash why-dash-magenta"></line>
       <path
         d="M-60,330 Q300,250 640,350 T1260,300"
         class="why-flow why-flow-lime"
-        fill="none"
-      />
+        fill="none"></path>
       <path
         d="M-60,220 Q360,300 720,220 T1260,260"
         class="why-flow why-flow-cyan"
-        fill="none"
-      />
+        fill="none"></path>
     </svg>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class=" mb-16">
-      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+    <div class="mb-16">
+      <h2
+        class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl"
+      >
         {content.whySection.titlePrefix}
         <!-- <span class="text-neon-lime">{content.whySection.titleHighlight}</span> -->
         <span class="ic-name">
@@ -103,9 +106,7 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
   </div>
 </section>
 
-
 <style>
-
   html.light .ic-name {
     padding-left: 4px;
   }
@@ -114,10 +115,6 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
     color: var(--ic-cyan);
     text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
     color: #22d3ee;
-  }
-
-  .ic-name-base {
-    color: #0e1629;
   }
 
   .ic-name-accent {

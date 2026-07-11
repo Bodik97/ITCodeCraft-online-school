@@ -137,6 +137,11 @@ body:not(.roblox-site) h6 {
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
 }
 
+html.light .header-shell.is-scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
 .mobile-menu {
   max-height: 0;
   /* Collapsed: contribute zero height so the header stays compact (the mt-4/p-4/
@@ -300,8 +305,7 @@ button {
   }
 }
 
-/* Light theme: hero option pills are translucent and become unreadable over the
-   dark decorative cards — give them a solid background and dark text. */
+
 html.light .hero-option {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(34, 211, 238, 0.5);
@@ -310,12 +314,16 @@ html.light .hero-option {
 }
 
 .hero-title-shimmer {
-  /* Always white with a black outline, independent of light/dark theme. */
   color: #fff;
-  -webkit-text-fill-color: #fff;
   -webkit-text-stroke: 1.5px #000;
   paint-order: stroke fill;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+html.light .hero-title-shimmer {
+  color: #0f172a;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 4px 14px rgba(34, 211, 238, 0.25);
 }
 
 /* Stats border glow pulse */

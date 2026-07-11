@@ -7,6 +7,7 @@ import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
 import Footer from "@/sections/main/Footer.astro";
 import { Icon } from "astro-icon/components";
+import Logo from "@/components/shared/Logo.astro";
 import content from "@/data/minecraft.json";
 
 const {
@@ -52,15 +53,7 @@ const particles = [
     <div
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
     >
-      <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
-        <span
-          class="inline-flex h-9 w-9 items-center justify-center rounded-[4px] bg-[#5dae3f] text-white text-lg mc-block-sm"
-          >⛏️</span
-        >
-        <span class="font-display font-bold text-lg leading-none">
-          <span class="text-[#22d3ee]">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
-        </span>
-      </a>
+      <Logo href={brand.homeUrl} />
 
       <nav class="hidden lg:flex items-center gap-6">
         {

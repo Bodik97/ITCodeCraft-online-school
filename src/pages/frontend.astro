@@ -7,6 +7,7 @@ import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
 import UseForm from "@/components/main/form/UseForm.astro";
 import Footer from "@/sections/main/Footer.astro";
 import { Icon } from "astro-icon/components";
+import Logo from "@/components/shared/Logo.astro";
 import content from "@/data/frontend.json";
 
 const {
@@ -53,12 +54,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
     <div
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
     >
-      <a href={brand.homeUrl} class="flex items-center gap-2 shrink-0">
-        
-        <span class="font-display font-bold text-lg leading-none bg-card px-2.5 py-2.5 rounded-lg">
-          <span class="text-neon-cyan">{brandPrefix}</span><span class="text-white">{brandBase}</span><span class="text-white/35 font-light">{brand.accent}</span>
-        </span>
-      </a>
+      <Logo href={brand.homeUrl} />
 
       <nav class="hidden lg:flex items-center gap-6">
         {
