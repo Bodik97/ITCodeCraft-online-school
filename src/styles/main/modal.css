@@ -56,6 +56,10 @@ html.light [data-modal-error-content].modal-panel {
   background-color: #ffffff;
 }
 
+html.light .modal-success-desc {
+  color: #334155; /* text-slate-700 */
+}
+
 html.is-scroll-locked,
 body.is-scroll-locked {
   overflow: hidden;

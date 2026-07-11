@@ -50,21 +50,25 @@ const coursesJsonLd = JSON.stringify({
 
 <script type="application/ld+json" is:inline set:html={coursesJsonLd} />
 
-<section id="courses" class="py-24 bg-transparent relative overflow-hidden">
+<section id="courses" class="py-24 bg-transparent relative overflow-x-clip">
   <div
     class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
   >
   </div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="mb-16">
-      <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+      <h2
+        class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl"
+      >
         {content.coursesSection.titlePrefix}
         <br class="md:hidden" />
         <span class="text-neon-cyan"
           >{content.coursesSection.titleHighlight}</span
         >
       </h2>
-      <p class="text-slate-500 max-w-[335px] text-sm md:text-base md:max-w-full xl:text-lg">
+      <p
+        class="text-slate-500 max-w-[335px] text-sm md:text-base md:max-w-full xl:text-lg"
+      >
         {content.coursesSection.description}
       </p>
     </div>
@@ -90,12 +94,13 @@ const coursesJsonLd = JSON.stringify({
         <Arrow />
       </button>
     </div>
-
   </div>
-  <div class="relative pl-3 md:pl-8">
+
+  <!-- Full-bleed track: left aligns with content, right can scroll to viewport edge -->
+  <div class="relative">
     <div
       data-scroller
-      class="courses-scroll flex gap-4 md:gap-6 snap-x snap-mandatory overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+      class="courses-scroll flex gap-4 md:gap-6 snap-x snap-mandatory overflow-x-auto pb-3"
     >
       {
         content.coursesSection.courses.map((course, index) => (
@@ -136,48 +141,45 @@ const coursesJsonLd = JSON.stringify({
               {course.description}
             </p>
 
-            {
-              courseLandings[course.title] ? (
-                <a
-                  href={courseLandings[course.title]}
-                  class:list={[
-                    "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
-                    courseButtonBackgrounds[
-                      index % courseButtonBackgrounds.length
-                    ],
-                  ]}
-                >
-                  Детальніше <span aria-hidden="true">→</span>
-                </a>
-              ) : (
-                <button
-                  type="button"
-                  data-modal-open
-                  data-product-name={course.title}
-                  data-product-color={
-                    courseTextColors[index % courseTextColors.length]
-                  }
-                  class:list={[
-                    "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
-                    courseButtonBackgrounds[
-                      index % courseButtonBackgrounds.length
-                    ],
-                  ]}
-                >
-                  {content.coursesSection.enrollLabel}{" "}
-                </button>
-              )
-            }
+            {courseLandings[course.title] ? (
+              <a
+                href={courseLandings[course.title]}
+                class:list={[
+                  "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                  courseButtonBackgrounds[
+                    index % courseButtonBackgrounds.length
+                  ],
+                ]}
+              >
+                Детальніше <span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                data-modal-open
+                data-product-name={course.title}
+                data-product-color={
+                  courseTextColors[index % courseTextColors.length]
+                }
+                class:list={[
+                  "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                  courseButtonBackgrounds[
+                    index % courseButtonBackgrounds.length
+                  ],
+                ]}
+              >
+                {content.coursesSection.enrollLabel}{" "}
+              </button>
+            )}
           </article>
         ))
       }
     </div>
-    
-    <div class="relative flex items-center justify-center mt-8 md:mt-12 w-full pr-3 md:pr-8">
-      <div
-        data-scroll-pagination
-        class="flex gap-2 items-center"
-      ></div>
+
+    <div
+      class="relative flex items-center justify-center mt-8 md:mt-12 w-full"
+    >
+      <div data-scroll-pagination class="flex gap-2 items-center"></div>
     </div>
   </div>
 </section>
@@ -186,8 +188,30 @@ const coursesJsonLd = JSON.stringify({
   .courses-scroll {
     overflow-x: auto;
     scrollbar-width: none;
-    scroll-padding-left: 1rem;
     -webkit-overflow-scrolling: touch;
+    /* Left aligns with max-w-7xl; right stays near the viewport edge so cards aren't clipped mid-card */
+    padding-left: max(1rem, calc((100% - 80rem) / 2 + 1rem));
+    padding-right: 1rem;
+    scroll-padding-left: max(1rem, calc((100% - 80rem) / 2 + 1rem));
+    scroll-padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .courses-scroll {
+      padding-left: max(1.5rem, calc((100% - 80rem) / 2 + 1.5rem));
+      padding-right: 1.5rem;
+      scroll-padding-left: max(1.5rem, calc((100% - 80rem) / 2 + 1.5rem));
+      scroll-padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .courses-scroll {
+      padding-left: max(2rem, calc((100% - 80rem) / 2 + 2rem));
+      padding-right: 2rem;
+      scroll-padding-left: max(2rem, calc((100% - 80rem) / 2 + 2rem));
+      scroll-padding-right: 2rem;
+    }
   }
   .courses-scroll::-webkit-scrollbar {
     display: none;
@@ -210,10 +234,21 @@ const coursesJsonLd = JSON.stringify({
     border-radius: 8px;
     background: #1f2937;
     color: #fff;
-    transition: background 0.15s ease;
+    transition:
+      background 0.15s ease,
+      opacity 0.15s ease,
+      cursor 0.15s ease;
   }
-  .slider-arrow:hover {
+  .slider-arrow:hover:not(:disabled) {
     background: #273549;
+  }
+  .slider-arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  html.light .slider-arrow:disabled {
+    opacity: 0.4;
   }
   /* Base arrow.svg points left (‹); flip it for the right/next button (›). */
   .slider-arrow--flip {
@@ -256,7 +291,7 @@ const coursesJsonLd = JSON.stringify({
   }
   /* In light theme, the active bullets still use the neon colors, just a bit opaque or keep them bright */
   html.light :global(.scroll-bullet.color-lime.is-active) {
-    background-color: #65a30d; 
+    background-color: #65a30d;
   }
   html.light :global(.scroll-bullet.color-magenta.is-active) {
     background-color: #e11d48;

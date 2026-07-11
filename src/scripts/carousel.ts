@@ -7,7 +7,7 @@ function initCarousel(scroller: HTMLElement): void {
   scroller.dataset.carouselReady = "true";
 
   // Find the closest section/container to look for controls
-  const wrap = scroller.closest('section') || scroller.parentElement;
+  const wrap = scroller.closest("section") || scroller.parentElement;
 
   const step = (): number => {
     const card = scroller.querySelector<HTMLElement>(":scope > *");
@@ -16,18 +16,36 @@ function initCarousel(scroller: HTMLElement): void {
     return card.offsetWidth + gap;
   };
 
+  const prevBtn = wrap?.querySelector<HTMLButtonElement>("[data-scroll-prev]");
+  const nextBtn = wrap?.querySelector<HTMLButtonElement>("[data-scroll-next]");
+
+  const updateArrowState = () => {
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    const atStart = scroller.scrollLeft <= 2;
+    const atEnd = scroller.scrollLeft >= maxScroll - 2;
+
+    if (prevBtn) {
+      prevBtn.disabled = atStart;
+      prevBtn.setAttribute("aria-disabled", String(atStart));
+    }
+    if (nextBtn) {
+      nextBtn.disabled = atEnd || maxScroll <= 0;
+      nextBtn.setAttribute("aria-disabled", String(atEnd || maxScroll <= 0));
+    }
+  };
+
   const pagination = wrap?.querySelector("[data-scroll-pagination]");
   let bullets: HTMLElement[] = [];
 
   if (pagination) {
     const cards = scroller.querySelectorAll(":scope > *");
-    
+
     // Read border colors from cards to match bullet colors
     const getCardColorClass = (card: Element) => {
-      if (card.classList.contains('border-neon-lime')) return 'color-lime';
-      if (card.classList.contains('border-neon-magenta')) return 'color-magenta';
-      if (card.classList.contains('border-neon-cyan')) return 'color-cyan';
-      return 'color-cyan'; // fallback
+      if (card.classList.contains("border-neon-lime")) return "color-lime";
+      if (card.classList.contains("border-neon-magenta")) return "color-magenta";
+      if (card.classList.contains("border-neon-cyan")) return "color-cyan";
+      return "color-cyan"; // fallback
     };
 
     // Create bullet for each card
@@ -53,7 +71,10 @@ function initCarousel(scroller: HTMLElement): void {
       let minDistance = Infinity;
 
       cards.forEach((card, i) => {
-        const cardCenter = (card as HTMLElement).offsetLeft - scroller.offsetLeft + card.clientWidth / 2;
+        const cardCenter =
+          (card as HTMLElement).offsetLeft -
+          scroller.offsetLeft +
+          card.clientWidth / 2;
         const distance = Math.abs(cardCenter - scrollerCenter);
         if (distance < minDistance) {
           minDistance = distance;
@@ -71,16 +92,20 @@ function initCarousel(scroller: HTMLElement): void {
     updateBullets();
   }
 
-  wrap
-    ?.querySelector("[data-scroll-next]")
-    ?.addEventListener("click", () =>
-      scroller.scrollBy({ left: step(), behavior: "smooth" }),
-    );
-  wrap
-    ?.querySelector("[data-scroll-prev]")
-    ?.addEventListener("click", () =>
-      scroller.scrollBy({ left: -step(), behavior: "smooth" }),
-    );
+  nextBtn?.addEventListener("click", () => {
+    if (nextBtn.disabled) return;
+    scroller.scrollBy({ left: step(), behavior: "smooth" });
+  });
+  prevBtn?.addEventListener("click", () => {
+    if (prevBtn.disabled) return;
+    scroller.scrollBy({ left: -step(), behavior: "smooth" });
+  });
+
+  scroller.addEventListener("scroll", updateArrowState, { passive: true });
+  window.addEventListener("resize", updateArrowState, { passive: true });
+  // Layout may settle after fonts/images — refresh once more on next frame
+  requestAnimationFrame(updateArrowState);
+  updateArrowState();
 
   // Mouse drag-to-scroll (touch devices keep the native swipe).
   let down = false;
