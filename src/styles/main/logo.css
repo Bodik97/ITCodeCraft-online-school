@@ -8,12 +8,10 @@
 
 @layer components {
   .ic-logo {
-    /* Logo colours are pinned to the dark-theme palette and never follow the
-       page theme. On light pages readability comes from the backing plate below
-       (see html.light .ic-logo), not from recolouring the wordmark. */
     --ic-cyan: #22d3ee;
     --ic-text: #ffffff;
-    --ic-muted: #5a8ba0;
+    --ic-muted: rgba(255, 255, 255, 0.5);
+    --ic-accent: rgba(255, 255, 255, 0.5);
     --ic-name-size: 26px;
     --ic-sub-size: 11px;
     --ic-gap: 14px;
@@ -57,14 +55,15 @@
   }
 
   .ic-name-accent {
-    color: #7fa8be;
+    color: var(--ic-accent);
     font-weight: 500;
     letter-spacing: -0.02em;
   }
 
   .ic-subline {
     font-family: "Space Grotesk", sans-serif;
-    @apply text-[9px] tracking-[0.25em] font-medium uppercase text-[#5a8ba0];
+    color: var(--ic-muted);
+    @apply text-[9px] tracking-[0.25em] font-medium uppercase;
   }
 
   .ic-logo--sm .ic-subline {
@@ -77,10 +76,12 @@
   }
 
   /* Light theme: wordmark base text turns dark */
-  html.light .ic-name-base,
-  body.frontend-site header .ic-name-base,
-  body.scratch-site header .ic-name-base {
-    color: #0e1629;
+  html.light .ic-logo,
+  body.frontend-site header .ic-logo,
+  body.scratch-site header .ic-logo {
+    --ic-text: #0e1629;
+    --ic-muted: #64748b;
+    --ic-accent: #64748b;
   }
 
   html.light .ic-logo--sm,
