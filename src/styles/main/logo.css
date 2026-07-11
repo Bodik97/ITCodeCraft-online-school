@@ -5,9 +5,9 @@
        (see html.light .ic-logo), not from recolouring the wordmark. */
     --ic-cyan: #22d3ee;
     --ic-text: #ffffff;
-    --ic-muted: rgba(230, 238, 249, 0.5);
+    --ic-muted: #5a8ba0;
     --ic-name-size: 26px;
-    --ic-sub-size: 8px;
+    --ic-sub-size: 11px;
     --ic-gap: 14px;
 
     display: inline-flex;
@@ -32,10 +32,10 @@
   }
 
   .ic-name {
-    font-family: "Outfit", "Inter", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: var(--ic-name-size);
-    font-weight: 900;
-    letter-spacing: -0.04em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     white-space: nowrap;
   }
 
@@ -49,18 +49,21 @@
   }
 
   .ic-name-accent {
-    color: rgba(255, 255, 255, 0.35);
-    font-weight: 300;
-    letter-spacing: -0.03em;
+    color: #7fa8be;
+    font-weight: 500;
+    letter-spacing: -0.02em;
   }
 
   .ic-subline {
-    font-family: "DM Mono", "Space Mono", monospace;
+    font-family: "Space Grotesk", sans-serif;
+    @apply text-[9px] tracking-[0.25em] font-medium uppercase text-[#5a8ba0];
+    /* 
+    font-weight: 500;
     font-size: var(--ic-sub-size);
     letter-spacing: 0.28em;
     color: var(--ic-muted);
     text-transform: uppercase;
-    white-space: nowrap;
+    white-space: nowrap; */
   }
 
   .ic-logo--sm .ic-subline {

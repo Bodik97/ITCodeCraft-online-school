@@ -10,7 +10,9 @@ function initCarousel(scroller: HTMLElement): void {
 
   const step = (): number => {
     const card = scroller.querySelector<HTMLElement>(":scope > *");
-    return card ? card.offsetWidth + 24 : scroller.clientWidth * 0.8;
+    if (!card) return scroller.clientWidth * 0.8;
+    const gap = Number.parseFloat(getComputedStyle(scroller).columnGap) || 0;
+    return card.offsetWidth + gap;
   };
 
   wrap

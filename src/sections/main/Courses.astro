@@ -74,7 +74,7 @@ const coursesJsonLd = JSON.stringify({
     <div class="relative">
       <div
         data-scroller
-        class="courses-scroll flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+        class="courses-scroll flex gap-4 md:gap-6 snap-x snap-mandatory overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
       >
         {
           content.coursesSection.courses.map((course, index) => (
@@ -177,8 +177,10 @@ const coursesJsonLd = JSON.stringify({
 
 <style>
   .courses-scroll {
+    overflow-x: auto;
     scrollbar-width: none;
     scroll-padding-left: 1rem;
+    -webkit-overflow-scrolling: touch;
   }
   .courses-scroll::-webkit-scrollbar {
     display: none;

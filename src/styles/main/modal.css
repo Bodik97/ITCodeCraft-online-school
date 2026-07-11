@@ -43,6 +43,12 @@ html.light .modal {
   );
 }
 
+/* Success modal in light theme should stay light, not inherit dark gradient */
+html.light [data-modal-success-content].modal-panel {
+  background-image: none;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+}
+
 html.is-scroll-locked,
 body.is-scroll-locked {
   overflow: hidden;

@@ -11,7 +11,7 @@ const success = data.registerSection.success;
   inert
 >
   <div
-    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-slate-200/35 px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
+    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-slate-300/80 bg-white px-5 py-8 pt-11 opacity-0 shadow-[0_24px_70px_rgba(15,23,42,0.18)] transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
     role="dialog"
     aria-modal="true"
     aria-labelledby="success-modal-title"
@@ -40,19 +40,19 @@ const success = data.registerSection.success;
     </button>
 
     <div
-      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-neon-lime/50 bg-neon-lime/20 shadow-[0_0_25px_rgba(163,230,53,0.25)]"
+      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-lime-300 bg-lime-50 shadow-[0_0_25px_rgba(163,230,53,0.2)]"
     >
-      <span class="text-3xl text-neon-lime" aria-hidden="true">✔</span>
+      <span class="text-3xl text-lime-600" aria-hidden="true">✔</span>
     </div>
 
     <h2
       id="success-modal-title"
-      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(34,211,238,0.25)]"
+      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_10px_rgba(56,189,248,0.2)]"
     >
       {success.title}
     </h2>
     <p
-      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-slate-100 sm:text-base"
+      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-slate-700 sm:text-base"
     >
       {success.description}
     </p>

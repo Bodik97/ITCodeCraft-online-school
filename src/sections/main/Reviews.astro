@@ -15,16 +15,16 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
   class="py-24 bg-transparent border-t border-slate-200/70 relative overflow-hidden"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class=" mb-16">
-      <h2 class="text-xl  md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
+    <div class="mb-16">
+      <h2
+        class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl"
+      >
         {content.reviewsSection.titlePrefix}
-        <span class=""
-          >
+        <span class="">
           <span class="ic-name">
-            <span class="ic-name-prefix ">{brandPrefix}</span
-            ><span class="ic-name-base ">{brandBase}</span><span
-              class="ic-name-accent">{brandAccent}</span
-            >
+            <span class="ic-name-prefix">{brandPrefix}</span><span
+              class="ic-name-base">{brandBase}</span
+            ><span class="ic-name-accent">{brandAccent}</span>
           </span>
         </span>
       </h2>
@@ -51,27 +51,9 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
 </style>
 
 <style>
-  .ic-logo {
-    --ic-cyan: var(--color-neon-cyan, #22d3ee);
-    /* Pinned to the dark-theme colour so the school name never recolours. */
-    --ic-text: #e6eef9;
-    --ic-name-size: 26px;
-  }
 
-  .ic-name {
-    font-family: "Outfit", "Inter", sans-serif;
-    font-size: var(--ic-name-size);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    white-space: nowrap;
-  }
-
-  /* Light theme: keep the wordmark's fixed colours readable on a light heading
-     by placing it on a small dark plate (same idea as the logo). */
   html.light .ic-name {
-    background: #0e1629;
-    padding: 0.06em 0.42em;
-    border-radius: 0.4em;
+    padding-left: 4px;
   }
 
   .ic-name-prefix {
@@ -81,12 +63,10 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
   }
 
   .ic-name-base {
-    color: #ffffff;
+    color: #0e1629;
   }
 
   .ic-name-accent {
-    color: rgba(255, 255, 255, 0.35);
-    font-weight: 300;
-    letter-spacing: -0.03em;
+    color: #556e80;
   }
 </style>
