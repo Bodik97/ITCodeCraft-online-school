@@ -15,25 +15,7 @@
     "onlineLabel": "online",
     "initialOnlineCount": 23,
     "closeMenuLabel": "Закрити меню",
-    "openMenuLabel": "Відкрити меню",
-    "mobileCourseLinks": [
-      {
-        "name": "Roblox",
-        "href": "/roblox"
-      },
-      {
-        "name": "Frontend",
-        "href": "/frontend"
-      },
-      {
-        "name": "Minecraft",
-        "href": "/minecraft"
-      },
-      {
-        "name": "Scratch",
-        "href": "/scratch"
-      }
-    ]
+    "openMenuLabel": "Відкрити меню"
   },
   "hero": {
     "liveBadgePrefix": "Місце в якому діти стають творцями своїх ідей та технологій",

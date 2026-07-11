@@ -2,15 +2,7 @@
 import content from "@/data/main.json";
 import Logo from "@/components/shared/Logo.astro";
 
-// Mobile menu adds the landing-page courses (grouped right after "Всі курси");
-// the desktop nav stays compact without the course pages.
-type NavLink = { name: string; href: string; isCourse?: boolean };
-const courseLinks: NavLink[] = (content.navigation.mobileCourseLinks ?? []).map(
-  (link) => ({ ...link, isCourse: true }),
-);
-const mobileLinks: NavLink[] = content.footerSection.navigationLinks.flatMap(
-  (link) => (link.href === "#courses" ? [link, ...courseLinks] : [link]),
-);
+const navLinks = content.footerSection.navigationLinks;
 ---
 
 <header
@@ -23,7 +15,7 @@ const mobileLinks: NavLink[] = content.footerSection.navigationLinks.flatMap(
 
       <nav class="hidden lg:flex items-center gap-7 ml-6">
         {
-          content.footerSection.navigationLinks.map((link) => (
+          navLinks.map((link) => (
             <a
               href={link.href}
               class="text-sm font-medium text-slate-400 hover:text-neon-cyan transition-colors duration-200"
@@ -118,15 +110,10 @@ const mobileLinks: NavLink[] = content.footerSection.navigationLinks.flatMap(
     >
       <nav class="flex flex-col gap-3">
         {
-          mobileLinks.map((link) => (
+          navLinks.map((link) => (
             <a
               href={link.href}
-              class:list={[
-                "text-sm font-medium transition-colors duration-200",
-                link.isCourse
-                  ? "text-neon-cyan underline decoration-neon-cyan/50 decoration-2 underline-offset-4 hover:decoration-neon-cyan"
-                  : "text-slate-300 hover:text-neon-cyan",
-              ]}
+              class="text-sm font-medium text-slate-300 hover:text-neon-cyan transition-colors duration-200"
             >
               {link.name}
             </a>
