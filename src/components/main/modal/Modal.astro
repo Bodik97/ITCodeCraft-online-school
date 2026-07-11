@@ -21,7 +21,7 @@ const modal = data.modal;
   >
     <button
       type="button"
-      class="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/35 bg-paper/90 text-[1.2rem] md:text-2xl leading-none text-ink transition hover:scale-105 hover:border-neon-cyan/75 hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40 sm:size-10"
+      class="modal-close-btn absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/35 bg-paper/90 text-[1.2rem] md:text-2xl leading-none text-ink transition hover:scale-105 hover:border-neon-cyan/75 hover:text-neon-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40 sm:size-10"
       data-modal-close
       aria-label="Закрити модальне вікно"
     >
@@ -44,7 +44,7 @@ const modal = data.modal;
       id="modal-title"
       data-modal-title
       data-modal-default-title={modal.title}
-      class="mb-5 text-left pr-10 text-[clamp(1rem,1.2rem+1vw,2.25rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(34,211,238,0.3)]"
+      class="modal-title mb-5 text-left pr-10 text-[clamp(1rem,1.2rem+1vw,2.25rem)] font-bold leading-[1.15] text-ink"
     >
       {modal.title}
     </h2>
