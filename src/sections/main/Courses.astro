@@ -55,9 +55,7 @@ const coursesJsonLd = JSON.stringify({
     class="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
   >
   </div>
-  <div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-  >
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="mb-16">
       <h2 class="text-xl md:text-2xl font-bold font-display text-ink mb-4 xl:text-4xl">
         {content.coursesSection.titlePrefix}
@@ -71,106 +69,115 @@ const coursesJsonLd = JSON.stringify({
       </p>
     </div>
 
-    <div class="relative">
-      <div
-        data-scroller
-        class="courses-scroll flex gap-4 md:gap-6 snap-x snap-mandatory overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+    <!-- Desktop Slider Arrows positioned top-right -->
+    <div
+      class="hidden md:flex md:items-center md:gap-3 absolute top-0 right-4 sm:right-6 lg:right-8"
+    >
+      <button
+        type="button"
+        data-scroll-prev
+        aria-label="Попередні курси"
+        class="slider-arrow"
       >
-        {
-          content.coursesSection.courses.map((course, index) => (
-            <article
-              class:list={[
-                "snap-start shrink-0 basis-[88%] sm:basis-[60%] lg:basis-[46%] xl:basis-[37%] group relative min-h-[460px] bg-surface border p-8 rounded-sm transition-all duration-300 flex flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
-                courseBorders[index % courseBorders.length],
-              ]}
-            >
-              <div class="relative h-[180px] w-full overflow-hidden">
-                <img
-                  src={`./assets/courses/${course.image}.webp`}
-                  alt={course.alt}
-                  width="277"
-                  height="180"
-                  loading="lazy"
-                  decoding="async"
-                  class="front-image absolute inset-0 h-full w-full object-cover transition-opacity duration-300 "
-                />
-              </div>
+        <Arrow />
+      </button>
+      <button
+        type="button"
+        data-scroll-next
+        aria-label="Наступні курси"
+        class="slider-arrow slider-arrow--flip"
+      >
+        <Arrow />
+      </button>
+    </div>
 
-              <div class="mb-4 flex mt-5 justify-between items-center">
-                <h3 class="text-2xl font-bold font-display text-ink">
-                  {course.title}
-                </h3>
+  </div>
+  <div class="relative pl-3 md:pl-8">
+    <div
+      data-scroller
+      class="courses-scroll flex gap-4 md:gap-6 snap-x snap-mandatory overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
+    >
+      {
+        content.coursesSection.courses.map((course, index) => (
+          <article
+            class:list={[
+              "snap-start shrink-0 basis-[88%] sm:basis-[60%] lg:basis-[46%] xl:basis-[37%] py-5 px-4 group relative min-h-[460px] bg-surface border md:p-8 rounded-sm transition-all duration-300 flex flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]",
+              courseBorders[index % courseBorders.length],
+            ]}
+          >
+            <div class="relative h-[180px] w-full overflow-hidden">
+              <img
+                src={`./assets/courses/${course.image}.webp`}
+                alt={course.alt}
+                width="277"
+                height="180"
+                loading="lazy"
+                decoding="async"
+                class="front-image absolute inset-0 h-full w-full object-cover transition-opacity duration-300 "
+              />
+            </div>
 
-                <span
+            <div class="mb-4 flex mt-5 justify-between items-center">
+              <h3 class="text-2xl font-bold font-display text-ink">
+                {course.title}
+              </h3>
+
+              <span
+                class:list={[
+                  "text-xs font-bold px-2 py-1 rounded  border border-slate-200",
+                  courseTextColors[index % courseTextColors.length],
+                ]}
+              >
+                {course.age}
+              </span>
+            </div>
+
+            <p class="text-slate-500 mb-6 leading-relaxed text-sm md:text-base ">
+              {course.description}
+            </p>
+
+            {
+              courseLandings[course.title] ? (
+                <a
+                  href={courseLandings[course.title]}
                   class:list={[
-                    "text-xs font-bold px-2 py-1 rounded  border border-slate-200",
-                    courseTextColors[index % courseTextColors.length],
+                    "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                    courseButtonBackgrounds[
+                      index % courseButtonBackgrounds.length
+                    ],
                   ]}
                 >
-                  {course.age}
-                </span>
-              </div>
-
-              <p class="text-slate-500 mb-6 leading-relaxed text-sm md:text-base ">
-                {course.description}
-              </p>
-
-              {
-                courseLandings[course.title] ? (
-                  <a
-                    href={courseLandings[course.title]}
-                    class:list={[
-                      "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
-                      courseButtonBackgrounds[
-                        index % courseButtonBackgrounds.length
-                      ],
-                    ]}
-                  >
-                    Детальніше <span aria-hidden="true">→</span>
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    data-modal-open
-                    data-product-name={course.title}
-                    data-product-color={
-                      courseTextColors[index % courseTextColors.length]
-                    }
-                    class:list={[
-                      "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
-                      courseButtonBackgrounds[
-                        index % courseButtonBackgrounds.length
-                      ],
-                    ]}
-                  >
-                    {content.coursesSection.enrollLabel}{" "}
-                  </button>
-                )
-              }
-            </article>
-          ))
-        }
-      </div>
+                  Детальніше <span aria-hidden="true">→</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  data-modal-open
+                  data-product-name={course.title}
+                  data-product-color={
+                    courseTextColors[index % courseTextColors.length]
+                  }
+                  class:list={[
+                    "flex items-center w-full justify-center gap-2 py-3 rounded-sm font-bold text-[#0a1420] opacity-90 hover:opacity-100 transition-opacity mt-auto",
+                    courseButtonBackgrounds[
+                      index % courseButtonBackgrounds.length
+                    ],
+                  ]}
+                >
+                  {content.coursesSection.enrollLabel}{" "}
+                </button>
+              )
+            }
+          </article>
+        ))
+      }
+    </div>
+    
+    <div class="relative flex items-center justify-center mt-8 md:mt-12 w-full pr-3 md:pr-8">
       <div
-        class="hidden md:flex md:items-center md:gap-3 md:absolute md:-top-16 md:right-0"
-      >
-        <button
-          type="button"
-          data-scroll-prev
-          aria-label="Попередні курси"
-          class="slider-arrow"
-        >
-          <Arrow />
-        </button>
-        <button
-          type="button"
-          data-scroll-next
-          aria-label="Наступні курси"
-          class="slider-arrow slider-arrow--flip"
-        >
-          <Arrow />
-        </button>
-      </div>
+        data-scroll-pagination
+        class="flex gap-2 items-center"
+      ></div>
     </div>
   </div>
 </section>
@@ -211,5 +218,50 @@ const coursesJsonLd = JSON.stringify({
   /* Base arrow.svg points left (‹); flip it for the right/next button (›). */
   .slider-arrow--flip {
     transform: rotate(180deg);
+  }
+
+  /* Pagination Bullets */
+  :global(.scroll-bullet) {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: #64748b;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  :global(.scroll-bullet.is-active) {
+    width: 24px;
+    opacity: 1;
+    /* Default fallback */
+    background-color: #22d3ee;
+  }
+
+  /* Match active bullet colors to the card borders */
+  :global(.scroll-bullet.color-lime.is-active) {
+    background-color: #84cc16; /* neon-lime */
+  }
+  :global(.scroll-bullet.color-magenta.is-active) {
+    background-color: #f43f5e; /* neon-magenta */
+  }
+  :global(.scroll-bullet.color-cyan.is-active) {
+    background-color: #22d3ee; /* neon-cyan */
+  }
+
+  html.light :global(.scroll-bullet) {
+    background-color: #94a3b8;
+  }
+  /* In light theme, the active bullets still use the neon colors, just a bit opaque or keep them bright */
+  html.light :global(.scroll-bullet.color-lime.is-active) {
+    background-color: #65a30d; 
+  }
+  html.light :global(.scroll-bullet.color-magenta.is-active) {
+    background-color: #e11d48;
+  }
+  html.light :global(.scroll-bullet.color-cyan.is-active) {
+    background-color: #0891b2;
   }
 </style>
