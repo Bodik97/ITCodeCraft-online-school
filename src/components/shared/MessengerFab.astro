@@ -29,16 +29,17 @@ const rootStyle = `--fab-accent:${accent};--fab-accent-rgb:${accentRgb};--fab-ac
 
 <div
   id="messenger-fab-root"
-  class:list={["fixed z-[60] flex flex-col items-end gap-3", position]}
+  class:list={["fixed z-[60] flex flex-col items-end", position]}
   style={rootStyle}
 >
-  <div
-    id="messenger-fab-panel"
-    class="messenger-fab-panel flex flex-col items-end gap-3"
-    role="group"
-    aria-label="Месенджери"
-    aria-hidden="true"
-  >
+  <div class="relative flex flex-col items-end justify-end">
+    <div
+      id="messenger-fab-panel"
+      class="messenger-fab-panel absolute bottom-[calc(100%+12px)] right-0 flex flex-col items-end gap-3"
+      role="group"
+      aria-label="Месенджери"
+      aria-hidden="true"
+    >
     <a
       href={fab.viberUrl}
       class="messenger-fab-link flex h-12 w-12 items-center justify-center rounded-full bg-[#7360f2] text-white shadow-lg ring-2 ring-white/15 transition-[transform,filter] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -94,6 +95,7 @@ const rootStyle = `--fab-accent:${accent};--fab-accent-rgb:${accentRgb};--fab-ac
         ></path></svg
       >
     </a>
+  </div>
   </div>
 
   <div class="relative flex h-14 w-14 shrink-0 items-center justify-center">
