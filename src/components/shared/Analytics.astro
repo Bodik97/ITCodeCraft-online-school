@@ -5,6 +5,8 @@
 // map it to `content_group` → clean per-page reporting.
 // NOTE: with `define:vars` the script is inline and its body is raw JS — do NOT wrap
 // it in a `{`...`}` template expression (Astro would output that literally).
+import GoogleAdsConversion from "@/components/shared/GoogleAdsConversion.astro";
+
 interface Props {
   pageGroup: string;
 }
@@ -13,63 +15,66 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim();
 ---
 {
   gtmId && (
-    <script is:inline define:vars={{ pageGroup, gtmId }}>
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ page_group: pageGroup });
+    <>
+      <script is:inline define:vars={{ pageGroup, gtmId }}>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ page_group: pageGroup });
 
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", gtmId);
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", gtmId);
 
-      // Total button/CTA tracking — one delegated listener captures every link &
-      // button. Override the auto label with data-cta="…" and the location with
-      // data-cta-section="…" on a wrapping element for cleaner reports.
-      document.addEventListener(
-        "click",
-        function (e) {
-          var t = e.target;
-          if (!t || !t.closest) return;
-          var el = t.closest('a,button,[role="button"],[data-cta]');
-          if (!el) return;
-          var text = (
-            el.getAttribute("data-cta") ||
-            el.getAttribute("aria-label") ||
-            el.textContent ||
-            ""
-          )
-            .replace(/\s+/g, " ")
-            .trim()
-            .slice(0, 80);
-          if (!text) return;
-          var sec = el.closest("[data-cta-section]");
-          var loc = sec
-            ? sec.getAttribute("data-cta-section")
-            : el.closest("header")
-              ? "header"
-              : el.closest("footer")
-                ? "footer"
-                : (el.closest("section[id]") &&
-                    el.closest("section[id]").id) ||
-                  "body";
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "cta_click",
-            cta_text: text,
-            cta_location: loc,
-            cta_href:
-              el.tagName === "A" ? el.getAttribute("href") || "" : "",
-            page_group: pageGroup,
-          });
-        },
-        true,
-      );
-    </script>
+        // Total button/CTA tracking — one delegated listener captures every link &
+        // button. Override the auto label with data-cta="…" and the location with
+        // data-cta-section="…" on a wrapping element for cleaner reports.
+        document.addEventListener(
+          "click",
+          function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            var el = t.closest('a,button,[role="button"],[data-cta]');
+            if (!el) return;
+            var text = (
+              el.getAttribute("data-cta") ||
+              el.getAttribute("aria-label") ||
+              el.textContent ||
+              ""
+            )
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 80);
+            if (!text) return;
+            var sec = el.closest("[data-cta-section]");
+            var loc = sec
+              ? sec.getAttribute("data-cta-section")
+              : el.closest("header")
+                ? "header"
+                : el.closest("footer")
+                  ? "footer"
+                  : (el.closest("section[id]") &&
+                      el.closest("section[id]").id) ||
+                    "body";
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: "cta_click",
+              cta_text: text,
+              cta_location: loc,
+              cta_href:
+                el.tagName === "A" ? el.getAttribute("href") || "" : "",
+              page_group: pageGroup,
+            });
+          },
+          true,
+        );
+      </script>
+      <GoogleAdsConversion />
+    </>
   )
 }

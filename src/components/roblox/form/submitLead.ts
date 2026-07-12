@@ -73,15 +73,24 @@ export async function submitLead(input: SubmitLeadInput): Promise<void> {
       params.set("email", "");
 
       if (input.crm.redirectUrl) {
-        window.location.href = `${input.crm.redirectUrl}?${params.toString()}`;
+        const nextUrl = `${input.crm.redirectUrl}?${params.toString()}`;
+        // Google Ads conversion — waits for the hit, then redirects.
+        if (window.gtag_report_conversion) {
+          window.gtag_report_conversion(nextUrl);
+        } else {
+          window.location.href = nextUrl;
+        }
         return;
       }
 
+      window.gtag_report_conversion?.();
       window.history.pushState(
         {},
         "",
         `${window.location.pathname}?${params.toString()}`,
       );
+    } else {
+      window.gtag_report_conversion?.();
     }
 
     window.dispatchEvent(new CustomEvent("itcc:form-success"));

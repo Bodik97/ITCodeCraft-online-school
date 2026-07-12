@@ -132,8 +132,15 @@ export default function FormComponent({
 
             if (redirectUrl) {
                 reset();
-                window.location.href = `${crmParams.redirectUrl}?${params.toString()}`;
+                const nextUrl = `${crmParams.redirectUrl}?${params.toString()}`;
+                // Google Ads conversion — waits for the hit, then redirects.
+                if (window.gtag_report_conversion) {
+                    window.gtag_report_conversion(nextUrl);
+                } else {
+                    window.location.href = nextUrl;
+                }
             } else {
+                window.gtag_report_conversion?.();
                 window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
                 if (crmParams.isModalForm) {
                     const modal = document.querySelector('.modal');

@@ -23,4 +23,6 @@ interface Window {
   productName?: string;
   fbq?: (...args: unknown[]) => void;
   gtag?: (...args: unknown[]) => void;
+  /** Google Ads conversion: "Заявка Roblox (форма)". */
+  gtag_report_conversion?: (url?: string) => boolean;
 }

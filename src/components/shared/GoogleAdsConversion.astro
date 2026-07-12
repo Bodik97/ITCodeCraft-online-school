@@ -1,0 +1,26 @@
+---
+// Google Ads event snippet: "Заявка Roblox (форма)".
+// Place after the Google/GTM tag. Call window.gtag_report_conversion on lead submit.
+---
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== "function") {
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
+  }
+
+  // Event snippet for Заявка Roblox (форма) conversion
+  window.gtag_report_conversion = function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof url != "undefined") {
+        window.location = url;
+      }
+    };
+    window.gtag("event", "conversion", {
+      send_to: "AW-18135456615/SYizCPutn70cEOe21MdD",
+      event_callback: callback,
+    });
+    return false;
+  };
+</script>

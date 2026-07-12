@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import data from "@/data/roblox.json";
+import GoogleAdsConversion from "@/components/shared/GoogleAdsConversion.astro";
 
 interface Props {
   title: string;
@@ -51,6 +52,7 @@ const organizationJsonLd = JSON.stringify({
       })(window, document, "script", "dataLayer", "GTM-NB6DC34X");
     </script>
     <!-- End Google Tag Manager -->
+    <GoogleAdsConversion />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
