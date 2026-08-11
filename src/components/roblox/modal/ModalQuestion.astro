@@ -2,6 +2,7 @@
 import UseQuestionForm from "@/components/roblox/form/UseQuestionForm.astro";
 import content from "@/data/roblox.json";
 const q = content.faqSection.questionForm;
+const modalCopy = content.modal;
 ---
 
 <div
@@ -32,8 +33,33 @@ const q = content.faqSection.questionForm;
       <h3 id="modal-question-title" class="text-xl font-display font-bold mb-1 text-center pr-8">
         {q.title}
       </h3>
-      <p class="text-slate-400 text-sm text-center mb-6">{q.subtitle}</p>
-      <UseQuestionForm formId="roblox-faq-question-modal" />
+      <p class="text-slate-400 text-sm text-center mb-6" data-question-modal-subtitle>
+        {q.subtitle}
+      </p>
+
+      <div data-question-modal-form>
+        <UseQuestionForm formId="roblox-faq-question-modal" />
+      </div>
+
+      <div
+        data-question-modal-success
+        hidden
+        class="text-center py-6 text-[#0F172A]"
+      >
+        <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+        <h3 class="font-display text-2xl font-bold mb-2 text-[#0F172A]">
+          {modalCopy.successTitle}
+        </h3>
+        <p class="text-[#334155] text-sm">{modalCopy.successMessage}</p>
+      </div>
+
+      <p
+        data-question-modal-error
+        hidden
+        class="mt-4 text-center text-sm font-medium text-[#b91c1c]"
+      >
+        {modalCopy.errorMessage}
+      </p>
     </div>
   </div>
 </div>
@@ -121,23 +147,42 @@ const q = content.faqSection.questionForm;
 </style>
 
 <script>
-  import { onFormSuccess } from "@/lib/formEvents";
+  import { onFormError, onFormSuccess } from "@/lib/formEvents";
   import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
 
   const modal = document.getElementById("modal-question");
   const openTriggers = document.querySelectorAll("[data-open-question-modal]");
+  const formBox = modal?.querySelector("[data-question-modal-form]");
+  const successBox = modal?.querySelector("[data-question-modal-success]");
+  const errorBox = modal?.querySelector("[data-question-modal-error]");
+  const titleEl = document.getElementById("modal-question-title");
+  const subtitleEl = modal?.querySelector("[data-question-modal-subtitle]");
+
+  function isOpen() {
+    return !!modal?.classList.contains("is-open");
+  }
+
+  function resetState() {
+    formBox?.removeAttribute("hidden");
+    successBox?.setAttribute("hidden", "");
+    errorBox?.setAttribute("hidden", "");
+    titleEl?.removeAttribute("hidden");
+    subtitleEl?.removeAttribute("hidden");
+  }
 
   function setQuestionModalOpen(open: boolean) {
     if (!modal) return;
     modal.classList.toggle("is-open", open);
     modal.classList.toggle("hidden", !open);
     modal.setAttribute("aria-hidden", String(!open));
-    if (open) lockBodyScroll();
-    else unlockBodyScroll();
     if (open) {
+      resetState();
+      lockBodyScroll();
       document.dispatchEvent(new CustomEvent("mobile-menu:close"));
       const firstInput = modal.querySelector<HTMLInputElement>("input, textarea");
       window.setTimeout(() => firstInput?.focus(), 100);
+    } else {
+      unlockBodyScroll();
     }
   }
 
@@ -150,10 +195,22 @@ const q = content.faqSection.questionForm;
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && modal?.classList.contains("is-open")) {
+    if (event.key === "Escape" && isOpen()) {
       setQuestionModalOpen(false);
     }
   });
 
-  onFormSuccess(() => setQuestionModalOpen(false));
+  onFormSuccess(() => {
+    if (!isOpen()) return;
+    formBox?.setAttribute("hidden", "");
+    errorBox?.setAttribute("hidden", "");
+    successBox?.removeAttribute("hidden");
+    titleEl?.setAttribute("hidden", "");
+    subtitleEl?.setAttribute("hidden", "");
+  });
+
+  onFormError(() => {
+    if (!isOpen()) return;
+    errorBox?.removeAttribute("hidden");
+  });
 </script>

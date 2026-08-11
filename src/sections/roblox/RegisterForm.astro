@@ -2,6 +2,7 @@
 import UseForm from "@/components/roblox/form/UseForm.astro";
 import content from "@/data/roblox.json";
 const s = content.registerSection;
+const modalCopy = content.modal;
 ---
 
 <section id="cta" class="py-20 bg-[#0F172A] text-white relative">
@@ -15,11 +16,78 @@ const s = content.registerSection;
           {s.perks.map((perk) => <li>{perk}</li>)}
         </ul>
       </div>
-      <div class="fade-in-up bg-white rounded-3xl p-8 shadow-2xl text-[#0F172A]">
-        <h3 class="text-xl font-display font-bold mb-1 text-center">{s.form.title}</h3>
-        <p class="text-slate-400 text-sm text-center mb-6">{s.form.subtitle}</p>
-        <UseForm formId="roblox-register-section" />
+      <div
+        data-roblox-form-card
+        class="fade-in-up bg-white rounded-3xl p-8 shadow-2xl text-[#0F172A] flex flex-col"
+      >
+        <div data-roblox-form-heading>
+          <h3 class="text-xl font-display font-bold mb-1 text-center">{s.form.title}</h3>
+          <p class="text-slate-400 text-sm text-center mb-6">{s.form.subtitle}</p>
+        </div>
+
+        <div data-roblox-form>
+          <UseForm formId="roblox-register-section" />
+        </div>
+
+        <div
+          data-roblox-success
+          hidden
+          class="flex flex-1 flex-col items-center justify-center text-center py-6 text-[#0F172A]"
+        >
+          <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+          <h3 class="font-display text-2xl font-bold mb-2 text-[#0F172A]">
+            {s.form.successTitle}
+          </h3>
+          <p class="text-[#334155] text-sm">{s.form.successMessage}</p>
+        </div>
+
+        <p
+          data-roblox-error
+          hidden
+          class="mt-4 text-center text-sm font-medium text-[#b91c1c]"
+        >
+          {modalCopy.errorMessage}
+        </p>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
+  const card = document.querySelector("[data-roblox-form-card]");
+  const sectionForm = document.querySelector("[data-roblox-form]");
+  const sectionSuccess = document.querySelector("[data-roblox-success]");
+  const sectionError = document.querySelector("[data-roblox-error]");
+  const sectionHeading = document.querySelector("[data-roblox-form-heading]");
+  const registerModal = document.getElementById("modal-register");
+  const questionModal = document.getElementById("modal-question");
+
+  const modalIsOpen = () =>
+    !!registerModal?.classList.contains("is-open") ||
+    !!questionModal?.classList.contains("is-open");
+
+  const lockCardHeight = () => {
+    if (!(card instanceof HTMLElement)) return;
+    card.style.minHeight = `${card.offsetHeight}px`;
+  };
+
+  onFormSuccess(() => {
+    if (modalIsOpen()) return;
+    lockCardHeight();
+    sectionForm?.setAttribute("hidden", "");
+    sectionHeading?.setAttribute("hidden", "");
+    sectionError?.setAttribute("hidden", "");
+    sectionSuccess?.removeAttribute("hidden");
+    document
+      .getElementById("cta")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  onFormError(() => {
+    if (modalIsOpen()) return;
+    lockCardHeight();
+    sectionError?.removeAttribute("hidden");
+  });
+</script>

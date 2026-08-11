@@ -2,6 +2,7 @@
 import UseForm from "@/components/roblox/form/UseForm.astro";
 import content from "@/data/roblox.json";
 const s = content.registerSection;
+const modalCopy = content.modal;
 ---
 
 <div
@@ -20,7 +21,10 @@ const s = content.registerSection;
   ></button>
 
   <div class="register-modal__panel relative w-full max-w-lg text-[#0F172A]">
-    <div class="register-modal__card bg-white rounded-3xl p-8 shadow-2xl">
+    <div
+      class="register-modal__card bg-white rounded-3xl p-8 shadow-2xl flex flex-col"
+      data-register-modal-card
+    >
       <button
         type="button"
         class="register-modal__close"
@@ -33,7 +37,30 @@ const s = content.registerSection;
         {s.form.title}
       </h3>
       <p class="text-slate-400 text-sm text-center mb-6">{s.form.subtitle}</p>
-      <UseForm formId="roblox-register-modal" />
+
+      <div data-register-modal-form>
+        <UseForm formId="roblox-register-modal" />
+      </div>
+
+      <div
+        data-register-modal-success
+        hidden
+        class="flex flex-1 flex-col items-center justify-center text-center py-6 text-[#0F172A]"
+      >
+        <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+        <h3 class="font-display text-2xl font-bold mb-2 text-[#0F172A]">
+          {s.form.successTitle}
+        </h3>
+        <p class="text-[#334155] text-sm">{s.form.successMessage}</p>
+      </div>
+
+      <p
+        data-register-modal-error
+        hidden
+        class="mt-4 text-center text-sm font-medium text-[#b91c1c]"
+      >
+        {modalCopy.errorMessage}
+      </p>
     </div>
   </div>
 </div>
@@ -65,13 +92,6 @@ const s = content.registerSection;
     max-height: min(92vh, 44rem);
     overflow: visible;
     animation: register-modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .register-modal__accent {
-    height: 3px;
-    border-radius: 999px 999px 0 0;
-    background: linear-gradient(90deg, #6366f1 0%, #00a2ff 50%, #fbbf24 100%);
-    opacity: 0.9;
   }
 
   .register-modal__card {
@@ -128,23 +148,51 @@ const s = content.registerSection;
 </style>
 
 <script>
-  import { onFormSuccess } from "@/lib/formEvents";
+  import { onFormError, onFormSuccess } from "@/lib/formEvents";
   import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
 
   const modal = document.getElementById("modal-register");
   const openTriggers = document.querySelectorAll("[data-open-register-modal]");
+  const card = modal?.querySelector("[data-register-modal-card]");
+  const formBox = modal?.querySelector("[data-register-modal-form]");
+  const successBox = modal?.querySelector("[data-register-modal-success]");
+  const errorBox = modal?.querySelector("[data-register-modal-error]");
+  const titleEl = document.getElementById("modal-register-title");
+  const subtitleEl = titleEl?.nextElementSibling;
+
+  function isOpen() {
+    return !!modal?.classList.contains("is-open");
+  }
+
+  function lockCardHeight() {
+    if (!(card instanceof HTMLElement)) return;
+    card.style.minHeight = `${card.offsetHeight}px`;
+  }
+
+  function resetState() {
+    if (card instanceof HTMLElement) card.style.minHeight = "";
+    formBox?.removeAttribute("hidden");
+    successBox?.setAttribute("hidden", "");
+    errorBox?.setAttribute("hidden", "");
+    titleEl?.removeAttribute("hidden");
+    if (subtitleEl instanceof HTMLElement) subtitleEl.removeAttribute("hidden");
+  }
 
   function setRegisterModalOpen(open: boolean) {
     if (!modal) return;
     modal.classList.toggle("is-open", open);
     modal.classList.toggle("hidden", !open);
     modal.setAttribute("aria-hidden", String(!open));
-    if (open) lockBodyScroll();
-    else unlockBodyScroll();
     if (open) {
+      resetState();
+      lockBodyScroll();
       document.dispatchEvent(new CustomEvent("mobile-menu:close"));
-      const firstInput = modal.querySelector<HTMLInputElement>("input, select, textarea");
+      const firstInput = modal.querySelector<HTMLInputElement>(
+        "input, select, textarea",
+      );
       window.setTimeout(() => firstInput?.focus(), 100);
+    } else {
+      unlockBodyScroll();
     }
   }
 
@@ -157,10 +205,24 @@ const s = content.registerSection;
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && modal?.classList.contains("is-open")) {
+    if (event.key === "Escape" && isOpen()) {
       setRegisterModalOpen(false);
     }
   });
 
-  onFormSuccess(() => setRegisterModalOpen(false));
+  onFormSuccess(() => {
+    if (!isOpen()) return;
+    lockCardHeight();
+    formBox?.setAttribute("hidden", "");
+    errorBox?.setAttribute("hidden", "");
+    successBox?.removeAttribute("hidden");
+    titleEl?.setAttribute("hidden", "");
+    if (subtitleEl instanceof HTMLElement) subtitleEl.setAttribute("hidden", "");
+  });
+
+  onFormError(() => {
+    if (!isOpen()) return;
+    lockCardHeight();
+    errorBox?.removeAttribute("hidden");
+  });
 </script>

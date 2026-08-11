@@ -43,7 +43,7 @@ export default function QuestionForm({ copy, crm }: Props) {
     <form
       id={crm.formId}
       onSubmit={onSubmit}
-      className="lead-form space-y-5"
+      className="lead-form"
       data-testid="question-form"
       data-itcc-form="faq-question"
       data-form-id={crm.formId}

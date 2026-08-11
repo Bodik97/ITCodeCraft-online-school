@@ -31,7 +31,7 @@ export default function PhoneField<TFieldValues extends FieldValues>({
   }, [testId]);
 
   return (
-    <div>
+    <div className="relative">
       <label htmlFor={inputId}>Телефон</label>
       <Controller
         name={name}
@@ -46,7 +46,7 @@ export default function PhoneField<TFieldValues extends FieldValues>({
               noCountrySelected: "Оберіть країну",
               countryListAriaLabel: "Список країн",
             }}
-            containerClass="iti--lead-form"
+            containerClass={`iti--lead-form${error ? " has-error" : ""}`}
             countrySelectorMode="DROPDOWN"
             separateDialCode={false}
             numberDisplayFormat="NATIONAL"
@@ -60,6 +60,7 @@ export default function PhoneField<TFieldValues extends FieldValues>({
               onBlur: field.onBlur,
               placeholder: "050 123 45 67",
               "aria-invalid": error ? true : undefined,
+              className: error ? "has-error" : undefined,
             }}
           />
         )}

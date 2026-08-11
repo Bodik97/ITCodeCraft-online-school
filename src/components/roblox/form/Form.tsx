@@ -19,6 +19,12 @@ type Props = {
   crm: CrmParams;
 };
 
+const emptyValues: LeadFormValues = {
+  parentName: "",
+  phone: "",
+  childAge: undefined,
+};
+
 export default function LeadForm({ copy, crm }: Props) {
   const {
     register,
@@ -28,10 +34,12 @@ export default function LeadForm({ copy, crm }: Props) {
     reset,
   } = useForm<LeadFormValues>({
     resolver: zodResolver(leadSchema),
-    defaultValues: { childAge: 10, phone: "" },
+    defaultValues: emptyValues,
   });
 
   const onSubmit = handleSubmit(async (values) => {
+    if (typeof values.childAge !== "number") return;
+
     await submitLead({
       crm,
       trackEvent: "form_submit_lead",
@@ -42,26 +50,28 @@ export default function LeadForm({ copy, crm }: Props) {
       fields: values,
       withRedirect: true,
     });
-    reset();
+    reset(emptyValues);
   });
 
   return (
     <form
       id={crm.formId}
       onSubmit={onSubmit}
-      className="lead-form space-y-5"
+      className="lead-form"
       data-testid="lead-form"
       data-itcc-form="register-lead"
       data-form-id={crm.formId}
       noValidate
     >
-      <div>
+      <div className="relative">
         <label htmlFor="parentName">Ваше ім'я</label>
         <input
           id="parentName"
           data-testid="input-parent-name"
           placeholder="Ваше ім'я"
           autoComplete="name"
+          aria-invalid={errors.parentName ? true : undefined}
+          className={errors.parentName ? "has-error" : undefined}
           {...register("parentName")}
         />
         {errors.parentName && (
