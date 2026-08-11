@@ -3,15 +3,18 @@
 // whole site. Gated on PUBLIC_GTM_ID so nothing loads until the container exists.
 // `pageGroup` is pushed to the dataLayer BEFORE GTM loads so the GA4 config tag can
 // map it to `content_group` → clean per-page reporting.
+// Optional `adsSendTo` enables the Google Ads conversion snippet for that page only.
 // NOTE: with `define:vars` the script is inline and its body is raw JS — do NOT wrap
 // it in a `{`...`}` template expression (Astro would output that literally).
 import GoogleAdsConversion from "@/components/shared/GoogleAdsConversion.astro";
 
 interface Props {
   pageGroup: string;
+  adsSendTo?: string;
 }
-const { pageGroup } = Astro.props;
+const { pageGroup, adsSendTo } = Astro.props;
 const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim();
+const conversionSendTo = adsSendTo?.trim() || "";
 ---
 {
   gtmId && (
@@ -74,7 +77,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim();
           true,
         );
       </script>
-      <GoogleAdsConversion />
+      {conversionSendTo && <GoogleAdsConversion sendTo={conversionSendTo} />}
     </>
   )
 }

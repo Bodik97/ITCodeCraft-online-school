@@ -1,8 +1,8 @@
 # Налаштування аналітики — чекліст
 
 Уніфікація трекінгу під **один site-wide GTM-контейнер** → одна GA4-property
-(`G-00YT0R9QFP`), розподіл по сторінках через `content_group`.
-Roblox лишається на власному контейнері (`GTM-NB6DC34X` + `G-Q2RD189P09`).
+(`G-00YT0R9QFP`), розподіл по сторінках через `content_group` / `page_group`.
+Google Ads conversion — per page через `PUBLIC_GOOGLE_ADS_SEND_TO_*` (зараз заданий лише Roblox).
 
 Код уже готовий (гілка `analytics/unified-gtm`) і gated на env `PUBLIC_GTM_ID` —
 поки ID не заданий і теги в GTM не зібрані, сайт без трекінгу. **Не мерджити в

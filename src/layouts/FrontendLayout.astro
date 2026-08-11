@@ -23,6 +23,7 @@ if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
 
 const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
 const ogImage = new URL("/assets/OGP/fb.png", canonical).href;
+const adsSendTo = import.meta.env.PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND?.trim();
 
 const organizationJsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -77,7 +78,7 @@ const organizationJsonLd = JSON.stringify({
       window.productName = productName;
     </script>
 
-    <Analytics pageGroup="frontend" />
+    <Analytics pageGroup="frontend" adsSendTo={adsSendTo} />
   </head>
   <body class="frontend-site min-h-dvh flex flex-col antialiased">
     <AnalyticsNoscript />

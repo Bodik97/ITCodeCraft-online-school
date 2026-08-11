@@ -20,15 +20,18 @@ jobs:
       - run: npm install
       # Secrets: Settings → Secrets and variables → Actions
       # Потрібні: PUBLIC_GOOGLE_SCRIPT_URL, PUBLIC_TELEGRAM_BOT_TOKEN, PUBLIC_TELEGRAM_CHAT_ID
-      # Опційно: PUBLIC_GTM_ID, PUBLIC_GTM_ID_ROBLOX, PUBLIC_GOOGLE_ADS_SEND_TO
+      # Опційно: PUBLIC_GTM_ID, PUBLIC_GOOGLE_ADS_SEND_TO_*
       - run: npm run build
         env:
           PUBLIC_GTM_ID: ${{ secrets.PUBLIC_GTM_ID != '' && secrets.PUBLIC_GTM_ID || 'GTM-MLSDNBJ4' }}
-          PUBLIC_GTM_ID_ROBLOX: ${{ secrets.PUBLIC_GTM_ID_ROBLOX }}
           PUBLIC_GOOGLE_SCRIPT_URL: ${{ secrets.PUBLIC_GOOGLE_SCRIPT_URL }}
           PUBLIC_TELEGRAM_BOT_TOKEN: ${{ secrets.PUBLIC_TELEGRAM_BOT_TOKEN }}
           PUBLIC_TELEGRAM_CHAT_ID: ${{ secrets.PUBLIC_TELEGRAM_CHAT_ID }}
-          PUBLIC_GOOGLE_ADS_SEND_TO: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO }}
+          PUBLIC_GOOGLE_ADS_SEND_TO_MAIN: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_MAIN }}
+          PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX != '' && secrets.PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX || 'AW-18135456615/SYizCPutn70cEOe21MdD' }}
+          PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND }}
+          PUBLIC_GOOGLE_ADS_SEND_TO_SCRATCH: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_SCRATCH }}
+          PUBLIC_GOOGLE_ADS_SEND_TO_MINECRAFT: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_MINECRAFT }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist

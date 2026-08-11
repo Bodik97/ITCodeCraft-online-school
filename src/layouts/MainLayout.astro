@@ -38,6 +38,7 @@ const hrefBase = canonicalUrl ?? new URL(Astro.url.pathname, site).href;
 const canonical = new URL(hrefBase, site).href.replace(/\/+$/, "") + "/";
 const ogImageFb = new URL("/assets/OGP/fb.png", canonical).href;
 const ogImageTw = new URL("/assets/OGP/tw.png", canonical).href;
+const adsSendTo = import.meta.env.PUBLIC_GOOGLE_ADS_SEND_TO_MAIN?.trim();
 
 const organizationJsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -127,7 +128,7 @@ const organizationJsonLd = JSON.stringify({
     />
     <link rel="manifest" href="./assets/favicon/site.webmanifest" />
 
-    <Analytics pageGroup="main" />
+    <Analytics pageGroup="main" adsSendTo={adsSendTo} />
   </head>
   <body
     class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"

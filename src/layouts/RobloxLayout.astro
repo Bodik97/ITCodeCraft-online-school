@@ -1,7 +1,8 @@
 ---
 import "@/styles/global.css";
 import data from "@/data/roblox.json";
-import GoogleAdsConversion from "@/components/shared/GoogleAdsConversion.astro";
+import Analytics from "@/components/shared/Analytics.astro";
+import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
 
 interface Props {
   title: string;
@@ -16,6 +17,7 @@ if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
 
 const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
 const ogImage = new URL("/opengraph.jpg", canonical).href;
+const adsSendTo = import.meta.env.PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX?.trim();
 
 const organizationJsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -38,21 +40,6 @@ const organizationJsonLd = JSON.stringify({
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <!-- Google Tag Manager -->
-    <script is:inline>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-NB6DC34X");
-    </script>
-    <!-- End Google Tag Manager -->
-    <GoogleAdsConversion />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -71,17 +58,10 @@ const organizationJsonLd = JSON.stringify({
       window.productName = productName;
     </script>
     <link rel="icon" href="/assets/roblox/favicon.svg" type="image/svg+xml" />
+    <Analytics pageGroup="roblox" adsSendTo={adsSendTo} />
   </head>
   <body class="roblox-site min-h-dvh flex flex-col font-sans antialiased">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-NB6DC34X"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"></iframe></noscript
-    >
-    <!-- End Google Tag Manager (noscript) -->
+    <AnalyticsNoscript />
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-white focus:z-[100] focus:text-[#6366F1] focus:font-bold">
       Перейти до головного контенту

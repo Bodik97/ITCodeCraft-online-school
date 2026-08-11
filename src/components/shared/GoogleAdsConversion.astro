@@ -1,8 +1,13 @@
 ---
-// Google Ads event snippet: "Заявка Roblox (форма)".
-// Place after the Google/GTM tag. Call window.gtag_report_conversion on lead submit.
+// Google Ads event snippet — call window.gtag_report_conversion on lead submit.
+// `sendTo` is the conversion label (AW-XXX/label). Omit this component when empty.
+interface Props {
+  sendTo: string;
+}
+
+const { sendTo } = Astro.props;
 ---
-<script is:inline>
+<script is:inline define:vars={{ sendTo }}>
   window.dataLayer = window.dataLayer || [];
   if (typeof window.gtag !== "function") {
     window.gtag = function () {
@@ -10,7 +15,6 @@
     };
   }
 
-  // Event snippet for Заявка Roblox (форма) conversion
   window.gtag_report_conversion = function gtag_report_conversion(url) {
     var callback = function () {
       if (typeof url != "undefined") {
@@ -18,7 +22,7 @@
       }
     };
     window.gtag("event", "conversion", {
-      send_to: "AW-18135456615/SYizCPutn70cEOe21MdD",
+      send_to: sendTo,
       event_callback: callback,
     });
     return false;
