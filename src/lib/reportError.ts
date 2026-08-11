@@ -1,14 +1,14 @@
 /**
  * Reports form-submission events to a Telegram bot.
  *
- * NOTE: the bot token below is bundled into the client. This is a known
+ * NOTE: PUBLIC_TELEGRAM_* are bundled into the client. This is a known
  * limitation — anything needed at runtime in the browser is public. To keep
  * the token secret it must be moved behind a server endpoint (e.g. an Astro
  * API route) that proxies the Telegram call.
  */
 
-const token = "8529596170:AAFZJ18bCQ7ZUVh2nE8QnmBR5yTT2n2Vj5M";
-const chatId = "1009742427";
+const token = import.meta.env.PUBLIC_TELEGRAM_BOT_TOKEN?.trim() ?? "";
+const chatId = import.meta.env.PUBLIC_TELEGRAM_CHAT_ID?.trim() ?? "";
 
 type ReportContext = {
     formId?: string;
@@ -48,6 +48,11 @@ function formatUserData(fields?: Record<string, unknown>, formId?: string): stri
 }
 
 async function sendTelegramMessage(text: string): Promise<void> {
+    if (!token || !chatId) {
+        console.error("Telegram env missing: PUBLIC_TELEGRAM_BOT_TOKEN / PUBLIC_TELEGRAM_CHAT_ID");
+        return;
+    }
+
     const safeText = text.length > 3900 ? `${text.slice(0, 3900)}\n...` : text;
 
     try {

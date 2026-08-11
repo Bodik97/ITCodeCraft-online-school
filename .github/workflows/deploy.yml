@@ -18,9 +18,17 @@ jobs:
         with:
           node-version: 20
       - run: npm install
+      # Secrets: Settings → Secrets and variables → Actions
+      # Потрібні: PUBLIC_GOOGLE_SCRIPT_URL, PUBLIC_TELEGRAM_BOT_TOKEN, PUBLIC_TELEGRAM_CHAT_ID
+      # Опційно: PUBLIC_GTM_ID, PUBLIC_GTM_ID_ROBLOX, PUBLIC_GOOGLE_ADS_SEND_TO
       - run: npm run build
         env:
-          PUBLIC_GTM_ID: GTM-MLSDNBJ4
+          PUBLIC_GTM_ID: ${{ secrets.PUBLIC_GTM_ID != '' && secrets.PUBLIC_GTM_ID || 'GTM-MLSDNBJ4' }}
+          PUBLIC_GTM_ID_ROBLOX: ${{ secrets.PUBLIC_GTM_ID_ROBLOX }}
+          PUBLIC_GOOGLE_SCRIPT_URL: ${{ secrets.PUBLIC_GOOGLE_SCRIPT_URL }}
+          PUBLIC_TELEGRAM_BOT_TOKEN: ${{ secrets.PUBLIC_TELEGRAM_BOT_TOKEN }}
+          PUBLIC_TELEGRAM_CHAT_ID: ${{ secrets.PUBLIC_TELEGRAM_CHAT_ID }}
+          PUBLIC_GOOGLE_ADS_SEND_TO: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist

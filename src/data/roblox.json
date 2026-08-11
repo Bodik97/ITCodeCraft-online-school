@@ -463,8 +463,7 @@
   },
     "crm": {
       "productName": "roblox",
-      "formId": "roblox-landing",
-      "googleScriptUrl": "https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec"
+      "formId": "roblox-landing"
     },
     "registerSection": {
       "eyebrow": "Безкоштовно",

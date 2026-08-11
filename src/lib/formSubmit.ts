@@ -1,7 +1,3 @@
-/** Production Google Apps Script endpoint shared by every lead form. */
-const DEFAULT_GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwLFKEM6U9mmi-WH7-yE61G99VVRHlIpFWWa6TtivbgLmdwjuji-swmE7Rkz7TO0ZLUMA/exec";
-
 /** Поля таблиці лідів (порядок колонок у Google Sheet). */
 export type GoogleSheetLeadPayload = {
   /** Обраний курс */
@@ -61,8 +57,13 @@ export async function submitLeadToGoogleSheet(
 ): Promise<void> {
   const url =
     scriptUrl?.trim() ||
-    import.meta.env.PUBLIC_GOOGLE_SCRIPT_URL?.trim() ||
-    DEFAULT_GOOGLE_SCRIPT_URL;
+    import.meta.env.PUBLIC_GOOGLE_SCRIPT_URL?.trim();
+
+  if (!url) {
+    throw new Error(
+      "Google Script URL missing: set PUBLIC_GOOGLE_SCRIPT_URL or pass scriptUrl",
+    );
+  }
 
   // The Apps Script endpoint returns JSON with `access-control-allow-origin: *`,
   // so we read the real status instead of firing blind (no-cors). text/plain keeps
