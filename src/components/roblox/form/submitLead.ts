@@ -3,7 +3,7 @@ import {
   submitLeadToGoogleSheet,
 } from "@/lib/formSubmit";
 import { pushGtmEvent, uid } from "@/lib/utils";
-import { reportError } from "@/lib/reportError";
+import { reportError, reportLeadSuccess } from "@/lib/reportError";
 
 export type CrmParams = {
   productName: string;
@@ -59,6 +59,8 @@ export async function submitLead(input: SubmitLeadInput): Promise<void> {
 
   try {
     await submitLeadToGoogleSheet(sendData, input.crm.googleScriptUrl);
+
+    void reportLeadSuccess({ formId: input.crm.formId, fields: input.fields });
 
     pushGtmEvent("lead", {
       phone: sendData.phone,

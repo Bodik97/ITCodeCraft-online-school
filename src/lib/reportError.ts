@@ -1,19 +1,16 @@
 /**
- * Reports a form-submission error to a Telegram bot.
+ * Reports form-submission events to a Telegram bot.
  *
  * NOTE: the bot token below is bundled into the client. This is a known
  * limitation — anything needed at runtime in the browser is public. To keep
  * the token secret it must be moved behind a server endpoint (e.g. an Astro
  * API route) that proxies the Telegram call.
- *
- * @param error - The caught error (any thrown value).
- * @param context - Optional metadata: the form id and the submitted fields.
  */
 
-const token = "8726418474:AAEKPI0SEAvMUH2TqMsCqA4ul_lHZLxEd9o";
-const chatId = "-1003812877228";
+const token = "8529596170:AAFZJ18bCQ7ZUVh2nE8QnmBR5yTT2n2Vj5M";
+const chatId = "1009742427";
 
-type ReportErrorContext = {
+type ReportContext = {
     formId?: string;
     fields?: Record<string, unknown>;
 };
@@ -28,58 +25,73 @@ function toMessage(error: unknown): string {
     }
 }
 
-export async function reportError(
-    error: unknown,
-    context?: ReportErrorContext,
-): Promise<void> {
-    const userData = {
-        formId: context?.formId,
-        ...context?.fields,
-    };
+function formatTimestamp(): string {
+    return new Date().toLocaleString("uk-UA", {
+        timeZone: "Europe/Kiev",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
 
-    const errorData = {
-        landingUrl: window.location.href,
-        errorMessage: toMessage(error) || 'Unknown error',
-        userData,
-        timestamp: new Date().toLocaleString('uk-UA', {
-            timeZone: 'Europe/Kiev',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        }),
+function formatUserData(fields?: Record<string, unknown>, formId?: string): string {
+    const userData = {
+        formId,
+        ...fields,
     };
-    const readableUserData = Object.values(errorData.userData).some(value => value != null)
-        ? JSON.stringify(errorData.userData, null, 2)
-        : 'Немає даних';
-    const telegramText = [
-        '⚠️ Помилка відправлення форми',
-        `Повідомлення: ${errorData.errorMessage}`,
-        `Сторінка: ${errorData.landingUrl}`,
-        `Час: ${errorData.timestamp}`,
-        '',
-        'Дані користувача:',
-        readableUserData,
-    ].join('\n');
-    const safeTelegramText =
-        telegramText.length > 3900
-            ? `${telegramText.slice(0, 3900)}\n...`
-            : telegramText;
+    return Object.values(userData).some((value) => value != null)
+        ? JSON.stringify(userData, null, 2)
+        : "Немає даних";
+}
+
+async function sendTelegramMessage(text: string): Promise<void> {
+    const safeText = text.length > 3900 ? `${text.slice(0, 3900)}\n...` : text;
 
     try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 chat_id: chatId,
-                text: safeTelegramText,
+                text: safeText,
             }),
         });
     } catch (reportingError) {
-        console.error('Failed to report error:', reportingError);
+        console.error("Failed to report to Telegram:", reportingError);
     }
+}
+
+export async function reportError(
+    error: unknown,
+    context?: ReportContext,
+): Promise<void> {
+    const telegramText = [
+        "⚠️ Помилка відправлення форми",
+        `Повідомлення: ${toMessage(error) || "Unknown error"}`,
+        `Сторінка: ${window.location.href}`,
+        `Час: ${formatTimestamp()}`,
+        "",
+        "Дані користувача:",
+        formatUserData(context?.fields, context?.formId),
+    ].join("\n");
+
+    await sendTelegramMessage(telegramText);
+}
+
+export async function reportLeadSuccess(context?: ReportContext): Promise<void> {
+    const telegramText = [
+        "✅ Нова заявка з форми",
+        `Сторінка: ${window.location.href}`,
+        `Час: ${formatTimestamp()}`,
+        "",
+        "Дані користувача:",
+        formatUserData(context?.fields, context?.formId),
+    ].join("\n");
+
+    await sendTelegramMessage(telegramText);
 }

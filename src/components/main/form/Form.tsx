@@ -6,7 +6,7 @@ import { useUserInfoStore } from '@/store/useUserInfoStore.ts';
 import { cn, pushGtmEvent, uid } from '@/lib/utils';
 
 
-import { reportError } from '@/lib/reportError';
+import { reportError, reportLeadSuccess } from '@/lib/reportError';
 import {
   buildGoogleSheetLeadPayload,
   submitLeadToGoogleSheet,
@@ -104,6 +104,8 @@ export default function FormComponent({
             const mergedData = {
                 ...sendData,
             };
+
+            void reportLeadSuccess({ formId: crmParams.formId, fields: formData });
 
             await pushGtmEvent('lead', {
                 phone: mergedData.phone,
