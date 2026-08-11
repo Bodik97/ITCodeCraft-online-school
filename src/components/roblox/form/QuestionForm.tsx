@@ -27,19 +27,16 @@ export default function QuestionForm({ copy, crm }: Props) {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    try {
-      await submitLead({
-        crm,
-        trackEvent: "form_submit_question",
-        trackContext: "faq_питання",
-        name: values.name,
-        phone: values.phone,
-        question: values.question,
-        fields: values,
-      });
-    } finally {
-      reset();
-    }
+    await submitLead({
+      crm,
+      trackEvent: "form_submit_question",
+      trackContext: "faq_питання",
+      name: values.name,
+      phone: values.phone,
+      question: values.question,
+      fields: values,
+    });
+    reset();
   });
 
   return (

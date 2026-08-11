@@ -32,20 +32,17 @@ export default function LeadForm({ copy, crm }: Props) {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    try {
-      await submitLead({
-        crm,
-        trackEvent: "form_submit_lead",
-        trackContext: "блок_на_сайті",
-        name: values.parentName,
-        phone: values.phone,
-        childAge: values.childAge,
-        fields: values,
-        withRedirect: true,
-      });
-    } finally {
-      reset();
-    }
+    await submitLead({
+      crm,
+      trackEvent: "form_submit_lead",
+      trackContext: "блок_на_сайті",
+      name: values.parentName,
+      phone: values.phone,
+      childAge: values.childAge,
+      fields: values,
+      withRedirect: true,
+    });
+    reset();
   });
 
   return (

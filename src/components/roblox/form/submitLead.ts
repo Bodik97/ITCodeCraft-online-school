@@ -99,5 +99,6 @@ export async function submitLead(input: SubmitLeadInput): Promise<void> {
   } catch (error) {
     reportError(error, { formId: input.crm.formId, fields: input.fields });
     window.dispatchEvent(new CustomEvent("itcc:form-error"));
+    throw error;
   }
 }
