@@ -846,8 +846,10 @@ const particles = [
 
   {/* ---------- PAGE SCRIPTS ---------- */}
   <script>
+    import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
     // Success / error feedback for the lead form
-    document.addEventListener("itcc:form-success", () => {
+    onFormSuccess(() => {
       document.querySelector("[data-mc-form]")?.setAttribute("hidden", "");
       document.querySelector("[data-mc-error]")?.setAttribute("hidden", "");
       document.querySelector("[data-mc-success]")?.removeAttribute("hidden");
@@ -855,7 +857,7 @@ const particles = [
         .getElementById("register")
         ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
-    document.addEventListener("itcc:form-error", () => {
+    onFormError(() => {
       document.querySelector("[data-mc-error]")?.removeAttribute("hidden");
     });
 

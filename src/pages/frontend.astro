@@ -668,8 +668,10 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
 
   {/* ---------- PAGE SCRIPTS ---------- */}
   <script>
+    import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
     // Success / error feedback for the lead form
-    document.addEventListener("itcc:form-success", () => {
+    onFormSuccess(() => {
       document.querySelector("[data-fe-form]")?.setAttribute("hidden", "");
       document.querySelector("[data-fe-error]")?.setAttribute("hidden", "");
       document.querySelector("[data-fe-success]")?.removeAttribute("hidden");
@@ -677,7 +679,7 @@ const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
         .getElementById("register")
         ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
-    document.addEventListener("itcc:form-error", () => {
+    onFormError(() => {
       document.querySelector("[data-fe-error]")?.removeAttribute("hidden");
     });
 

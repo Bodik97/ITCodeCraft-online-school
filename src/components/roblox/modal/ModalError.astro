@@ -11,6 +11,7 @@ import content from "@/data/roblox.json";
 </div>
 
 <script>
+  import { onFormError } from "@/lib/formEvents";
   import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
 
   const modal = document.getElementById("modal-error");
@@ -23,6 +24,6 @@ import content from "@/data/roblox.json";
     else unlockBodyScroll();
   }
 
-  window.addEventListener("itcc:form-error", () => setErrorModalOpen(true));
+  onFormError(() => setErrorModalOpen(true));
   document.getElementById("modal-error-close")?.addEventListener("click", () => setErrorModalOpen(false));
 </script>

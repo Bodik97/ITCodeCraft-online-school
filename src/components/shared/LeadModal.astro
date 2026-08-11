@@ -98,10 +98,11 @@ const styleVars = `--form-accent:${accent};--form-accent-rgb:${accentRgb};--form
   </div>
 </div>
 
-<script is:inline>
-  (function () {
-    const root = document.querySelector("[data-lead-modal-root]");
-    if (!(root instanceof HTMLElement)) return;
+<script>
+  import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
+  const root = document.querySelector("[data-lead-modal-root]");
+  if (root instanceof HTMLElement) {
     const panel = root.querySelector(".lead-modal-panel");
     const formBox = root.querySelector("[data-lead-modal-form]");
     const successBox = root.querySelector("[data-lead-modal-success]");
@@ -155,15 +156,15 @@ const styleVars = `--form-accent:${accent};--form-accent-rgb:${accentRgb};--form
       if (e.key === "Escape") close();
     });
 
-    document.addEventListener("itcc:form-success", () => {
+    onFormSuccess(() => {
       if (isClosed()) return;
       formBox?.setAttribute("hidden", "");
       errorBox?.setAttribute("hidden", "");
       successBox?.removeAttribute("hidden");
     });
-    document.addEventListener("itcc:form-error", () => {
+    onFormError(() => {
       if (isClosed()) return;
       errorBox?.removeAttribute("hidden");
     });
-  })();
+  }
 </script>

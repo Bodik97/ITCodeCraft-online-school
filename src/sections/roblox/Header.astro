@@ -10,29 +10,29 @@ const { navigation, brand } = content;
     <div class="flex items-center gap-2 min-w-0">
       <Logo href={brand.homeUrl} />
     </div>
-    <nav class="hidden md:flex items-center gap-5" aria-label="Навігація">
+    <nav class="hidden lg:flex items-center gap-5 xl:gap-6" aria-label="Навігація">
       {navigation.links.map((link) => (
         <a
           href={`#${link.id}`}
-          class="text-sm font-medium text-white/70 hover:text-white transition-colors"
+          class="text-sm font-medium text-white/70 hover:text-white transition-colors whitespace-nowrap"
         >
           {link.label}
         </a>
       ))}
     </nav>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 shrink-0">
       <button
         type="button"
         data-open-register-modal
         data-testid="button-header-cta"
-        class="hidden md:inline-flex px-5 py-2 rounded-xl font-bold text-sm btn-3d-amber"
+        class="hidden lg:inline-flex px-5 py-2 rounded-xl font-bold text-sm btn-3d-amber whitespace-nowrap"
       >
         {navigation.ctaLabel}
       </button>
       <button
         id="mobile-menu-toggle"
         type="button"
-        class="menu-toggle md:hidden"
+        class="menu-toggle lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu-panel"
         data-label-open={navigation.openMenuLabel}
@@ -48,11 +48,11 @@ const { navigation, brand } = content;
     </div>
   </div>
 
-  <div id="mobile-menu-backdrop" class="mobile-menu-backdrop md:hidden" aria-hidden="true"></div>
+  <div id="mobile-menu-backdrop" class="mobile-menu-backdrop lg:hidden" aria-hidden="true"></div>
 
   <div
     id="mobile-menu-panel"
-    class="mobile-menu-panel md:hidden"
+    class="mobile-menu-panel lg:hidden"
     role="dialog"
     aria-modal="true"
     aria-labelledby="mobile-menu-title"
@@ -109,7 +109,7 @@ const { navigation, brand } = content;
       box-shadow 0.2s ease;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .menu-toggle {
       display: none;
     }

@@ -67,7 +67,9 @@ const success = data.registerSection.success;
   </div>
 </div>
 
-<script is:inline>
+<script>
+  import { onFormSuccess } from "@/lib/formEvents";
+
   const successModalRoot = document.querySelector("[data-modal-success-root]");
   const successModalContent = document.querySelector(
     "[data-modal-success-content]",
@@ -145,6 +147,6 @@ const success = data.registerSection.success;
       }
     });
 
-    document.addEventListener("itcc:form-success", openModal);
+    onFormSuccess(openModal);
   }
 </script>

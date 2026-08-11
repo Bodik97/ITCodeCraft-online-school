@@ -3,6 +3,7 @@ import {
   submitLeadToGoogleSheet,
 } from "@/lib/formSubmit";
 import { pushGtmEvent, uid } from "@/lib/utils";
+import { dispatchFormError, dispatchFormSuccess } from "@/lib/formEvents";
 import { reportError, reportLeadSuccess } from "@/lib/reportError";
 
 export type CrmParams = {
@@ -95,10 +96,10 @@ export async function submitLead(input: SubmitLeadInput): Promise<void> {
       window.gtag_report_conversion?.();
     }
 
-    window.dispatchEvent(new CustomEvent("itcc:form-success"));
+    dispatchFormSuccess();
   } catch (error) {
     reportError(error, { formId: input.crm.formId, fields: input.fields });
-    window.dispatchEvent(new CustomEvent("itcc:form-error"));
+    dispatchFormError();
     throw error;
   }
 }

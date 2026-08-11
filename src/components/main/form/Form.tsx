@@ -6,6 +6,7 @@ import { useUserInfoStore } from '@/store/useUserInfoStore.ts';
 import { cn, pushGtmEvent, uid } from '@/lib/utils';
 
 
+import { dispatchFormError, dispatchFormSuccess } from '@/lib/formEvents';
 import { reportError, reportLeadSuccess } from '@/lib/reportError';
 import {
   buildGoogleSheetLeadPayload,
@@ -80,7 +81,7 @@ export default function FormComponent({
         // drop the submission (show success) without touching the lead endpoint.
         if (honeypotRef.current?.value) {
             reset();
-            document.dispatchEvent(new CustomEvent('itcc:form-success'));
+            dispatchFormSuccess();
             return;
         }
 
@@ -152,7 +153,7 @@ export default function FormComponent({
                     }
                 }
 
-                document.dispatchEvent(new CustomEvent('itcc:form-success'));
+                dispatchFormSuccess();
 
 
             }
@@ -165,7 +166,7 @@ export default function FormComponent({
 
         } catch (error) {
             reportError(error, { formId: crmParams.formId, fields: formData });
-            document.dispatchEvent(new CustomEvent('itcc:form-error'));
+            dispatchFormError();
         }
     };
 

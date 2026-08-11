@@ -56,7 +56,7 @@ export default function LeadForm({ copy, crm }: Props) {
       noValidate
     >
       <div>
-        <label htmlFor="parentName">Ім&apos;я батька або мами</label>
+        <label htmlFor="parentName">Ваше ім'я</label>
         <input
           id="parentName"
           data-testid="input-parent-name"

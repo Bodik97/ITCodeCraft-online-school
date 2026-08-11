@@ -799,7 +799,9 @@ const blockStack = [
 
   {/* ---------- PAGE SCRIPTS ---------- */}
   <script>
-    document.addEventListener("itcc:form-success", () => {
+    import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
+    onFormSuccess(() => {
       document.querySelector("[data-sc-form]")?.setAttribute("hidden", "");
       document.querySelector("[data-sc-error]")?.setAttribute("hidden", "");
       document.querySelector("[data-sc-success]")?.removeAttribute("hidden");
@@ -807,7 +809,7 @@ const blockStack = [
         .getElementById("register")
         ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
-    document.addEventListener("itcc:form-error", () => {
+    onFormError(() => {
       document.querySelector("[data-sc-error]")?.removeAttribute("hidden");
     });
 

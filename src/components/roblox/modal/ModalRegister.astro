@@ -128,6 +128,7 @@ const s = content.registerSection;
 </style>
 
 <script>
+  import { onFormSuccess } from "@/lib/formEvents";
   import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
 
   const modal = document.getElementById("modal-register");
@@ -161,5 +162,5 @@ const s = content.registerSection;
     }
   });
 
-  window.addEventListener("itcc:form-success", () => setRegisterModalOpen(false));
+  onFormSuccess(() => setRegisterModalOpen(false));
 </script>

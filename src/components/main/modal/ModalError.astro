@@ -62,7 +62,9 @@
   </div>
 </div>
 
-<script is:inline>
+<script>
+  import { onFormError } from "@/lib/formEvents";
+
   const errorModalRoot = document.querySelector("[data-modal-error-root]");
   const errorModalContent = document.querySelector("[data-modal-error-content]");
   const errorModalCloseButtons = document.querySelectorAll(
@@ -118,6 +120,6 @@
       }
     });
 
-    document.addEventListener("itcc:form-error", openModal);
+    onFormError(openModal);
   }
 </script>
