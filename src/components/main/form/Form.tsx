@@ -99,6 +99,16 @@ export default function FormComponent({
             childAge: formData.childAge ?? formData.child_age,
         });
 
+        window.itccTrack?.(
+            'form_submit_lead',
+            JSON.stringify({
+                context: crmParams.isModalForm ? 'модалка' : 'блок_на_сайті',
+                course: resolvedProductName,
+                ...formData,
+            }),
+            { skipThrottle: true },
+        );
+
         try {
             await submitLeadToGoogleSheet(sendData);
 

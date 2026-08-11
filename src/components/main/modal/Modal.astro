@@ -138,6 +138,10 @@ const modal = data.modal;
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "registration_modal_open", ...modalOpenData });
       window.gtag?.("event", "registration_modal_open", modalOpenData);
+      window.itccTrack?.(
+        "registration_modal_open",
+        JSON.stringify(modalOpenData),
+      );
 
       modalRoot.removeAttribute("inert");
       modalRoot.setAttribute("aria-hidden", "false");

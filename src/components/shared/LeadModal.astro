@@ -123,9 +123,20 @@ const styleVars = `--form-accent:${accent};--form-accent-rgb:${accentRgb};--form
       errorBox?.setAttribute("hidden", "");
     };
 
-    const open = () => {
+    const open = (opener?: Element) => {
       if (!isClosed()) return;
       resetState();
+      const source =
+        opener instanceof HTMLElement
+          ? opener.getAttribute("data-cta") ||
+            opener.getAttribute("aria-label") ||
+            opener.textContent?.replace(/\s+/g, " ").trim().slice(0, 80) ||
+            "lead_modal"
+          : "lead_modal";
+      window.itccTrack?.(
+        "registration_modal_open",
+        JSON.stringify({ source, page: location.pathname }),
+      );
       root.removeAttribute("inert");
       root.setAttribute("aria-hidden", "false");
       root.classList.remove(...hiddenRoot);
@@ -148,7 +159,7 @@ const styleVars = `--form-accent:${accent};--form-accent-rgb:${accentRgb};--form
     openers.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         if (btn instanceof HTMLAnchorElement) e.preventDefault();
-        open();
+        open(btn);
       });
     });
     closers.forEach((btn) => btn.addEventListener("click", close));

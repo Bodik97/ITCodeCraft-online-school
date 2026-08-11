@@ -17,6 +17,19 @@ dataLayer-події, які вже шле сайт (їх підхоплює GTM
 | `registration_modal_open` | `cta_source`, `course` | Modal.astro |
 | `page_group` (init push) | `main` / `minecraft` / `scratch` / `frontend` | Analytics.astro |
 
+### Telegram (поведінкові події)
+
+`window.itccTrack(event, label)` → `PUBLIC_ITCC_TRACK_ENDPOINT` (Apps Script) → Telegram.
+Шаблон скрипта: `scripts/itcc-track-telegram.example.gs`.
+
+| Подія | Коли |
+|---|---|
+| `registration_modal_open` | відкриття модалки реєстрації (main + landing) |
+| `form_submit_lead` / `form_submit_question` | сабміт форми (до відповіді сервера) |
+
+Успішні/неуспішні заявки також йдуть окремо через `reportLeadSuccess` / `reportError`
+(`PUBLIC_TELEGRAM_*`) — зручніші повідомлення з полями ліда.
+
 ---
 
 ## 🔓 Крок 1 — Створити GTM-контейнер (розблоковує код)

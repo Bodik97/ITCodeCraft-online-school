@@ -1,0 +1,44 @@
+---
+// Client event tracker → PUBLIC_ITCC_TRACK_ENDPOINT (Google Apps Script → Telegram).
+// See scripts/itcc-track-telegram.example.gs. No-op when endpoint is empty.
+const endpoint = import.meta.env.PUBLIC_ITCC_TRACK_ENDPOINT?.trim() ?? "";
+---
+
+<script is:inline define:vars={{ endpoint }}>
+  (function () {
+    var THROTTLE_MS = 2000;
+    var lastSent = Object.create(null);
+
+    function post(event, label) {
+      if (!endpoint) return;
+      var body = JSON.stringify({
+        event: String(event || "unknown").slice(0, 120),
+        label: String(label || "").slice(0, 3800),
+        url: String(location.href || "").slice(0, 500),
+        userAgent: String(navigator.userAgent || "").slice(0, 200),
+        timestamp: Date.now(),
+      });
+      try {
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: body,
+          keepalive: true,
+          mode: "cors",
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
+    window.itccTrack = function (event, label, opts) {
+      var skip = opts && opts.skipThrottle;
+      var key = String(event || "") + "\0" + String(label || "").slice(0, 512);
+      var now = Date.now();
+      if (!skip) {
+        var prev = lastSent[key];
+        if (prev && now - prev < THROTTLE_MS) return;
+        lastSent[key] = now;
+      }
+      post(event, label);
+    };
+  })();
+</script>

@@ -4,9 +4,11 @@
 // `pageGroup` is pushed to the dataLayer BEFORE GTM loads so the GA4 config tag can
 // map it to `content_group` → clean per-page reporting.
 // Optional `adsSendTo` enables the Google Ads conversion snippet for that page only.
+// CTA clicks also go to Telegram via window.itccTrack (ItccTrack.astro).
 // NOTE: with `define:vars` the script is inline and its body is raw JS — do NOT wrap
 // it in a `{`...`}` template expression (Astro would output that literally).
 import GoogleAdsConversion from "@/components/shared/GoogleAdsConversion.astro";
+import ItccTrack from "@/components/shared/ItccTrack.astro";
 
 interface Props {
   pageGroup: string;
@@ -16,6 +18,7 @@ const { pageGroup, adsSendTo } = Astro.props;
 const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim();
 const conversionSendTo = adsSendTo?.trim() || "";
 ---
+<ItccTrack />
 {
   gtmId && (
     <>
@@ -33,51 +36,50 @@ const conversionSendTo = adsSendTo?.trim() || "";
           j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
           f.parentNode.insertBefore(j, f);
         })(window, document, "script", "dataLayer", gtmId);
-
-        // Total button/CTA tracking — one delegated listener captures every link &
-        // button. Override the auto label with data-cta="…" and the location with
-        // data-cta-section="…" on a wrapping element for cleaner reports.
-        document.addEventListener(
-          "click",
-          function (e) {
-            var t = e.target;
-            if (!t || !t.closest) return;
-            var el = t.closest('a,button,[role="button"],[data-cta]');
-            if (!el) return;
-            var text = (
-              el.getAttribute("data-cta") ||
-              el.getAttribute("aria-label") ||
-              el.textContent ||
-              ""
-            )
-              .replace(/\s+/g, " ")
-              .trim()
-              .slice(0, 80);
-            if (!text) return;
-            var sec = el.closest("[data-cta-section]");
-            var loc = sec
-              ? sec.getAttribute("data-cta-section")
-              : el.closest("header")
-                ? "header"
-                : el.closest("footer")
-                  ? "footer"
-                  : (el.closest("section[id]") &&
-                      el.closest("section[id]").id) ||
-                    "body";
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-              event: "cta_click",
-              cta_text: text,
-              cta_location: loc,
-              cta_href:
-                el.tagName === "A" ? el.getAttribute("href") || "" : "",
-              page_group: pageGroup,
-            });
-          },
-          true,
-        );
       </script>
       {conversionSendTo && <GoogleAdsConversion sendTo={conversionSendTo} />}
     </>
   )
 }
+<script is:inline define:vars={{ pageGroup }}>
+  // Delegated CTA tracking → dataLayer (GTM). Telegram gets high-intent events
+  // via window.itccTrack (modal open, form submit) — not every button click.
+  document.addEventListener(
+    "click",
+    function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var el = t.closest('a,button,[role="button"],[data-cta]');
+      if (!el) return;
+      var text = (
+        el.getAttribute("data-cta") ||
+        el.getAttribute("aria-label") ||
+        el.textContent ||
+        ""
+      )
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 80);
+      if (!text) return;
+      var sec = el.closest("[data-cta-section]");
+      var loc = sec
+        ? sec.getAttribute("data-cta-section")
+        : el.closest("header")
+          ? "header"
+          : el.closest("footer")
+            ? "footer"
+            : (el.closest("section[id]") && el.closest("section[id]").id) ||
+              "body";
+      var href = el.tagName === "A" ? el.getAttribute("href") || "" : "";
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "cta_click",
+        cta_text: text,
+        cta_location: loc,
+        cta_href: href,
+        page_group: pageGroup,
+      });
+    },
+    true,
+  );
+</script>

@@ -20,13 +20,14 @@ jobs:
       - run: npm install
       # Secrets: Settings → Secrets and variables → Actions
       # Потрібні: PUBLIC_GOOGLE_SCRIPT_URL, PUBLIC_TELEGRAM_BOT_TOKEN, PUBLIC_TELEGRAM_CHAT_ID
-      # Опційно: PUBLIC_GTM_ID, PUBLIC_GOOGLE_ADS_SEND_TO_*
+      # Опційно: PUBLIC_GTM_ID, PUBLIC_ITCC_TRACK_ENDPOINT, PUBLIC_GOOGLE_ADS_SEND_TO_*
       - run: npm run build
         env:
           PUBLIC_GTM_ID: ${{ secrets.PUBLIC_GTM_ID != '' && secrets.PUBLIC_GTM_ID || 'GTM-MLSDNBJ4' }}
           PUBLIC_GOOGLE_SCRIPT_URL: ${{ secrets.PUBLIC_GOOGLE_SCRIPT_URL }}
           PUBLIC_TELEGRAM_BOT_TOKEN: ${{ secrets.PUBLIC_TELEGRAM_BOT_TOKEN }}
           PUBLIC_TELEGRAM_CHAT_ID: ${{ secrets.PUBLIC_TELEGRAM_CHAT_ID }}
+          PUBLIC_ITCC_TRACK_ENDPOINT: ${{ secrets.PUBLIC_ITCC_TRACK_ENDPOINT }}
           PUBLIC_GOOGLE_ADS_SEND_TO_MAIN: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_MAIN }}
           PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX != '' && secrets.PUBLIC_GOOGLE_ADS_SEND_TO_ROBLOX || 'AW-18135456615/SYizCPutn70cEOe21MdD' }}
           PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND: ${{ secrets.PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND }}
