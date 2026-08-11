@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none">
+  <rect width="180" height="180" rx="36" fill="#FF8C1A"/>
+  <!-- Scratch-like cat face -->
+  <path d="M40 78 L52 38 L72 62 Z" fill="#FFE0BF"/>
+  <path d="M140 78 L128 38 L108 62 Z" fill="#FFE0BF"/>
+  <circle cx="90" cy="98" r="48" fill="#FFE0BF"/>
+  <circle cx="72" cy="92" r="8" fill="#2B2440"/>
+  <circle cx="108" cy="92" r="8" fill="#2B2440"/>
+  <path d="M90 102 L84 112 L90 110 L96 112 Z" fill="#FF4D6D"/>
+  <path d="M78 122 Q90 132 102 122" stroke="#2B2440" stroke-width="5" stroke-linecap="round" fill="none"/>
+</svg>

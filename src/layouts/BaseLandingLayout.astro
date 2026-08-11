@@ -23,6 +23,7 @@ interface Props {
   jsonLd: string;
   productName: string;
   faviconHref?: string;
+  appleTouchIconHref?: string;
 }
 
 const {
@@ -42,6 +43,7 @@ const {
   jsonLd,
   productName,
   faviconHref = "/assets/favicon/favicon-32x32.png",
+  appleTouchIconHref = "/assets/favicon/apple-touch-icon.png",
 } = Astro.props;
 
 const site = Astro.site;
@@ -49,6 +51,11 @@ if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
 
 const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
 const ogImage = new URL(ogImagePath, canonical).href;
+const faviconType = faviconHref.endsWith(".svg")
+  ? "image/svg+xml"
+  : faviconHref.endsWith(".ico")
+    ? "image/x-icon"
+    : "image/png";
 ---
 
 <!doctype html>
@@ -74,8 +81,8 @@ const ogImage = new URL(ogImagePath, canonical).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="icon" type="image/png" sizes="32x32" href={faviconHref} />
-    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" href={faviconHref} type={faviconType} />
+    <link rel="apple-touch-icon" href={appleTouchIconHref} />
 
     <script is:inline type="application/ld+json" set:html={jsonLd} />
     <script is:inline define:vars={{ productName }}>
