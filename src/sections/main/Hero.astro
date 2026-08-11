@@ -1,6 +1,6 @@
 ---
 import content from "@/data/main.json";
-import HeroBg from "@/components/main/HeroBg.astro";
+import heroBgVideo from "@/assets/main/hero-bg.mp4";
 import UseForm from "@/components/main/form/UseForm.astro";
 import { Icon } from "astro-icon/components";
 
@@ -27,7 +27,26 @@ const getInitialCounterValue = (rawValue: string): string => {
   id="hero-section"
   class="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper pt-40 pb-20"
 >
-  <HeroBg />
+  <div
+    class="hero-video-bg absolute inset-0 z-0 overflow-hidden pointer-events-none"
+    aria-hidden="true"
+  >
+    <video
+      class="hero-video absolute inset-0 h-full w-full object-cover"
+      src={heroBgVideo}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    />
+    <!-- Soft white mist — video still visible, without a harsh wash -->
+    <div class="absolute inset-0 bg-paper/40"></div>
+    <div
+      class="absolute inset-0 bg-linear-to-b from-paper/25 via-transparent to-paper/55"
+    >
+    </div>
+  </div>
 
   <div
     class="hero-parallax relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-full lg:w-full xl:max-w-7xl"
@@ -45,7 +64,7 @@ const getInitialCounterValue = (rawValue: string): string => {
       <div>
         <p
           set:html={content.hero.subtitle}
-          class="hero-reveal text-sm max-w-115 md:text-lg text-slate-600 mb-4 md:max-w-125 lg:max-w-150"
+          class="hero-reveal text-sm max-w-115 md:text-lg text-white mb-4 md:max-w-125 lg:max-w-150 [text-shadow:0_1px_12px_rgba(15,23,42,0.35)]"
           style="transition-delay: 0.25s"
         />
         <h2
@@ -188,12 +207,33 @@ const getInitialCounterValue = (rawValue: string): string => {
   .hero-reveal:nth-child(3) {
     transition-delay: 0.4s;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      display: none;
+    }
+  }
 </style>
 
 <script>
   const heroSection = document.getElementById("hero-section");
 
   if (heroSection) {
+    const video = heroSection.querySelector<HTMLVideoElement>(".hero-video");
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (video) {
+      if (prefersReduced) {
+        video.pause();
+        video.removeAttribute("autoplay");
+      } else {
+        // iOS / some browsers ignore autoplay until a play() promise
+        video.play().catch(() => {});
+      }
+    }
+
     // --- Parallax ---
     const layers = [
       ...heroSection.querySelectorAll<HTMLElement>(".hero-parallax"),
@@ -242,10 +282,6 @@ const getInitialCounterValue = (rawValue: string): string => {
     });
 
     // --- Staggered reveal on load ---
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
     if (prefersReduced) {
       heroSection
         .querySelectorAll(".hero-reveal")
