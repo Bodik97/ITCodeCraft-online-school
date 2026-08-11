@@ -1,0 +1,429 @@
+---
+import { Icon } from "astro-icon/components";
+import {
+  SCRATCH_BLOCK_COLORS,
+  type LandingPrefix,
+} from "./theme";
+
+interface HeroStat {
+  value: string;
+  label: string;
+}
+
+interface StackItem {
+  name: string;
+  icon: string;
+}
+
+interface ParticleToken {
+  t?: string;
+  left: string;
+  delay: string;
+  duration: string;
+  color: string;
+  size: number;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  hero: {
+    badges: string[];
+    title: string;
+    titleAccent: string;
+    subtitle: string;
+    ctaPrimary: string;
+    ctaNote: string;
+    stats: HeroStat[];
+    codeLines?: string[];
+  };
+  /** FE tech stack marquee */
+  stack?: StackItem[];
+  /** SC/MC builds marquee strings */
+  builds?: string[];
+  particles: ParticleToken[];
+  heroStatColors?: string[];
+  /** Hero media */
+  image: { src: string; alt: string };
+  /** Secondary CTA */
+  ctaSecondary: { href: string; label: string };
+  /** FE: open lead modal on primary; SC: link to #register; MC: modal */
+  primaryCtaMode?: "modal" | "link";
+  primaryCtaHref?: string;
+  /** Floating badges on media (SC/MC) */
+  mediaBadges?: { text: string; class?: string }[];
+}
+
+const {
+  prefix,
+  hero,
+  stack,
+  builds,
+  particles,
+  heroStatColors,
+  image,
+  ctaSecondary,
+  primaryCtaMode = prefix === "sc" ? "link" : "modal",
+  primaryCtaHref = "#register",
+  mediaBadges = [],
+} = Astro.props;
+
+const feStatColors = heroStatColors ?? ["#818cf8", "#a78bfa", "#22d3ee"];
+const scStatColors = heroStatColors ?? ["#4C97FF", "#9966FF", "#FF8C1A"];
+---
+
+{
+  prefix === "fe" && (
+    <section class="relative overflow-hidden bg-linear-to-b from-[#0b1120] via-[#0f172a] to-[#131c33] text-white">
+      <div
+        class="pointer-events-none absolute -top-40 -left-32 w-120 h-120 rounded-full bg-[#6366f1]/30 blur-[120px]"
+        aria-hidden="true"
+      />
+      <div
+        class="pointer-events-none absolute -bottom-48 -right-28 w-135 h-135 rounded-full bg-neon-cyan/20 blur-[130px]"
+        aria-hidden="true"
+      />
+      <div class="fe-particles" aria-hidden="true">
+        {particles.map((p) => (
+          <span
+            class="fe-particle"
+            style={`left:${p.left};bottom:-30px;color:${p.color};font-size:${p.size}px;animation-delay:${p.delay};animation-duration:${p.duration}`}
+          >
+            {p.t}
+          </span>
+        ))}
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div class="fe-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {hero.badges.map((b) => (
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 px-3 py-1 text-xs font-semibold text-[#a5f3fc]">
+                <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
+                {b}
+              </span>
+            ))}
+          </div>
+          <h1 class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5">
+            {hero.title}{" "}
+            <span class="bg-linear-to-r from-[#818cf8] via-[#a78bfa] to-neon-cyan bg-clip-text text-transparent">
+              {hero.titleAccent}
+            </span>
+          </h1>
+          <p class="text-base md:text-lg text-slate-300 max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <button
+              type="button"
+              data-lead-modal-open
+              class="fe-btn fe-btn-primary inline-flex items-center gap-2 rounded-xl px-7 py-4 text-base font-bold"
+            >
+              {hero.ctaPrimary}
+              <span aria-hidden="true">→</span>
+            </button>
+            <a
+              href={ctaSecondary.href}
+              class="fe-btn fe-btn-ghost inline-flex items-center rounded-xl px-6 py-4 text-base font-bold"
+            >
+              {ctaSecondary.label}
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-slate-400 font-medium">{hero.ctaNote}</p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {hero.stats.map((s, i) => (
+              <div class="rounded-xl bg-white/5 border border-white/10 px-2 py-4 text-center">
+                <div
+                  class="fe-counter font-display text-2xl md:text-3xl font-bold"
+                  style={`color:${feStatColors[i % feStatColors.length]}`}
+                  data-fe-count={s.value}
+                >
+                  {s.value}
+                </div>
+                <div class="text-[11px] md:text-xs text-slate-300 font-medium mt-1">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="fe-reveal relative">
+          <div class="fe-float rounded-xl overflow-hidden border border-white/15 shadow-2xl bg-[#1e293b]">
+            <div class="flex items-center gap-1.5 px-4 py-3 border-b border-white/10 bg-[#0f172a]">
+              <span class="w-3 h-3 rounded-full bg-[#ff5f56]" />
+              <span class="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+              <span class="w-3 h-3 rounded-full bg-[#27c93f]" />
+              <span class="fe-mono ml-3 text-[11px] text-slate-400 truncate"
+                >itcodecraft.tech/my-first-site</span
+              >
+            </div>
+            <img
+              src={image.src}
+              alt={image.alt}
+              width="600"
+              height="400"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-3/2"
+            />
+          </div>
+          {hero.codeLines && (
+            <div class="absolute -bottom-5 -left-4 fe-mono text-xs sm:text-sm rounded-lg bg-[#1e293b] border border-white/15 px-4 py-3 shadow-xl leading-relaxed">
+              {hero.codeLines.map((line) => (
+                <div set:html={line} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {stack && (
+        <div class="relative z-10 border-y border-white/10 bg-[#070b16] py-4">
+          <div class="fe-marquee">
+            <div class="fe-marquee-track">
+              {[...stack, ...stack].map((tech) => (
+                <span class="inline-flex items-center gap-2 shrink-0 rounded-lg border border-white/15 bg-transparent px-4 py-2 transition-colors hover:border-white/35 hover:bg-white/5">
+                  <Icon name={tech.icon} class="size-5 shrink-0" />
+                  <span class="fe-mono text-sm font-semibold text-slate-100">
+                    {tech.name}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}
+
+{
+  prefix === "sc" && (
+    <section class="relative overflow-hidden bg-linear-to-b from-[#fff3df] via-[#fff9f0] to-[#fdf0ff]">
+      <div class="sc-particles" aria-hidden="true">
+        {particles.map((p) => (
+          <div
+            class="sc-particle"
+            style={`left:${p.left};bottom:-30px;width:${p.size}px;height:${p.size}px;background:${p.color};animation-delay:${p.delay};animation-duration:${p.duration}`}
+          />
+        ))}
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div class="sc-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {hero.badges.map((b, i) => (
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-white border-2 border-[#f0e6d6] px-3 py-1 text-xs font-bold text-[#6b6480]">
+                <span
+                  class="w-2 h-2 rounded-full animate-pulse"
+                  style={`background:${SCRATCH_BLOCK_COLORS[i % SCRATCH_BLOCK_COLORS.length]}`}
+                />
+                {b}
+              </span>
+            ))}
+          </div>
+          <h1 class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5 text-[#2b2440]">
+            {hero.title}{" "}
+            <span class="text-[#ff8c1a]">{hero.titleAccent}</span>
+          </h1>
+          <p class="text-base md:text-lg text-[#5b5470] max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            {primaryCtaMode === "link" ? (
+              <a
+                href={primaryCtaHref}
+                class="sc-btn sc-btn-primary inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-base font-bold"
+              >
+                {hero.ctaPrimary}
+                <span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                data-lead-modal-open
+                class="sc-btn sc-btn-primary inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-base font-bold"
+              >
+                {hero.ctaPrimary}
+                <span aria-hidden="true">→</span>
+              </button>
+            )}
+            <a
+              href={ctaSecondary.href}
+              class="sc-btn sc-btn-soft inline-flex items-center rounded-2xl px-6 py-4 text-base font-bold"
+            >
+              {ctaSecondary.label}
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-[#897f9e] font-medium">{hero.ctaNote}</p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {hero.stats.map((s, i) => (
+              <div class="sc-card rounded-2xl px-2 py-4 text-center">
+                <div
+                  class="sc-counter font-display text-2xl md:text-3xl font-bold"
+                  style={`color:${scStatColors[i % scStatColors.length]}`}
+                  data-sc-count={s.value}
+                >
+                  {s.value}
+                </div>
+                <div class="text-[11px] md:text-xs text-[#897f9e] font-medium mt-1">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="sc-reveal relative">
+          <div class="sc-float rounded-[28px] overflow-hidden sc-card p-0">
+            <img
+              src={image.src}
+              alt={image.alt}
+              width="600"
+              height="450"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-4/3"
+            />
+          </div>
+          {mediaBadges[0] && (
+            <div class="absolute -bottom-4 -left-4 rounded-2xl bg-[#FFBF00] px-4 py-3 shadow-lg -rotate-3">
+              <p class="font-display font-bold text-sm text-[#3d2200]">
+                {mediaBadges[0].text}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {builds && (
+        <div class="relative z-10 border-y-2 border-[#f0e6d6] bg-white/70 py-3">
+          <div class="sc-marquee">
+            <div class="sc-marquee-track">
+              {[...builds, ...builds].map((b, i) => (
+                <span
+                  class="shrink-0 rounded-full px-4 py-1.5 text-sm font-bold"
+                  style={`background:${SCRATCH_BLOCK_COLORS[i % SCRATCH_BLOCK_COLORS.length]};color:#fff`}
+                >
+                  {b}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}
+
+{
+  prefix === "mc" && (
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#8fd0f5] via-[#bfe3f5] to-[#eaf6e2]">
+      <div class="mc-particles" aria-hidden="true">
+        {particles.map((p) => (
+          <div
+            class="mc-particle"
+            style={`width:${p.size}px;height:${p.size}px;left:${p.left};bottom:-30px;background:${p.color};animation-delay:${p.delay};animation-duration:${p.duration}`}
+          />
+        ))}
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div class="mc-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {hero.badges.map((b) => (
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-white/85 border-2 border-[#1f2937] px-3 py-1 text-xs font-bold text-[#3a7d20]">
+                <span class="w-2 h-2 rounded-full bg-[#5dae3f] animate-pulse" />
+                {b}
+              </span>
+            ))}
+          </div>
+          <h1 class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5">
+            {hero.title}{" "}
+            <span class="text-[#3a7d20] underline decoration-[#fbbf24] decoration-4 underline-offset-4">
+              {hero.titleAccent}
+            </span>
+          </h1>
+          <p class="text-base md:text-lg text-[#374151] max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <button
+              type="button"
+              data-lead-modal-open
+              class="mc-btn mc-btn-grass inline-flex items-center gap-2 rounded-[8px] px-7 py-4 text-base font-bold"
+            >
+              {hero.ctaPrimary}
+              <span aria-hidden="true">→</span>
+            </button>
+            <a
+              href={ctaSecondary.href}
+              class="inline-flex items-center rounded-[8px] border-2 border-[#1f2937] bg-white px-6 py-4 text-base font-bold text-[#1f2937] mc-block-sm hover:translate-y-px transition-transform"
+            >
+              {ctaSecondary.label}
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-[#6b7280] font-medium">{hero.ctaNote}</p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {hero.stats.map((s) => (
+              <div class="rounded-[8px] bg-white px-2 py-4 text-center mc-block-sm">
+                <div
+                  class="mc-counter font-display text-2xl md:text-3xl font-bold text-[#3a7d20]"
+                  data-mc-count={s.value}
+                >
+                  {s.value}
+                </div>
+                <div class="text-[11px] md:text-xs text-[#6b7280] font-medium mt-1">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="mc-reveal relative">
+          <div class="mc-float relative rounded-[12px] overflow-hidden mc-block bg-[#bfe3f5]">
+            <img
+              src={image.src}
+              alt={image.alt}
+              width="600"
+              height="450"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-[4/3]"
+            />
+          </div>
+          {mediaBadges[0] && (
+            <div class="absolute -bottom-4 -left-4 rounded-[8px] bg-[#fbbf24] px-4 py-3 mc-block-sm rotate-[-3deg]">
+              <p class="font-display font-bold text-sm text-[#1f2937]">
+                {mediaBadges[0].text}
+              </p>
+            </div>
+          )}
+          {mediaBadges[1] && (
+            <div class="absolute -top-3 -right-3 hidden sm:block rounded-[8px] bg-[#5dae3f] px-3 py-2 mc-block-sm rotate-[4deg] text-white font-display font-bold text-sm">
+              {mediaBadges[1].text}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {builds && (
+        <div class="relative z-10 border-y-2 border-[#1f2937] bg-white/70 py-3">
+          <div class="mc-marquee">
+            <div class="mc-marquee-track">
+              {[...builds, ...builds].map((b) => (
+                <span class="shrink-0 rounded-[6px] bg-white border-2 border-[#1f2937] px-4 py-1.5 text-sm font-bold text-[#1f2937]">
+                  {b}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

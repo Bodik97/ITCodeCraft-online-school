@@ -1,0 +1,28 @@
+---
+import LandingHero from "@/sections/landing/Hero.astro";
+import content from "@/data/minecraft.json";
+
+const { hero, builds } = content;
+
+const particles = [
+  { size: 18, left: "6%", delay: "0s", duration: "15s", color: "#5dae3f" },
+  { size: 12, left: "20%", delay: "3s", duration: "12s", color: "#8b5a2b" },
+  { size: 22, left: "38%", delay: "1.5s", duration: "17s", color: "#fbbf24" },
+  { size: 14, left: "55%", delay: "5s", duration: "13s", color: "#34d6ce" },
+  { size: 16, left: "72%", delay: "2s", duration: "16s", color: "#5dae3f" },
+  { size: 12, left: "88%", delay: "6s", duration: "14s", color: "#8b5a2b" },
+];
+---
+
+<LandingHero
+  prefix="mc"
+  hero={hero}
+  builds={builds}
+  particles={particles}
+  image={{ src: "/assets/courses/minecraft2.webp", alt: "Світ Minecraft, створений учнем" }}
+  ctaSecondary={{ href: "#projects", label: "Дивитись проєкти" }}
+  mediaBadges={[
+    { text: "🏆 50+ проєктів учнів" },
+    { text: "⛏️ 7-11 років" },
+  ]}
+/>

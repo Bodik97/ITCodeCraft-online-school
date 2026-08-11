@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components";
+import {
+  getLandingTheme,
+  SCRATCH_BLOCK_COLORS,
+  type LandingPrefix,
+} from "./theme";
+
+interface ParentItem {
+  icon: string;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  /** parentPerks (FE) or trust (SC/MC) */
+  parents: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: ParentItem[];
+  };
+  sectionClass?: string;
+}
+
+const { prefix, parents, sectionClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap = sectionClass ?? `py-16 md:py-24 ${t.parentsBg}`;
+const cardInner =
+  prefix === "mc" ? "rounded-[10px] bg-white p-6 mc-block-sm" : `${t.cardClass} p-6`;
+const bodyClass =
+  prefix === "mc"
+    ? "text-[#4b5563] text-sm leading-relaxed"
+    : `${t.muted} text-sm leading-relaxed`;
+---
+
+<section id="parents" class={wrap}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`max-w-2xl mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{parents.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {parents.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{parents.subtitle}</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        parents.items.map((item, i) => (
+          <div class={`${prefix}-reveal ${prefix}-lift ${cardInner}`}>
+            {prefix === "sc" ? (
+              <div
+                class={t.iconWrapClass}
+                style={`background:${SCRATCH_BLOCK_COLORS[i % SCRATCH_BLOCK_COLORS.length]}`}
+              >
+                <Icon name={item.icon} class="size-6" />
+              </div>
+            ) : (
+              <div class={t.iconWrapClass}>
+                <Icon name={item.icon} class="size-6" />
+              </div>
+            )}
+            <h3 class="font-display text-lg font-bold mb-2">{item.title}</h3>
+            <p class={bodyClass}>{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

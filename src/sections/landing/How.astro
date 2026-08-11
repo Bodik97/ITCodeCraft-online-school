@@ -1,0 +1,111 @@
+---
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface HowStep {
+  step: string;
+  title: string;
+  text: string;
+  details: string;
+  outcome: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  how: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    steps: HowStep[];
+  };
+}
+
+const { prefix, how } = Astro.props;
+const t = getLandingTheme(prefix);
+const detailsText =
+  prefix === "fe"
+    ? "text-slate-700 text-sm sm:text-base leading-relaxed mb-4"
+    : prefix === "sc"
+      ? "text-[#5b5470] text-sm sm:text-base leading-relaxed mb-4"
+      : "text-[#4b5563] text-sm sm:text-base leading-relaxed mb-4";
+const stepLabelIdle =
+  prefix === "fe"
+    ? "fe-mono text-[10px] sm:text-xs font-bold text-slate-400"
+    : prefix === "sc"
+      ? "text-[10px] sm:text-xs font-black text-[#c9bfd9]"
+      : "text-[10px] sm:text-xs font-black text-[#9ca3af]";
+const cardBase =
+  prefix === "mc"
+    ? "flex-1 bg-white rounded-[10px] p-5 sm:p-6 mc-block-sm"
+    : `flex-1 ${t.cardClass} p-5 sm:p-6`;
+---
+
+<section id="how" class="py-16 md:py-24">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`text-center max-w-2xl mx-auto mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{how.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {how.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{how.subtitle}</p>
+    </div>
+
+    <div class="space-y-4">
+      {
+        how.steps.map((item, i) => (
+          <article
+            class={`${prefix}-step ${prefix}-reveal group flex gap-4 sm:gap-6 items-start cursor-pointer`}
+            data-step={i}
+          >
+            <div
+              class={`relative z-10 ${t.howNumIdle} ${t.stepNumActive} font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm`}
+            >
+              {i + 1}
+            </div>
+            <div class={`${cardBase} ${t.stepCardActive} transition-all duration-300`}>
+              <div class="flex justify-between items-start gap-3">
+                <div class="flex-1">
+                  <div
+                    class={`${stepLabelIdle} ${t.stepLabelActive} uppercase tracking-[0.15em] mb-1 transition-colors`}
+                  >
+                    {item.step}
+                  </div>
+                  <h3 class="font-display text-lg sm:text-xl font-bold leading-tight">
+                    {item.title}
+                  </h3>
+                </div>
+                <span
+                  class={`text-2xl ${t.stepPlus} transition-transform duration-300 group-[.is-active]:rotate-45 shrink-0`}
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </div>
+              <p class={`${t.muted} text-sm sm:text-base mt-2 leading-relaxed`}>
+                {item.text}
+              </p>
+              <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
+                <div class="overflow-hidden">
+                  <div class={`pt-5 mt-5 ${t.stepBorder}`}>
+                    <p class={detailsText}>{item.details}</p>
+                    <div class={`flex items-start gap-3 ${t.stepOutcomeBox}`}>
+                      <span
+                        class={`inline-flex w-6 h-6 items-center justify-center text-white text-sm shrink-0 ${prefix === "fe" ? "rounded-md bg-[#6366f1]" : prefix === "sc" ? "rounded-lg bg-[#ff8c1a]" : "rounded-[4px] bg-[#5dae3f]"}`}
+                      >
+                        ✓
+                      </span>
+                      <span
+                        class={`text-xs sm:text-sm font-bold ${t.stepOutcomeText} leading-tight`}
+                      >
+                        {item.outcome}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

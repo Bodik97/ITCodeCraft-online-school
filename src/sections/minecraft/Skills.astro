@@ -1,0 +1,16 @@
+---
+import LandingSkills from "@/sections/landing/Skills.astro";
+import content from "@/data/minecraft.json";
+---
+
+<LandingSkills
+  prefix="mc"
+  skills={content.skills}
+  image={{
+    src: "/assets/courses/minecraft.webp",
+    alt: "Проєкт учня курсу Minecraft",
+    aspectClass: "aspect-[4/3]",
+  }}
+  imageBadge="🧠 Навички на все життя"
+  notePrefix="✅"
+/>

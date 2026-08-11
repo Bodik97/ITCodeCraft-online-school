@@ -1,0 +1,80 @@
+---
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface TestimonialItem {
+  name: string;
+  role: string;
+  text: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    items: TestimonialItem[];
+  };
+  sectionClass?: string;
+  /** Quiz-style gold eyebrow for MC if needed — unused by default */
+  quoteColor?: string;
+}
+
+const { prefix, testimonials, sectionClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap =
+  sectionClass ??
+  (prefix === "mc"
+    ? "py-16 md:py-24 bg-white border-b-2 border-[#1f2937]"
+    : "py-16 md:py-24");
+const quoteClass =
+  prefix === "fe"
+    ? "text-slate-700 leading-relaxed"
+    : prefix === "sc"
+      ? "text-[#4b4560] leading-relaxed"
+      : "text-[#374151] leading-relaxed";
+const roleClass =
+  prefix === "sc" ? "text-xs text-[#897f9e]" : `text-xs ${t.mutedSoft}`;
+---
+
+<section id="testimonials" class={wrap}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{testimonials.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold">
+        {testimonials.title}
+      </h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      {
+        testimonials.items.map((item, i) => (
+          <figure class={`${prefix}-reveal ${prefix}-lift ${t.cardClass} p-6`}>
+            <div class="flex items-center gap-3 mb-4">
+              {prefix === "sc" && t.avatarColors ? (
+                <span
+                  class="inline-flex h-11 w-11 items-center justify-center rounded-full text-white font-bold"
+                  style={`background:${t.avatarColors[i % t.avatarColors.length]}`}
+                >
+                  {item.name.charAt(0)}
+                </span>
+              ) : (
+                <span
+                  class={`inline-flex h-11 w-11 items-center justify-center rounded-full text-white font-bold ${t.avatarGradient}`}
+                >
+                  {item.name.charAt(0)}
+                </span>
+              )}
+              <figcaption>
+                <div class="font-bold leading-tight">{item.name}</div>
+                <div class={roleClass}>{item.role}</div>
+              </figcaption>
+            </div>
+            <p class={quoteClass}>“{item.text}”</p>
+            <div class="mt-3" style={`color:${t.star}`} aria-hidden="true">
+              ★★★★★
+            </div>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

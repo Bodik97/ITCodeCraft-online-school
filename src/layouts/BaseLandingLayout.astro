@@ -1,0 +1,146 @@
+---
+import Analytics from "@/components/shared/Analytics.astro";
+import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
+
+interface Props {
+  pageGroup: string;
+  adsSendTo?: string;
+  title: string;
+  description: string;
+  lang: string;
+  canonicalUrl: string;
+  bodyClass: string;
+  fontsHref: string;
+  /** CSS class for reveal IO, e.g. `.fe-reveal` */
+  revealSelector: string;
+  /** CSS custom property for scroll progress, e.g. `--fe-progress` */
+  progressCssVar: string;
+  /** Scroll progress bar classes, e.g. `fe-scroll-progress` */
+  progressBarClass: string;
+  /** Focus ring color for skip link */
+  skipLinkFocusClass: string;
+  ogImagePath?: string;
+  jsonLd: string;
+  productName: string;
+  faviconHref?: string;
+}
+
+const {
+  pageGroup,
+  adsSendTo,
+  title,
+  description,
+  lang,
+  canonicalUrl,
+  bodyClass,
+  fontsHref,
+  revealSelector,
+  progressCssVar,
+  progressBarClass,
+  skipLinkFocusClass,
+  ogImagePath = "/assets/OGP/fb.png",
+  jsonLd,
+  productName,
+  faviconHref = "/assets/favicon/favicon-32x32.png",
+} = Astro.props;
+
+const site = Astro.site;
+if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
+
+const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
+const ogImage = new URL(ogImagePath, canonical).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={fontsHref} rel="stylesheet" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="uk_UA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href={faviconHref} />
+    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png" />
+
+    <script is:inline type="application/ld+json" set:html={jsonLd} />
+    <script is:inline define:vars={{ productName }}>
+      window.productName = productName;
+    </script>
+
+    <Analytics pageGroup={pageGroup} adsSendTo={adsSendTo} />
+  </head>
+  <body class:list={[bodyClass, "min-h-dvh", "flex", "flex-col", "antialiased"]}>
+    <AnalyticsNoscript />
+    <div
+      class={progressBarClass}
+      id="scroll-progress"
+      aria-hidden="true"
+    >
+    </div>
+    <a
+      href="#main-content"
+      class:list={[
+        "sr-only",
+        "focus:not-sr-only",
+        "focus:absolute",
+        "focus:p-4",
+        "focus:bg-white",
+        "focus:z-[100]",
+        "focus:font-bold",
+        skipLinkFocusClass,
+      ]}
+    >
+      Перейти до головного контенту
+    </a>
+    <slot />
+
+    <script
+      define:vars={{ revealSelector, progressCssVar }}
+    >
+      const progress = document.getElementById("scroll-progress");
+      const onScroll = () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        if (progress) progress.style.setProperty(progressCssVar, `${pct}%`);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const items = document.querySelectorAll(revealSelector);
+      if (prefersReduced) {
+        items.forEach((el) => el.classList.add("is-visible"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-visible");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

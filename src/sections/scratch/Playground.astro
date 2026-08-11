@@ -1,0 +1,216 @@
+---
+import { Icon } from "astro-icon/components";
+import content from "@/data/scratch.json";
+
+interface PlaygroundBlock {
+  id: string;
+  label: string;
+  icon: string;
+  color: string;
+}
+
+interface Props {
+  playground?: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    blocks: PlaygroundBlock[];
+    scriptTitle: string;
+    emptyHint: string;
+    runLabel: string;
+    clearLabel: string;
+  };
+}
+
+const playground = Astro.props.playground ?? content.playground;
+const eyebrow =
+  "inline-block bg-[#ff8c1a]/12 text-[#d96b00] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#ff8c1a]/30";
+---
+
+<section id="playground" class="py-16 md:py-24">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10 sc-reveal">
+      <span class={eyebrow}>{playground.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {playground.title}
+      </h2>
+      <p class="text-[#6b6480] text-lg">{playground.subtitle}</p>
+    </div>
+
+    <div id="sc-playground" class="sc-reveal grid md:grid-cols-2 gap-6 items-start">
+      <div class="sc-card p-5 md:p-6">
+        <p class="text-xs font-black uppercase tracking-[0.15em] text-[#d96b00] mb-3">
+          Блоки
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          {
+            playground.blocks.map((b) => (
+              <button
+                type="button"
+                class="sc-pg-block sc-btn inline-flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-bold text-white shadow-md"
+                style={`background:${b.color}`}
+                data-action={b.id}
+                data-label={b.label}
+              >
+                <Icon name={b.icon} class="size-4" />
+                {b.label}
+              </button>
+            ))
+          }
+        </div>
+
+        <p class="text-xs font-black uppercase tracking-[0.15em] text-[#d96b00] mb-2">
+          {playground.scriptTitle}
+        </p>
+        <ul
+          data-pg-script
+          class="min-h-22 space-y-2 rounded-2xl border-2 border-dashed border-[#ffd9b0] bg-[#fff6ea] p-3"
+        >
+          <li data-pg-empty class="text-sm text-[#a59cb5] py-5 text-center">
+            {playground.emptyHint}
+          </li>
+        </ul>
+
+        <div class="flex gap-3 mt-4">
+          <button
+            type="button"
+            data-pg-run
+            class="sc-btn sc-btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold"
+          >
+            <Icon name="lucide:play" class="size-4" />
+            {playground.runLabel}
+          </button>
+          <button
+            type="button"
+            data-pg-clear
+            class="sc-btn sc-btn-soft inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold"
+          >
+            <Icon name="lucide:eraser" class="size-4" />
+            {playground.clearLabel}
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="sc-card relative overflow-hidden p-0 min-h-70 md:min-h-85 bg-linear-to-b from-[#eaf6ff] to-[#f3eaff]"
+      >
+        <div
+          class="absolute inset-x-0 bottom-0 h-10 bg-[#cdebc5] border-t-2 border-[#9fd897]"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          data-pg-bubble
+          hidden
+          class="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl bg-white border-2 border-[#1f2937] px-4 py-2 text-sm font-bold shadow-lg z-10"
+        >
+        </div>
+        <div
+          data-pg-sprite
+          class="absolute bottom-10 left-6 text-[#ff8c1a] transition-transform duration-500 ease-out"
+        >
+          <Icon name="lucide:cat" class="size-16" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const pg = document.getElementById("sc-playground");
+  if (pg) {
+    const palette = pg.querySelectorAll<HTMLElement>(".sc-pg-block");
+    const scriptList = pg.querySelector<HTMLElement>("[data-pg-script]");
+    const emptyEl = pg.querySelector<HTMLElement>("[data-pg-empty]");
+    const runBtn = pg.querySelector<HTMLButtonElement>("[data-pg-run]");
+    const clearBtn = pg.querySelector<HTMLElement>("[data-pg-clear]");
+    const sprite = pg.querySelector<HTMLElement>("[data-pg-sprite]");
+    const bubble = pg.querySelector<HTMLElement>("[data-pg-bubble]");
+    const program: { action: string; label: string }[] = [];
+    let x = 0;
+    let running = false;
+
+    const render = () => {
+      scriptList?.querySelectorAll("[data-pg-item]").forEach((n) => n.remove());
+      if (program.length === 0) {
+        emptyEl?.removeAttribute("hidden");
+        return;
+      }
+      emptyEl?.setAttribute("hidden", "");
+      program.forEach((p, idx) => {
+        const li = document.createElement("li");
+        li.setAttribute("data-pg-item", "");
+        li.className =
+          "flex items-center gap-2 rounded-xl bg-white border-2 border-[#f0e6d6] px-3 py-2 text-sm font-bold text-[#2b2440]";
+        li.textContent = `${idx + 1}. ${p.label}`;
+        scriptList?.appendChild(li);
+      });
+    };
+
+    const resetSprite = () => {
+      x = 0;
+      if (sprite) sprite.style.transform = "";
+      bubble?.setAttribute("hidden", "");
+    };
+
+    palette.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        if (program.length >= 8) return;
+        program.push({
+          action: btn.dataset.action || "",
+          label: btn.dataset.label || "",
+        });
+        render();
+      }),
+    );
+
+    clearBtn?.addEventListener("click", () => {
+      program.length = 0;
+      render();
+      resetSprite();
+    });
+
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const say = (msg: string) => {
+      if (!bubble) return;
+      bubble.textContent = msg;
+      bubble.removeAttribute("hidden");
+    };
+
+    runBtn?.addEventListener("click", async () => {
+      if (running || !sprite || program.length === 0) return;
+      running = true;
+      runBtn.setAttribute("disabled", "");
+      resetSprite();
+      await wait(200);
+      for (const step of program) {
+        if (step.action === "move") {
+          x = Math.min(x + 60, 190);
+          sprite.style.transform = `translateX(${x}px)`;
+        } else if (step.action === "jump") {
+          sprite.style.transform = `translateX(${x}px) translateY(-60px)`;
+          await wait(300);
+          sprite.style.transform = `translateX(${x}px) translateY(0)`;
+        } else if (step.action === "spin") {
+          sprite.style.transform = `translateX(${x}px) rotate(360deg)`;
+          await wait(600);
+          sprite.style.transform = `translateX(${x}px) rotate(0deg)`;
+        } else if (step.action === "say") {
+          say("Привіт!");
+          await wait(700);
+          bubble?.setAttribute("hidden", "");
+        } else if (step.action === "sound") {
+          say("Мяу!");
+          sprite.style.transform = `translateX(${x}px) scale(1.18)`;
+          await wait(280);
+          sprite.style.transform = `translateX(${x}px) scale(1)`;
+          await wait(250);
+          bubble?.setAttribute("hidden", "");
+        }
+        await wait(420);
+      }
+      running = false;
+      runBtn.removeAttribute("disabled");
+    });
+  }
+</script>

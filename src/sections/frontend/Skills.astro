@@ -1,0 +1,14 @@
+---
+import LandingSkills from "@/sections/landing/Skills.astro";
+import content from "@/data/frontend.json";
+---
+
+<LandingSkills
+  prefix="fe"
+  skills={content.skills}
+  image={{
+    src: "/assets/courses/frontend.webp",
+    alt: "Проєкт учня курсу Frontend",
+    aspectClass: "aspect-3/2",
+  }}
+/>

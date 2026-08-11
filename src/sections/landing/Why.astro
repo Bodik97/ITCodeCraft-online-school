@@ -1,0 +1,74 @@
+---
+import { Icon } from "astro-icon/components";
+import {
+  getLandingTheme,
+  SCRATCH_BLOCK_COLORS,
+  type LandingPrefix,
+} from "./theme";
+
+interface WhyItem {
+  icon: string;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  why: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: WhyItem[];
+  };
+  /** Override section wrapper classes when needed */
+  sectionClass?: string;
+}
+
+const { prefix, why, sectionClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap =
+  sectionClass ??
+  (prefix === "fe"
+    ? "py-16 md:py-24"
+    : `py-16 md:py-24 ${t.sectionBg}`);
+---
+
+<section id="why" class={wrap}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`max-w-2xl mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{why.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {why.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{why.subtitle}</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-6">
+      {
+        why.items.map((item, i) => (
+          <div
+            class={`${prefix}-reveal ${prefix}-lift ${t.cardClass} p-6`}
+          >
+            {prefix === "sc" ? (
+              <div
+                class={t.iconWrapClass}
+                style={`background:${SCRATCH_BLOCK_COLORS[i % SCRATCH_BLOCK_COLORS.length]}`}
+              >
+                <Icon name={item.icon} class="size-6" />
+              </div>
+            ) : (
+              <div class={t.iconWrapClass}>
+                <Icon name={item.icon} class="size-6" />
+              </div>
+            )}
+            <h3 class="font-display text-xl font-bold mb-2">{item.title}</h3>
+            <p
+              class={`${prefix === "mc" ? "text-[#4b5563]" : t.muted} leading-relaxed`}
+            >
+              {item.text}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

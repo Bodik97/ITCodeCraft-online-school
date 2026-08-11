@@ -1,0 +1,8 @@
+---
+import LandingHeader from "@/sections/landing/Header.astro";
+import content from "@/data/scratch.json";
+
+const { brand, navigation } = content;
+---
+
+<LandingHeader prefix="sc" brand={brand} navigation={navigation} />

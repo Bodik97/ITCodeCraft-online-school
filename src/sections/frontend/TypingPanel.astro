@@ -1,0 +1,50 @@
+---
+interface Props {
+  lines: string[];
+}
+
+const { lines } = Astro.props;
+---
+
+<div
+  class="absolute -bottom-5 -right-3 sm:-right-5 fe-mono text-xs sm:text-sm rounded-lg bg-[#0f172a] text-slate-100 px-4 py-3 shadow-2xl border border-white/10 min-w-57.5"
+>
+  <span
+    data-fe-type
+    data-fe-lines={JSON.stringify(lines)}
+    class="fe-cursor whitespace-pre"></span>
+</div>
+
+<script>
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const typeEl = document.querySelector<HTMLElement>("[data-fe-type]");
+  if (typeEl) {
+    let lines: string[] = [];
+    try {
+      lines = JSON.parse(typeEl.dataset.feLines || "[]");
+    } catch {
+      lines = [];
+    }
+    if (lines.length && !prefersReduced) {
+      const full = lines.join("\n");
+      let i = 0;
+      const type = () => {
+        typeEl.textContent = full.slice(0, i);
+        i += 1;
+        if (i <= full.length) {
+          setTimeout(type, full[i - 1] === "\n" ? 220 : 55);
+        } else {
+          setTimeout(() => {
+            i = 0;
+            type();
+          }, 2600);
+        }
+      };
+      type();
+    } else {
+      typeEl.textContent = lines.join("\n");
+    }
+  }
+</script>

@@ -1,0 +1,8 @@
+---
+import LandingHeader from "@/sections/landing/Header.astro";
+import content from "@/data/minecraft.json";
+
+const { brand, navigation } = content;
+---
+
+<LandingHeader prefix="mc" brand={brand} navigation={navigation} />

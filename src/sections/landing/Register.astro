@@ -1,0 +1,88 @@
+---
+import UseForm from "@/components/main/form/UseForm.astro";
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface Props {
+  prefix: LandingPrefix;
+  register: {
+    title: string;
+    subtitle: string;
+    features: string[];
+  };
+  phone: string;
+  /** Override CRM form id (defaults from theme) */
+  formId?: string;
+  sectionClass?: string;
+  formStyle?: string;
+  formBoxClass?: string;
+}
+
+const { prefix, register, phone, formId, sectionClass, formStyle, formBoxClass } =
+  Astro.props;
+const t = getLandingTheme(prefix);
+const wrap = sectionClass ?? `py-16 md:py-24 ${t.registerBg}`;
+const box = formBoxClass ?? t.formBoxClass;
+const style = formStyle ?? t.formStyle;
+const id = formId ?? t.formId;
+const checkRounded =
+  prefix === "fe"
+    ? "rounded-md"
+    : prefix === "sc"
+      ? "rounded-lg"
+      : "rounded-[4px]";
+const featureWeight = prefix === "sc" ? "font-semibold" : "font-medium";
+---
+
+<section id="register" class={wrap}>
+  <div
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+  >
+    <div class={`${prefix}-reveal ${t.registerText}`}>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+        {register.title}
+      </h2>
+      <p class={`${t.registerSubtext} text-lg mb-8`}>{register.subtitle}</p>
+      <ul class="space-y-3">
+        {
+          register.features.map((f) => (
+            <li class={`flex items-center gap-3 ${featureWeight}`}>
+              <span
+                class={`inline-flex h-6 w-6 items-center justify-center ${checkRounded} ${t.registerCheckBg} text-sm`}
+              >
+                ✓
+              </span>
+              {f}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class={`${prefix}-reveal ${box}`} style={style}>
+      <div {...{ [`data-${prefix}-form`]: true }}>
+        <UseForm formId={id} />
+      </div>
+      <div
+        {...{ [`data-${prefix}-success`]: true }}
+        hidden
+        class={t.successTextClass}
+      >
+        <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+        <h3 class={`font-display text-2xl font-bold mb-2 ${t.successHeadingClass}`}>
+          Чудовий вибір!
+        </h3>
+        <p class={t.successMutedClass}>
+          Ми отримали вашу заявку. Менеджер зателефонує найближчим часом.
+        </p>
+      </div>
+      <p
+        {...{ [`data-${prefix}-error`]: true }}
+        hidden
+        class={t.formErrorClass}
+      >
+        Сталася помилка. Спробуйте ще раз або зателефонуйте нам:
+        {phone}
+      </p>
+    </div>
+  </div>
+</section>

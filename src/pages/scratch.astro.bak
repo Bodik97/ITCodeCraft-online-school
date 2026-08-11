@@ -1,0 +1,1071 @@
+---
+import ScratchLayout from "@/layouts/ScratchLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import LeadModal from "@/components/shared/LeadModal.astro";
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
+import UseForm from "@/components/main/form/UseForm.astro";
+import Footer from "@/sections/main/Footer.astro";
+import { Icon } from "astro-icon/components";
+import Logo from "@/components/shared/Logo.astro";
+import content from "@/data/scratch.json";
+
+const {
+  hero,
+  builds,
+  why,
+  playground,
+  results,
+  skills,
+  creations,
+  how,
+  quiz,
+  testimonials,
+  faq,
+  trust,
+  guarantee,
+  register,
+  footer,
+  navigation,
+  brand,
+} = content;
+
+// Canonical school wordmark — same fixed colours on every page.
+const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
+const brandBase = brand.primary.slice(brandPrefix.length);
+
+const blockColors = ["#4C97FF", "#9966FF", "#CF63CF", "#FFBF00", "#4CBF56", "#FF8C1A"];
+const heroStatColors = ["#4C97FF", "#9966FF", "#FF8C1A"] as const;
+
+const particles = [
+  { left: "7%", size: 22, delay: "0s", duration: "15s", color: "#4C97FF" },
+  { left: "23%", size: 16, delay: "3s", duration: "12s", color: "#FFBF00" },
+  { left: "41%", size: 24, delay: "1.5s", duration: "17s", color: "#CF63CF" },
+  { left: "59%", size: 18, delay: "5s", duration: "13s", color: "#4CBF56" },
+  { left: "76%", size: 20, delay: "2s", duration: "16s", color: "#9966FF" },
+  { left: "91%", size: 16, delay: "6s", duration: "14s", color: "#FF8C1A" },
+];
+
+const eyebrow =
+  "inline-block bg-[#ff8c1a]/12 text-[#d96b00] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#ff8c1a]/30";
+
+const blockStack = [
+  { text: "коли почати", color: "#FFBF00", rotate: "-rotate-1", ml: "" },
+  { text: "повторити 10 разів", color: "#4C97FF", rotate: "rotate-1", ml: "ml-4" },
+  { text: "рухатись 10 кроків", color: "#9966FF", rotate: "-rotate-1", ml: "ml-8" },
+  { text: "програти звук", color: "#CF63CF", rotate: "rotate-1", ml: "ml-4" },
+  { text: "сказати «Готово!»", color: "#4CBF56", rotate: "-rotate-1", ml: "" },
+];
+---
+
+<ScratchLayout>
+  {/* ---------- HEADER ---------- */}
+  <header
+    class="sticky top-0 z-50 border-b-2 border-[#f0e6d6] bg-white/90 backdrop-blur-sm"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
+    >
+      <Logo href={brand.homeUrl} />
+
+      <nav class="hidden lg:flex items-center gap-6">
+        {
+          navigation.links.map((link) => (
+            <a
+              href={`#${link.id}`}
+              class="text-sm font-semibold text-[#6b6480] hover:text-[#ff8c1a] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a
+          href={brand.homeUrl}
+          class="hidden lg:inline-flex text-sm font-semibold text-[#6b6480] hover:text-[#ff8c1a] transition-colors"
+          >← {navigation.backToMain}</a
+        >
+        <button
+          type="button"
+          data-lead-modal-open
+          class="sc-btn sc-btn-primary hidden lg:inline-flex items-center rounded-xl px-4 py-2 text-sm font-bold"
+        >
+          {navigation.ctaLabel}
+        </button>
+        <LandingMobileNav
+          links={navigation.links}
+          backUrl={brand.homeUrl}
+          backLabel={navigation.backToMain}
+          ctaLabel={navigation.ctaLabel}
+          toggleClass="border-[#ff8c1a] text-[#ff8c1a] hover:bg-[#ff8c1a]/10"
+          panelClass="bg-white border-[#f0e6d6]"
+          linkClass="bg-[#fff7ec] border-[#ffe0bf] text-[#5b5470] hover:bg-[#fff0dd] hover:border-[#ff8c1a]"
+          dotColor="#ff8c1a"
+          ctaClass="sc-btn sc-btn-primary"
+        />
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="flex-1">
+    {/* ---------- HERO ---------- */}
+    <section
+      class="relative overflow-hidden bg-linear-to-b from-[#fff3df] via-[#fff9f0] to-[#fdf0ff]"
+    >
+      <div class="sc-particles" aria-hidden="true">
+        {
+          particles.map((p) => (
+            <div
+              class="sc-particle"
+              style={`left:${p.left};bottom:-30px;width:${p.size}px;height:${p.size}px;background:${p.color};animation-delay:${p.delay};animation-duration:${p.duration}`}
+            />
+          ))
+        }
+      </div>
+
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="sc-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {
+              hero.badges.map((b, i) => (
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-white border-2 border-[#f0e6d6] px-3 py-1 text-xs font-bold text-[#6b6480]">
+                  <span
+                    class="w-2 h-2 rounded-full animate-pulse"
+                    style={`background:${blockColors[i % blockColors.length]}`}
+                  />
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+          <h1
+            class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5 text-[#2b2440]"
+          >
+            {hero.title}{" "}
+            <span class="text-[#ff8c1a]">{hero.titleAccent}</span>
+          </h1>
+          <p class="text-base md:text-lg text-[#5b5470] max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href="#register"
+              class="sc-btn sc-btn-primary inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-base font-bold"
+            >
+              {hero.ctaPrimary}
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="#creations"
+              class="sc-btn sc-btn-soft inline-flex items-center rounded-2xl px-6 py-4 text-base font-bold"
+            >
+              Що створить дитина
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-[#897f9e] font-medium">
+            {hero.ctaNote}
+          </p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {
+              hero.stats.map((s, i) => (
+                <div class="sc-card rounded-2xl px-2 py-4 text-center">
+                  <div
+                    class="sc-counter font-display text-2xl md:text-3xl font-bold"
+                    style={`color:${heroStatColors[i % heroStatColors.length]}`}
+                    data-sc-count={s.value}
+                  >
+                    {s.value}
+                  </div>
+                  <div class="text-[11px] md:text-xs text-[#897f9e] font-medium mt-1">
+                    {s.label}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="sc-reveal relative">
+          <div class="sc-float rounded-[28px] overflow-hidden sc-card p-0">
+            <img
+              src="/assets/courses/scratch.webp"
+              alt="Проєкт дитини у Scratch"
+              width="600"
+              height="450"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-4/3"
+            />
+          </div>
+          <div
+            class="absolute -bottom-4 -left-4 rounded-2xl bg-[#FFBF00] px-4 py-3 shadow-lg -rotate-3"
+          >
+            <p class="font-display font-bold text-sm text-[#3d2200]">
+              🐱 для наймолодших
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Builds marquee */}
+      <div class="relative z-10 border-y-2 border-[#f0e6d6] bg-white/70 py-3">
+        <div class="sc-marquee">
+          <div class="sc-marquee-track">
+            {
+              [...builds, ...builds].map((b, i) => (
+                <span
+                  class="shrink-0 rounded-full px-4 py-1.5 text-sm font-bold"
+                  style={`background:${blockColors[i % blockColors.length]};color:#fff`}
+                >
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- PLAYGROUND (unique interactive demo) ---------- */}
+    <section id="playground" class="py-16 md:py-24">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 sc-reveal">
+          <span class={eyebrow}>{playground.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {playground.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{playground.subtitle}</p>
+        </div>
+
+        <div id="sc-playground" class="sc-reveal grid md:grid-cols-2 gap-6 items-start">
+          {/* Blocks + script */}
+          <div class="sc-card p-5 md:p-6">
+            <p class="text-xs font-black uppercase tracking-[0.15em] text-[#d96b00] mb-3">
+              Блоки
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              {
+                playground.blocks.map((b) => (
+                  <button
+                    type="button"
+                    class="sc-pg-block sc-btn inline-flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-bold text-white shadow-md"
+                    style={`background:${b.color}`}
+                    data-action={b.id}
+                    data-label={b.label}
+                  >
+                    <Icon name={b.icon} class="size-4" />
+                    {b.label}
+                  </button>
+                ))
+              }
+            </div>
+
+            <p class="text-xs font-black uppercase tracking-[0.15em] text-[#d96b00] mb-2">
+              {playground.scriptTitle}
+            </p>
+            <ul
+              data-pg-script
+              class="min-h-22 space-y-2 rounded-2xl border-2 border-dashed border-[#ffd9b0] bg-[#fff6ea] p-3"
+            >
+              <li data-pg-empty class="text-sm text-[#a59cb5] py-5 text-center">
+                {playground.emptyHint}
+              </li>
+            </ul>
+
+            <div class="flex gap-3 mt-4">
+              <button
+                type="button"
+                data-pg-run
+                class="sc-btn sc-btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold"
+              >
+                <Icon name="lucide:play" class="size-4" />
+                {playground.runLabel}
+              </button>
+              <button
+                type="button"
+                data-pg-clear
+                class="sc-btn sc-btn-soft inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold"
+              >
+                <Icon name="lucide:eraser" class="size-4" />
+                {playground.clearLabel}
+              </button>
+            </div>
+          </div>
+
+          {/* Stage */}
+          <div
+            class="sc-card relative overflow-hidden p-0 min-h-70 md:min-h-85 bg-linear-to-b from-[#eaf6ff] to-[#f3eaff]"
+          >
+            <div
+              class="absolute inset-x-0 bottom-0 h-10 bg-[#cdebc5] border-t-2 border-[#9fd897]"
+              aria-hidden="true"
+            >
+            </div>
+            <div
+              data-pg-bubble
+              hidden
+              class="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl bg-white border-2 border-[#1f2937] px-4 py-2 text-sm font-bold shadow-lg z-10"
+            >
+            </div>
+            <div
+              data-pg-sprite
+              class="absolute bottom-10 left-6 text-[#ff8c1a] transition-transform duration-500 ease-out"
+            >
+              <Icon name="lucide:cat" class="size-16" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- WHY ---------- */}
+    <section id="why" class="py-16 md:py-24 bg-white border-b-2 border-[#f0e6d6]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 sc-reveal">
+          <span class={eyebrow}>{why.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {why.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{why.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-6">
+          {
+            why.items.map((item, i) => (
+              <div class="sc-reveal sc-lift sc-card p-6">
+                <div
+                  class="inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white mb-4"
+                  style={`background:${blockColors[i % blockColors.length]}`}
+                >
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-xl font-bold mb-2">{item.title}</h3>
+                <p class="text-[#6b6480] leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- SKILLS ---------- */}
+    <section id="skills" class="py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 sc-reveal">
+          <span class={eyebrow}>{skills.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {skills.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{skills.subtitle}</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <div id="sc-skills" class="sc-reveal space-y-5">
+            {
+              skills.items.map((item) => (
+                <div>
+                  <div class="flex justify-between items-baseline mb-1.5">
+                    <span class="font-semibold text-sm md:text-base text-[#2b2440]">
+                      {item.name}
+                    </span>
+                    <span class="font-bold text-xs text-[#d96b00]">
+                      {item.level}%
+                    </span>
+                  </div>
+                  <div class="h-3.5 w-full rounded-full bg-[#fde9d2] overflow-hidden">
+                    <div
+                      class="sc-bar-fill h-full rounded-full bg-linear-to-r from-[#ff8c1a] to-[#ffbf00]"
+                      data-sc-level={item.level}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+            <p class="text-sm text-[#6b6480] pt-2">✨ {skills.note}</p>
+          </div>
+
+          {/* Scratch-style block stack illustration */}
+          <div class="sc-reveal">
+            <div class="sc-float relative max-w-sm mx-auto space-y-2.5">
+              {
+                blockStack.map((blk) => (
+                  <div
+                    class:list={[
+                      "rounded-2xl font-bold px-5 py-3.5 shadow-lg text-[#241733]",
+                      blk.rotate,
+                      blk.ml,
+                    ]}
+                    style={`background:${blk.color}`}
+                  >
+                    {blk.text}
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- RESULTS ROADMAP (unique, parent-focused) ---------- */}
+    <section id="results" class="py-16 md:py-24 bg-white border-y-2 border-[#f0e6d6]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 sc-reveal">
+          <span class={eyebrow}>{results.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {results.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{results.subtitle}</p>
+        </div>
+
+        <div class="relative grid md:grid-cols-3 gap-6 md:gap-4">
+          <div
+            class="hidden md:block absolute top-9 left-[16%] right-[16%] h-1 bg-linear-to-r from-[#4C97FF] via-[#9966FF] to-[#FF8C1A] rounded-full"
+            aria-hidden="true"
+          >
+          </div>
+          {
+            results.stages.map((stage, i) => (
+              <div class="sc-reveal relative text-center px-2">
+                <div
+                  class="relative z-10 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white shadow-lg mb-4"
+                  style={`background:${stage.color}`}
+                >
+                  <Icon name={stage.icon} class="size-8" />
+                  <span class="absolute -top-2 -right-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white border-2 border-[#1f2937] text-xs font-black text-[#2b2440]">
+                    {i + 1}
+                  </span>
+                </div>
+                <div class="font-display font-bold text-lg text-[#ff8c1a] mb-2">
+                  {stage.when}
+                </div>
+                <p class="text-[#6b6480] text-sm leading-relaxed max-w-xs mx-auto">
+                  {stage.text}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- QUIZ ---------- */}
+    <section id="quiz" class="py-16 md:py-24 bg-[#fff3df] border-y-2 border-[#f0e6d6]">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-8 sc-reveal">
+          <span class={eyebrow}>{quiz.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {quiz.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{quiz.subtitle}</p>
+        </div>
+
+        <div id="sc-quiz" class="sc-reveal sc-card p-6 md:p-8">
+          <div class="flex items-center justify-between mb-2">
+            <span
+              data-quiz-progress
+              class="text-xs font-black uppercase tracking-[0.15em] text-[#d96b00]"
+              >Крок 1/{quiz.questions.length}</span
+            >
+          </div>
+          <div class="h-3 w-full rounded-full bg-[#fde9d2] overflow-hidden mb-6">
+            <div
+              data-quiz-fill
+              class="h-full bg-linear-to-r from-[#ff8c1a] to-[#ffbf00] transition-[width] duration-300"
+              style={`width:${100 / quiz.questions.length}%`}
+            >
+            </div>
+          </div>
+
+          {
+            quiz.questions.map((qq, qi) => (
+              <div class="quiz-step" data-quiz-step={qi} hidden={qi !== 0}>
+                <h3 class="font-display text-xl md:text-2xl font-bold mb-5">
+                  {qq.q}
+                </h3>
+                <div class="grid sm:grid-cols-3 gap-3">
+                  {qq.options.map((o) => (
+                    <button
+                      type="button"
+                      class="quiz-option sc-btn rounded-2xl border-2 border-[#ffd9b0] bg-white px-4 py-4 text-sm font-bold text-[#2b2440] hover:border-[#ff8c1a] hover:bg-[#fff6ea] transition-colors"
+                      data-tag={o.tag}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+
+          <div data-quiz-result hidden>
+            <h3 class="font-display text-2xl md:text-3xl font-bold mb-2">
+              {quiz.result.title}
+            </h3>
+            <p class="text-[#6b6480] mb-5">{quiz.result.lead}</p>
+            <ul data-quiz-tags class="space-y-2 mb-7"></ul>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href="#register"
+                class="sc-btn sc-btn-primary inline-flex items-center rounded-2xl px-6 py-4 text-base font-bold"
+              >
+                {quiz.result.ctaLabel}
+              </a>
+              <button
+                type="button"
+                data-quiz-restart
+                class="text-sm font-bold text-[#6b6480] underline hover:text-[#ff8c1a]"
+              >
+                {quiz.result.restartLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- HOW IT WORKS ---------- */}
+    <section id="how" class="py-16 md:py-24">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 sc-reveal">
+          <span class={eyebrow}>{how.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {how.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{how.subtitle}</p>
+        </div>
+
+        <div class="space-y-4">
+          {
+            how.steps.map((item, i) => (
+              <article
+                class="sc-step sc-reveal group flex gap-4 sm:gap-6 items-start cursor-pointer"
+                data-step={i}
+              >
+                <div class="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-white border-2 border-[#f0e6d6] text-[#c9bfd9] group-[.is-active]:bg-[#ff8c1a] group-[.is-active]:border-[#ff8c1a] group-[.is-active]:text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
+                  {i + 1}
+                </div>
+                <div class="flex-1 sc-card p-5 sm:p-6 group-[.is-active]:border-[#ff8c1a]/40 transition-all duration-300">
+                  <div class="flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                      <div class="text-[10px] sm:text-xs font-black text-[#c9bfd9] group-[.is-active]:text-[#d96b00] uppercase tracking-[0.15em] mb-1 transition-colors">
+                        {item.step}
+                      </div>
+                      <h3 class="font-display text-lg sm:text-xl font-bold leading-tight">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <span
+                      class="text-2xl text-[#ff8c1a] transition-transform duration-300 group-[.is-active]:rotate-45 shrink-0"
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </div>
+                  <p class="text-[#6b6480] text-sm sm:text-base mt-2 leading-relaxed">
+                    {item.text}
+                  </p>
+                  <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
+                    <div class="overflow-hidden">
+                      <div class="pt-5 mt-5 border-t-2 border-dashed border-[#f0e6d6]">
+                        <p class="text-[#5b5470] text-sm sm:text-base leading-relaxed mb-4">
+                          {item.details}
+                        </p>
+                        <div class="flex items-start gap-3 bg-[#ff8c1a]/8 border-2 border-[#ff8c1a]/25 p-3 rounded-2xl">
+                          <span class="inline-flex w-6 h-6 rounded-lg bg-[#ff8c1a] items-center justify-center text-white text-sm shrink-0">
+                            ✓
+                          </span>
+                          <span class="text-xs sm:text-sm font-bold text-[#d96b00] leading-tight">
+                            {item.outcome}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- CREATIONS ---------- */}
+    <section id="creations" class="py-16 md:py-24 bg-white border-y-2 border-[#f0e6d6]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 sc-reveal">
+          <span class={eyebrow}>{creations.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {creations.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{creations.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {
+            creations.cards.map((card) => (
+              <div class="sc-reveal sc-lift sc-card p-6 text-center">
+                <div
+                  class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white mb-4"
+                  style={`background:${card.color}`}
+                >
+                  <Icon name={card.icon} class="size-8" />
+                </div>
+                <h3 class="font-display text-lg font-bold mb-2">{card.title}</h3>
+                <p class="text-[#6b6480] text-sm leading-relaxed">{card.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- TESTIMONIALS ---------- */}
+    <section id="testimonials" class="py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 sc-reveal">
+          <span class={eyebrow}>{testimonials.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold">
+            {testimonials.title}
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          {
+            testimonials.items.map((t, i) => (
+              <figure class="sc-reveal sc-lift sc-card p-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <span
+                    class="inline-flex h-11 w-11 items-center justify-center rounded-full text-white font-bold"
+                    style={`background:${blockColors[i % blockColors.length]}`}
+                  >
+                    {t.name.charAt(0)}
+                  </span>
+                  <figcaption>
+                    <div class="font-bold leading-tight">{t.name}</div>
+                    <div class="text-xs text-[#897f9e]">{t.role}</div>
+                  </figcaption>
+                </div>
+                <p class="text-[#4b4560] leading-relaxed">“{t.text}”</p>
+                <div class="mt-3 text-[#FFBF00]" aria-hidden="true">
+                  ★★★★★
+                </div>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- FAQ ---------- */}
+    <section id="faq" class="py-16 md:py-24 bg-[#fff3df] border-y-2 border-[#f0e6d6]">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 sc-reveal">
+          <span class={eyebrow}>{faq.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold">{faq.title}</h2>
+        </div>
+        <div class="space-y-4">
+          {
+            faq.items.map((item) => (
+              <details class="sc-reveal group sc-card p-5">
+                <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg list-none">
+                  {item.question}
+                  <span
+                    class="ml-4 text-[#ff8c1a] transition-transform group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p class="mt-3 text-[#5b5470] leading-relaxed">{item.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- TRUST / METHODOLOGY (unique, confidence) ---------- */}
+    <section id="parents" class="py-16 md:py-24 bg-white border-b-2 border-[#f0e6d6]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 sc-reveal">
+          <span class={eyebrow}>{trust.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {trust.title}
+          </h2>
+          <p class="text-[#6b6480] text-lg">{trust.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            trust.items.map((item, i) => (
+              <div class="sc-reveal sc-lift sc-card p-6">
+                <div
+                  class="inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white mb-4"
+                  style={`background:${blockColors[i % blockColors.length]}`}
+                >
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-lg font-bold mb-2">{item.title}</h3>
+                <p class="text-[#6b6480] text-sm leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- GUARANTEE band (confidence) ---------- */}
+    <section class="py-10 bg-[#2b2440]">
+      <div
+        class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
+      >
+        <div
+          class="shrink-0 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#4CBF56] text-white shadow-lg"
+        >
+          <Icon name="lucide:shield-check" class="size-9" />
+        </div>
+        <div class="sc-reveal">
+          <span
+            class="inline-block bg-[#4CBF56]/20 text-[#9be88a] text-xs font-black px-3 py-1 rounded-full uppercase tracking-[0.15em] mb-2"
+            >{guarantee.badge}</span
+          >
+          <h3 class="font-display text-2xl font-bold text-white mb-1">
+            {guarantee.title}
+          </h3>
+          <p class="text-white/70 text-sm md:text-base leading-relaxed">
+            {guarantee.text}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- REGISTER ---------- */}
+    <section
+      id="register"
+      class="py-16 md:py-24 bg-linear-to-br from-[#ff8c1a] to-[#ffbf00]"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="sc-reveal text-[#3d2200]">
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+            {register.title}
+          </h2>
+          <p class="text-[#5a3a00] text-lg mb-8">{register.subtitle}</p>
+          <ul class="space-y-3">
+            {
+              register.features.map((f) => (
+                <li class="flex items-center gap-3 font-semibold">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-[#3d2200] text-[#ffbf00] text-sm">
+                    ✓
+                  </span>
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div
+          class="sc-reveal rounded-3xl bg-[#0e172b] p-6 md:p-8 shadow-2xl"
+          style="--form-accent:#ff8c1a;--form-accent-rgb:255, 140, 26;--form-accent-fg:#ffffff;"
+        >
+          <div data-sc-form>
+            <UseForm formId="scratch-landing" />
+          </div>
+          <div data-sc-success hidden class="text-center text-white py-6">
+            <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+            <h3 class="font-display text-2xl font-bold mb-2">Чудовий вибір!</h3>
+            <p class="text-white/80">
+              Ми отримали вашу заявку. Менеджер зателефонує найближчим часом.
+            </p>
+          </div>
+          <p
+            data-sc-error
+            hidden
+            class="mt-4 text-center text-sm font-medium text-[#fca5a5]"
+          >
+            Сталася помилка. Спробуйте ще раз або зателефонуйте нам:
+            {footer.phone}
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  {/* ---------- PAGE SCRIPTS ---------- */}
+  <script>
+    import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
+    onFormSuccess(() => {
+      document.querySelector("[data-sc-form]")?.setAttribute("hidden", "");
+      document.querySelector("[data-sc-error]")?.setAttribute("hidden", "");
+      document.querySelector("[data-sc-success]")?.removeAttribute("hidden");
+      document
+        .getElementById("register")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    onFormError(() => {
+      document.querySelector("[data-sc-error]")?.removeAttribute("hidden");
+    });
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Timeline accordion
+    const steps = Array.from(document.querySelectorAll<HTMLElement>(".sc-step"));
+    steps.forEach((step, i) => {
+      if (i === 0) step.classList.add("is-active");
+      step.addEventListener("click", () => {
+        const wasActive = step.classList.contains("is-active");
+        steps.forEach((s) => s.classList.remove("is-active"));
+        if (!wasActive) step.classList.add("is-active");
+      });
+    });
+
+    // Counters
+    const counters =
+      document.querySelectorAll<HTMLElement>(".sc-counter[data-sc-count]");
+    const runCounter = (el: HTMLElement) => {
+      const raw = el.dataset.scCount || "";
+      const suffix = raw.replace(/[\d.]/g, "");
+      const target = parseFloat(raw);
+      if (isNaN(target)) return;
+      const isFloat = raw.includes(".");
+      const decimals = isFloat ? 1 : 0;
+      const duration = 1500;
+      const start = performance.now();
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const val = target * ease(p);
+        el.textContent =
+          (isFloat ? val.toFixed(decimals) : Math.floor(val).toString()) +
+          suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (!prefersReduced) {
+      const cio = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              runCounter(e.target as HTMLElement);
+              cio.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      counters.forEach((el) => cio.observe(el));
+    }
+
+    // Skill bars
+    const skillsWrap = document.getElementById("sc-skills");
+    if (skillsWrap) {
+      const bars =
+        skillsWrap.querySelectorAll<HTMLElement>(".sc-bar-fill[data-sc-level]");
+      const fill = () =>
+        bars.forEach((b) => {
+          b.style.width = `${b.dataset.scLevel}%`;
+        });
+      if (prefersReduced) {
+        fill();
+      } else {
+        const sio = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              fill();
+              sio.disconnect();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        sio.observe(skillsWrap);
+      }
+    }
+
+    // Interactive playground "Збери програму"
+    const pg = document.getElementById("sc-playground");
+    if (pg) {
+      const palette = pg.querySelectorAll<HTMLElement>(".sc-pg-block");
+      const scriptList = pg.querySelector<HTMLElement>("[data-pg-script]");
+      const emptyEl = pg.querySelector<HTMLElement>("[data-pg-empty]");
+      const runBtn = pg.querySelector<HTMLButtonElement>("[data-pg-run]");
+      const clearBtn = pg.querySelector<HTMLElement>("[data-pg-clear]");
+      const sprite = pg.querySelector<HTMLElement>("[data-pg-sprite]");
+      const bubble = pg.querySelector<HTMLElement>("[data-pg-bubble]");
+      const program: { action: string; label: string }[] = [];
+      let x = 0;
+      let running = false;
+
+      const render = () => {
+        scriptList?.querySelectorAll("[data-pg-item]").forEach((n) => n.remove());
+        if (program.length === 0) {
+          emptyEl?.removeAttribute("hidden");
+          return;
+        }
+        emptyEl?.setAttribute("hidden", "");
+        program.forEach((p, idx) => {
+          const li = document.createElement("li");
+          li.setAttribute("data-pg-item", "");
+          li.className =
+            "flex items-center gap-2 rounded-xl bg-white border-2 border-[#f0e6d6] px-3 py-2 text-sm font-bold text-[#2b2440]";
+          li.textContent = `${idx + 1}. ${p.label}`;
+          scriptList?.appendChild(li);
+        });
+      };
+
+      const resetSprite = () => {
+        x = 0;
+        if (sprite) sprite.style.transform = "";
+        bubble?.setAttribute("hidden", "");
+      };
+
+      palette.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          if (program.length >= 8) return;
+          program.push({
+            action: btn.dataset.action || "",
+            label: btn.dataset.label || "",
+          });
+          render();
+        }),
+      );
+
+      clearBtn?.addEventListener("click", () => {
+        program.length = 0;
+        render();
+        resetSprite();
+      });
+
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const say = (msg: string) => {
+        if (!bubble) return;
+        bubble.textContent = msg;
+        bubble.removeAttribute("hidden");
+      };
+
+      runBtn?.addEventListener("click", async () => {
+        if (running || !sprite || program.length === 0) return;
+        running = true;
+        runBtn.setAttribute("disabled", "");
+        resetSprite();
+        await wait(200);
+        for (const step of program) {
+          if (step.action === "move") {
+            x = Math.min(x + 60, 190);
+            sprite.style.transform = `translateX(${x}px)`;
+          } else if (step.action === "jump") {
+            sprite.style.transform = `translateX(${x}px) translateY(-60px)`;
+            await wait(300);
+            sprite.style.transform = `translateX(${x}px) translateY(0)`;
+          } else if (step.action === "spin") {
+            sprite.style.transform = `translateX(${x}px) rotate(360deg)`;
+            await wait(600);
+            sprite.style.transform = `translateX(${x}px) rotate(0deg)`;
+          } else if (step.action === "say") {
+            say("Привіт!");
+            await wait(700);
+            bubble?.setAttribute("hidden", "");
+          } else if (step.action === "sound") {
+            say("Мяу!");
+            sprite.style.transform = `translateX(${x}px) scale(1.18)`;
+            await wait(280);
+            sprite.style.transform = `translateX(${x}px) scale(1)`;
+            await wait(250);
+            bubble?.setAttribute("hidden", "");
+          }
+          await wait(420);
+        }
+        running = false;
+        runBtn.removeAttribute("disabled");
+      });
+    }
+
+    // Quiz
+    const quizEl = document.getElementById("sc-quiz");
+    if (quizEl) {
+      const qSteps = Array.from(
+        quizEl.querySelectorAll<HTMLElement>("[data-quiz-step]"),
+      );
+      const total = qSteps.length;
+      const progressEl = quizEl.querySelector<HTMLElement>("[data-quiz-progress]");
+      const fillEl = quizEl.querySelector<HTMLElement>("[data-quiz-fill]");
+      const resultEl = quizEl.querySelector<HTMLElement>("[data-quiz-result]");
+      const tagsEl = quizEl.querySelector<HTMLElement>("[data-quiz-tags]");
+      const restartBtn = quizEl.querySelector<HTMLElement>("[data-quiz-restart]");
+      const answers: string[] = [];
+
+      const setProgress = (n: number) => {
+        if (fillEl) fillEl.style.width = `${(n / total) * 100}%`;
+      };
+      const showStep = (i: number) => {
+        qSteps.forEach((s, idx) => (s.hidden = idx !== i));
+        if (resultEl) resultEl.hidden = true;
+        if (progressEl) progressEl.textContent = `Крок ${i + 1}/${total}`;
+        setProgress(i + 1);
+      };
+      const showResult = () => {
+        qSteps.forEach((s) => (s.hidden = true));
+        if (progressEl) progressEl.textContent = "Готово!";
+        setProgress(total);
+        if (tagsEl) {
+          tagsEl.innerHTML = "";
+          answers.forEach((tag) => {
+            const li = document.createElement("li");
+            li.className = "flex items-start gap-3 text-[#4b4560]";
+            li.innerHTML =
+              '<span class="inline-flex w-6 h-6 rounded-lg bg-[#ff8c1a] items-center justify-center text-white text-sm shrink-0">✓</span><span class="leading-snug">' +
+              tag +
+              "</span>";
+            tagsEl.appendChild(li);
+          });
+        }
+        if (resultEl) resultEl.hidden = false;
+      };
+
+      qSteps.forEach((step, i) => {
+        step.querySelectorAll<HTMLElement>(".quiz-option").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            answers[i] = btn.getAttribute("data-tag") || "";
+            if (i < total - 1) showStep(i + 1);
+            else showResult();
+          });
+        });
+      });
+
+      restartBtn?.addEventListener("click", () => {
+        answers.length = 0;
+        showStep(0);
+      });
+    }
+  </script>
+  <div class="lg:hidden h-20" aria-hidden="true"></div>
+  <MobileStickyCta
+    label="Записати на безоплатний урок"
+    barClass="bg-white/92 border-t border-[#f0e6d6]"
+    btnClass="sc-btn sc-btn-primary"
+  />
+  <MessengerFab
+    accent="#ff8c1a"
+    accentRgb="255, 140, 26"
+    accentDark="#d96b00"
+    fg="#ffffff"
+    position="bottom-24 right-5 sm:right-6"
+  />
+  <LeadModal
+    formId="scratch-modal"
+    title={register.title}
+    accent="#ff8c1a"
+    accentRgb="255, 140, 26"
+    accentFg="#ffffff"
+    phone={footer.phone}
+  />
+</ScratchLayout>

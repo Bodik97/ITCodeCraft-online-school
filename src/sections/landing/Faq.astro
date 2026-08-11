@@ -1,0 +1,63 @@
+---
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  faq: {
+    eyebrow: string;
+    title: string;
+    items: FaqItem[];
+  };
+  sectionClass?: string;
+}
+
+const { prefix, faq, sectionClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap =
+  sectionClass ??
+  (prefix === "mc"
+    ? "py-16 md:py-24"
+    : `py-16 md:py-24 ${t.faqBg}`);
+const answerClass =
+  prefix === "fe"
+    ? "mt-3 text-sm text-slate-700 leading-relaxed"
+    : prefix === "sc"
+      ? "mt-3 text-[#5b5470] leading-relaxed"
+      : "mt-3 text-[#4b5563] leading-relaxed";
+const itemCard =
+  prefix === "mc"
+    ? "rounded-[8px] bg-white p-5 mc-block-sm"
+    : `${t.cardClass} p-5`;
+---
+
+<section id="faq" class={wrap}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`mb-10 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{faq.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold">{faq.title}</h2>
+    </div>
+    <div class="space-y-4">
+      {
+        faq.items.map((item) => (
+          <details class={`${prefix}-reveal group ${itemCard}`}>
+            <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg list-none">
+              {item.question}
+              <span
+                class={`ml-4 ${t.stepPlus} transition-transform group-open:rotate-45`}
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p class={answerClass}>{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

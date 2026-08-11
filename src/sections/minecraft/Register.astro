@@ -1,0 +1,10 @@
+---
+import LandingRegister from "@/sections/landing/Register.astro";
+import content from "@/data/minecraft.json";
+---
+
+<LandingRegister
+  prefix="mc"
+  register={content.register}
+  phone={content.footer.phone}
+/>

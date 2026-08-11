@@ -1,0 +1,240 @@
+---
+import { Icon } from "astro-icon/components";
+import content from "@/data/minecraft.json";
+
+interface CircuitItem {
+  id: string;
+  label: string;
+  short: string;
+  color: string;
+  img: string;
+}
+
+interface Props {
+  playground?: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    buttonsTitle: string;
+    buttonsOrder: string[];
+    circuit: CircuitItem[];
+    resetLabel: string;
+    idleText: string;
+  };
+}
+
+const playground = Astro.props.playground ?? content.playground;
+---
+
+<section id="playground" class="py-16 md:py-24">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10 mc-reveal">
+      <span
+        class="inline-block bg-[#5dae3f]/10 text-[#3a7d20] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#5dae3f]/30"
+        >{playground.eyebrow}</span
+      >
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {playground.title}
+      </h2>
+      <p class="text-[#6b7280] text-lg">{playground.subtitle}</p>
+    </div>
+
+    <div id="mc-playground" class="mc-reveal grid md:grid-cols-2 gap-6 items-stretch">
+      <div class="rounded-[12px] bg-white p-5 md:p-6 mc-block flex flex-col">
+        <p class="text-xs font-black uppercase tracking-[0.15em] text-[#3a7d20] mb-4">
+          {playground.buttonsTitle}
+        </p>
+        <div class="flex flex-wrap gap-2.5 mb-auto">
+          {
+            playground.buttonsOrder.map((id) => {
+              const c = playground.circuit.find((x) => x.id === id);
+              return c ? (
+                <button
+                  type="button"
+                  data-comp={c.id}
+                  class="mc-pg-btn inline-flex items-center gap-2 rounded-[8px] px-3.5 py-2.5 text-sm font-bold text-white mc-block-sm hover:translate-y-px transition-transform disabled:opacity-50"
+                  style={`background:${c.color}`}
+                >
+                  <img src={c.img} alt="" class="size-5 mc-pixel" />
+                  {c.label}
+                </button>
+              ) : null;
+            })
+          }
+        </div>
+        <button
+          type="button"
+          data-pg-reset
+          class="mt-6 self-start inline-flex items-center gap-2 rounded-[8px] border-2 border-[#1f2937] bg-white px-4 py-2.5 text-sm font-bold text-[#1f2937] mc-block-sm hover:translate-y-px transition-transform"
+        >
+          <Icon name="lucide:eraser" class="size-4" />
+          {playground.resetLabel}
+        </button>
+      </div>
+
+      <div
+        data-pg-stage
+        class="rounded-[12px] mc-block relative overflow-hidden p-6 min-h-75 md:min-h-85 bg-[#1a1f29] flex flex-col items-center justify-center gap-5"
+      >
+        <p class="text-[10px] font-black uppercase tracking-[0.15em] text-[#5b6675]">
+          Схема механізму
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-1.5 w-full">
+          {
+            playground.circuit.map((c, idx) => (
+              <>
+                {idx > 0 && (
+                  <span
+                    data-conn
+                    class="w-3 h-1 rounded-full bg-[#3a4453] transition-colors duration-300"
+                  />
+                )}
+                <span
+                  data-schema={c.id}
+                  data-color={c.color}
+                  class="mc-schema-chip inline-flex flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-[#39414f] bg-[#12161f] p-1.5 transition-all duration-300"
+                >
+                  <img
+                    src={c.img}
+                    alt={c.label}
+                    class="w-14 h-14 rounded-md object-cover"
+                  />
+                  <span class="text-[10px] font-bold text-[#8b96a8]">
+                    {c.short}
+                  </span>
+                </span>
+              </>
+            ))
+          }
+        </div>
+        <div
+          data-pg-lamp
+          class="inline-flex h-24 w-24 items-center justify-center overflow-hidden rounded-[12px] border-2 border-[#0c0f15] bg-[#12161f] transition-all duration-300"
+        >
+          <img
+            src="/assets/minecraft/lamp.webp"
+            alt="Редстоун-лампа"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <p
+          data-pg-status
+          class="font-display font-bold text-base text-[#8b96a8] text-center px-2 min-h-[1.5em]"
+        >
+          {playground.idleText}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const pg = document.getElementById("mc-playground");
+  if (pg) {
+    const buttons = Array.from(
+      pg.querySelectorAll<HTMLButtonElement>(".mc-pg-btn"),
+    );
+    const chips = Array.from(pg.querySelectorAll<HTMLElement>("[data-schema]"));
+    const conns = Array.from(pg.querySelectorAll<HTMLElement>("[data-conn]"));
+    const resetBtn = pg.querySelector<HTMLElement>("[data-pg-reset]");
+    const lamp = pg.querySelector<HTMLElement>("[data-pg-lamp]");
+    const statusEl = pg.querySelector<HTMLElement>("[data-pg-status]");
+    const idleText = statusEl?.textContent?.trim() || "";
+    const order = chips.map((ch) => ch.dataset.schema || "");
+    let expected = 0;
+
+    const labelOf = (id: string) => {
+      const b = buttons.find((x) => x.dataset.comp === id);
+      return b ? (b.textContent || "").trim() : id;
+    };
+
+    const stage = pg.querySelector<HTMLElement>("[data-pg-stage]");
+    const burstSparks = () => {
+      if (prefersReduced || !stage) return;
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement("span");
+        s.className = "mc-spark";
+        const ang = (Math.PI * 2 * i) / 12 + Math.random() * 0.4;
+        const dist = 40 + Math.random() * 45;
+        s.style.left = "50%";
+        s.style.top = "58%";
+        s.style.setProperty("--tx", `${Math.cos(ang) * dist}px`);
+        s.style.setProperty("--ty", `${Math.sin(ang) * dist}px`);
+        stage.appendChild(s);
+        setTimeout(() => s.remove(), 760);
+      }
+    };
+    const shakeStage = () => {
+      if (prefersReduced || !stage) return;
+      stage.classList.add("mc-stage-shake");
+      setTimeout(() => stage.classList.remove("mc-stage-shake"), 430);
+    };
+
+    const lightChip = (chip: HTMLElement) => {
+      const color = chip.dataset.color || "#fc4a3a";
+      chip.style.setProperty("--mc-glow", color);
+      chip.style.background = "#1f2630";
+      chip.classList.add("is-on", "just-on");
+      setTimeout(() => chip.classList.remove("just-on"), 520);
+    };
+
+    const setStatus = (text: string, color: string) => {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      statusEl.style.color = color;
+    };
+
+    const success = () => {
+      if (lamp) {
+        lamp.classList.add("is-on", "surge");
+        setTimeout(() => lamp.classList.remove("surge"), 750);
+      }
+      burstSparks();
+      shakeStage();
+      setStatus("Механізм працює — лампа горить!", "#ffce6b");
+      buttons.forEach((b) => b.setAttribute("disabled", ""));
+    };
+
+    const reset = () => {
+      expected = 0;
+      chips.forEach((ch) => {
+        ch.classList.remove("is-on", "just-on");
+        ch.style.removeProperty("--mc-glow");
+        ch.style.background = "";
+      });
+      conns.forEach((cn) => cn.classList.remove("is-on"));
+      if (lamp) {
+        lamp.classList.remove("is-on", "surge");
+      }
+      buttons.forEach((b) => b.removeAttribute("disabled"));
+      if (statusEl) {
+        statusEl.textContent = idleText;
+        statusEl.style.color = "";
+      }
+    };
+
+    buttons.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        if (expected >= order.length) return;
+        const id = btn.dataset.comp || "";
+        if (id === order[expected]) {
+          const chip = chips[expected];
+          lightChip(chip);
+          if (expected > 0 && conns[expected - 1])
+            conns[expected - 1].classList.add("is-on");
+          btn.setAttribute("disabled", "");
+          expected++;
+          if (expected >= order.length) success();
+          else setStatus(`Далі увімкни: ${labelOf(order[expected])}`, "#9fb0c7");
+        } else {
+          setStatus(`⚠ Спершу увімкни: ${labelOf(order[expected])}`, "#fca5a5");
+        }
+      }),
+    );
+
+    resetBtn?.addEventListener("click", reset);
+  }
+</script>

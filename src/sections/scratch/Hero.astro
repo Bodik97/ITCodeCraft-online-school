@@ -1,0 +1,28 @@
+---
+import LandingHero from "@/sections/landing/Hero.astro";
+import content from "@/data/scratch.json";
+
+const { hero, builds } = content;
+
+const particles = [
+  { left: "7%", size: 22, delay: "0s", duration: "15s", color: "#4C97FF" },
+  { left: "23%", size: 16, delay: "3s", duration: "12s", color: "#FFBF00" },
+  { left: "41%", size: 24, delay: "1.5s", duration: "17s", color: "#CF63CF" },
+  { left: "59%", size: 18, delay: "5s", duration: "13s", color: "#4CBF56" },
+  { left: "76%", size: 20, delay: "2s", duration: "16s", color: "#9966FF" },
+  { left: "91%", size: 16, delay: "6s", duration: "14s", color: "#FF8C1A" },
+];
+---
+
+<LandingHero
+  prefix="sc"
+  hero={hero}
+  builds={builds}
+  particles={particles}
+  heroStatColors={["#4C97FF", "#9966FF", "#FF8C1A"]}
+  image={{ src: "/assets/courses/scratch.webp", alt: "Проєкт дитини у Scratch" }}
+  ctaSecondary={{ href: "#creations", label: "Що створить дитина" }}
+  primaryCtaMode="link"
+  primaryCtaHref="#register"
+  mediaBadges={[{ text: "🐱 для наймолодших" }]}
+/>

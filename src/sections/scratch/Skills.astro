@@ -1,0 +1,14 @@
+---
+import LandingSkills from "@/sections/landing/Skills.astro";
+import content from "@/data/scratch.json";
+
+const blockStack = [
+  { text: "коли почати", color: "#FFBF00", rotate: "-rotate-1", ml: "" },
+  { text: "повторити 10 разів", color: "#4C97FF", rotate: "rotate-1", ml: "ml-4" },
+  { text: "рухатись 10 кроків", color: "#9966FF", rotate: "-rotate-1", ml: "ml-8" },
+  { text: "програти звук", color: "#CF63CF", rotate: "rotate-1", ml: "ml-4" },
+  { text: "сказати «Готово!»", color: "#4CBF56", rotate: "-rotate-1", ml: "" },
+];
+---
+
+<LandingSkills prefix="sc" skills={content.skills} blockStack={blockStack} />

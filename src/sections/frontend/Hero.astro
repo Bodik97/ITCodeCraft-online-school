@@ -1,0 +1,25 @@
+---
+import LandingHero from "@/sections/landing/Hero.astro";
+import content from "@/data/frontend.json";
+
+const { hero, stack } = content;
+
+const particles = [
+  { t: "</>", left: "8%", delay: "0s", duration: "16s", color: "#82aaff", size: 18 },
+  { t: "{ }", left: "22%", delay: "3s", duration: "13s", color: "#c792ea", size: 16 },
+  { t: "div", left: "40%", delay: "1.5s", duration: "18s", color: "#c3e88d", size: 14 },
+  { t: "css", left: "58%", delay: "5s", duration: "14s", color: "#ffcb6b", size: 15 },
+  { t: "()", left: "74%", delay: "2s", duration: "17s", color: "#82aaff", size: 18 },
+  { t: "<a>", left: "90%", delay: "6s", duration: "15s", color: "#c792ea", size: 14 },
+];
+---
+
+<LandingHero
+  prefix="fe"
+  hero={hero}
+  stack={stack}
+  particles={particles}
+  heroStatColors={["#818cf8", "#a78bfa", "#22d3ee"]}
+  image={{ src: "/assets/courses/frontend2.webp", alt: "Сайт, створений учнем курсу Frontend" }}
+  ctaSecondary={{ href: "#projects", label: "Дивитись проєкти" }}
+/>

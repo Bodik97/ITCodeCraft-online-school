@@ -1,0 +1,62 @@
+---
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import Logo from "@/components/shared/Logo.astro";
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface NavLink {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  brand: { homeUrl: string };
+  navigation: {
+    links: NavLink[];
+    ctaLabel: string;
+    backToMain: string;
+  };
+}
+
+const { prefix, brand, navigation } = Astro.props;
+const t = getLandingTheme(prefix);
+const gapClass = prefix === "mc" ? "gap-2" : "gap-3";
+---
+
+<header class={t.headerClass}>
+  <div
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
+  >
+    <Logo href={brand.homeUrl} />
+
+    <nav class="hidden lg:flex items-center gap-6">
+      {
+        navigation.links.map((link) => (
+          <a href={`#${link.id}`} class={t.navLinkClass}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class={`flex items-center ${gapClass}`}>
+      <a href={brand.homeUrl} class={t.backLinkClass}
+        >← {navigation.backToMain}</a
+      >
+      <button type="button" data-lead-modal-open class={t.ctaBtnClass}>
+        {navigation.ctaLabel}
+      </button>
+      <LandingMobileNav
+        links={navigation.links}
+        backUrl={brand.homeUrl}
+        backLabel={navigation.backToMain}
+        ctaLabel={navigation.ctaLabel}
+        toggleClass={t.mobileToggleClass}
+        panelClass={t.mobilePanelClass}
+        linkClass={t.mobileLinkClass}
+        dotColor={t.mobileDot}
+        ctaClass={t.mobileCtaClass}
+      />
+    </div>
+  </div>
+</header>

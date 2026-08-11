@@ -1,0 +1,184 @@
+      body.scratch-site {
+        font-family: "Inter", sans-serif;
+        color: #2b2440;
+        background-color: #fff9f0;
+        background-image: radial-gradient(
+          rgba(255, 140, 26, 0.1) 1.5px,
+          transparent 1.5px
+        );
+        background-size: 26px 26px;
+        overflow-x: hidden;
+      }
+      body.scratch-site h1,
+      body.scratch-site h2,
+      body.scratch-site h3 {
+        font-family: "Fredoka", sans-serif;
+      }
+
+      .sc-scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        width: var(--sc-progress, 0%);
+        background: linear-gradient(90deg, #ff8c1a, #cf63cf, #4c97ff);
+        z-index: 90;
+        transition: width 0.1s linear;
+      }
+
+      /* Soft bubbly cards */
+      .sc-card {
+        background: #fff;
+        border: 2px solid #f0e6d6;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px -12px rgba(255, 140, 26, 0.25);
+      }
+
+      /* 3D pressable buttons */
+      .sc-btn {
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease,
+          filter 0.2s ease;
+      }
+      .sc-btn-primary {
+        background: #ff8c1a;
+        color: #3d2200;
+        box-shadow: 0 5px 0 0 #cf6a00;
+      }
+      .sc-btn-primary:hover {
+        transform: translateY(2px);
+        box-shadow: 0 3px 0 0 #cf6a00;
+        filter: brightness(1.03);
+      }
+      .sc-btn-primary:active {
+        transform: translateY(5px);
+        box-shadow: 0 0 0 0 #cf6a00;
+      }
+      .sc-btn-soft {
+        background: #fff;
+        color: #2b2440;
+        border: 2px solid #ffd9b0;
+      }
+      .sc-btn-soft:hover {
+        border-color: #ff8c1a;
+      }
+
+      /* Reveal */
+      .sc-reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .sc-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Float */
+      .sc-float {
+        animation: sc-float 4.5s ease-in-out infinite;
+      }
+      @keyframes sc-float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1deg);
+        }
+        50% {
+          transform: translateY(-14px) rotate(1deg);
+        }
+      }
+
+      /* Drifting colorful blocks */
+      .sc-particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+      .sc-particle {
+        position: absolute;
+        border-radius: 8px;
+        opacity: 0;
+        animation: sc-drift linear infinite;
+      }
+      @keyframes sc-drift {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        12% {
+          opacity: 0.85;
+        }
+        88% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-115vh) rotate(160deg);
+          opacity: 0;
+        }
+      }
+
+      /* Marquee */
+      .sc-marquee {
+        overflow: hidden;
+        mask-image: linear-gradient(
+          to right,
+          transparent 0%,
+          black 8%,
+          black 92%,
+          transparent 100%
+        );
+      }
+      .sc-marquee-track {
+        display: flex;
+        gap: 14px;
+        width: max-content;
+        animation: sc-scroll 30s linear infinite;
+      }
+      @keyframes sc-scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .sc-marquee:hover .sc-marquee-track {
+        animation-play-state: paused;
+      }
+
+      /* Hover lift */
+      .sc-lift {
+        transition:
+          transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.25s ease;
+      }
+      .sc-lift:hover {
+        transform: translateY(-5px) rotate(-0.5deg);
+        box-shadow: 0 18px 38px -14px rgba(255, 140, 26, 0.4);
+      }
+
+      /* Skill bars */
+      .sc-bar-fill {
+        width: 0;
+        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .sc-reveal,
+        .sc-float,
+        .sc-particle,
+        .sc-marquee-track,
+        .sc-bar-fill {
+          transition: none;
+          animation: none;
+        }
+        .sc-particle {
+          display: none;
+        }
+      }
+    

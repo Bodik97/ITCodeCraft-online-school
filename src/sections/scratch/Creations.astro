@@ -1,0 +1,52 @@
+---
+import { Icon } from "astro-icon/components";
+import content from "@/data/scratch.json";
+
+interface CreationCard {
+  icon: string;
+  title: string;
+  text: string;
+  color: string;
+}
+
+interface Props {
+  creations?: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    cards: CreationCard[];
+  };
+}
+
+const creations = Astro.props.creations ?? content.creations;
+const eyebrow =
+  "inline-block bg-[#ff8c1a]/12 text-[#d96b00] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#ff8c1a]/30";
+---
+
+<section id="creations" class="py-16 md:py-24 bg-white border-y-2 border-[#f0e6d6]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mb-12 sc-reveal">
+      <span class={eyebrow}>{creations.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {creations.title}
+      </h2>
+      <p class="text-[#6b6480] text-lg">{creations.subtitle}</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        creations.cards.map((card) => (
+          <div class="sc-reveal sc-lift sc-card p-6 text-center">
+            <div
+              class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white mb-4"
+              style={`background:${card.color}`}
+            >
+              <Icon name={card.icon} class="size-8" />
+            </div>
+            <h3 class="font-display text-lg font-bold mb-2">{card.title}</h3>
+            <p class="text-[#6b6480] text-sm leading-relaxed">{card.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

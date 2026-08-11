@@ -1,8 +1,8 @@
 ---
 import "@/styles/global.css";
+import "@/styles/frontend/theme.css";
 import data from "@/data/frontend.json";
-import Analytics from "@/components/shared/Analytics.astro";
-import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
+import BaseLandingLayout from "@/layouts/BaseLandingLayout.astro";
 
 interface Props {
   title?: string;
@@ -18,14 +18,13 @@ const {
   canonicalUrl = data.meta.canonical,
 } = Astro.props;
 
-const site = Astro.site;
-if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
-
-const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
-const ogImage = new URL("/assets/OGP/fb.png", canonical).href;
 const adsSendTo = import.meta.env.PUBLIC_GOOGLE_ADS_SEND_TO_FRONTEND?.trim();
 
-const organizationJsonLd = JSON.stringify({
+const site = Astro.site;
+if (!site) throw new Error("Set `site` in astro.config for canonical URLs.");
+const canonical = new URL(canonicalUrl, site).href.replace(/\/+$/, "") + "/";
+
+const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Course",
   name: "Курс Frontend для підлітків",
@@ -39,313 +38,21 @@ const organizationJsonLd = JSON.stringify({
 });
 ---
 
-<!doctype html>
-<html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:locale" content="uk_UA" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/assets/favicon/favicon-32x32.png"
-    />
-    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png" />
-
-    <script is:inline type="application/ld+json" set:html={organizationJsonLd} />
-    <script is:inline define:vars={{ productName: data.crm.productName }}>
-      window.productName = productName;
-    </script>
-
-    <Analytics pageGroup="frontend" adsSendTo={adsSendTo} />
-  </head>
-  <body class="frontend-site min-h-dvh flex flex-col antialiased">
-    <AnalyticsNoscript />
-    <div class="fe-scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-white focus:z-[100] focus:text-[#6366f1] focus:font-bold"
-    >
-      Перейти до головного контенту
-    </a>
-    <slot />
-
-    <script>
-      const progress = document.getElementById("scroll-progress");
-      const onScroll = () => {
-        const h = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
-        if (progress) progress.style.setProperty("--fe-progress", `${pct}%`);
-      };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      const items = document.querySelectorAll<HTMLElement>(".fe-reveal");
-      if (prefersReduced) {
-        items.forEach((el) => el.classList.add("is-visible"));
-      } else {
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((e) => {
-              if (e.isIntersecting) {
-                (e.target as HTMLElement).classList.add("is-visible");
-                io.unobserve(e.target);
-              }
-            });
-          },
-          { threshold: 0.12 },
-        );
-        items.forEach((el) => io.observe(el));
-      }
-    </script>
-
-    <style is:global>
-      body.frontend-site {
-        font-family: "Inter", sans-serif;
-        color: #0f172a;
-        background-color: #f8fafc;
-        background-image: radial-gradient(
-          rgba(99, 102, 241, 0.08) 1px,
-          transparent 1px
-        );
-        background-size: 22px 22px;
-        overflow-x: hidden;
-      }
-      body.frontend-site h1,
-      body.frontend-site h2,
-      body.frontend-site h3,
-      body.frontend-site .font-display {
-        font-family: "Space Grotesk", sans-serif;
-        letter-spacing: -0.01em;
-      }
-
-      .fe-mono {
-        font-family: "DM Mono", monospace;
-      }
-
-      .fe-scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 4px;
-        width: var(--fe-progress, 0%);
-        background: linear-gradient(90deg, #6366f1, #8b5cf6, #22d3ee);
-        z-index: 90;
-        transition: width 0.1s linear;
-      }
-
-      /* Cards */
-      .fe-card {
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-      }
-
-      /* Buttons */
-      .fe-btn {
-        transition:
-          transform 0.15s ease,
-          box-shadow 0.2s ease,
-          filter 0.2s ease;
-      }
-      .fe-btn-primary {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        color: #fff;
-        box-shadow: 0 8px 24px -8px rgba(99, 102, 241, 0.7);
-      }
-      .fe-btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 32px -8px rgba(99, 102, 241, 0.8);
-        filter: brightness(1.05);
-      }
-      .fe-btn-primary:active {
-        transform: translateY(0);
-      }
-      .fe-btn-ghost {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #fff;
-      }
-      .fe-btn-ghost:hover {
-        background: rgba(255, 255, 255, 0.16);
-      }
-
-      /* Reveal */
-      .fe-reveal {
-        opacity: 0;
-        transform: translateY(26px);
-        transition:
-          opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-          transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      .fe-reveal.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Float */
-      .fe-float {
-        animation: fe-float 5s ease-in-out infinite;
-      }
-      @keyframes fe-float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-12px);
-        }
-      }
-
-      /* Drifting code particles */
-      .fe-particles {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-        z-index: 1;
-      }
-      .fe-particle {
-        position: absolute;
-        font-family: "DM Mono", monospace;
-        font-weight: 700;
-        opacity: 0;
-        animation: fe-drift linear infinite;
-        user-select: none;
-      }
-      @keyframes fe-drift {
-        0% {
-          transform: translateY(0);
-          opacity: 0;
-        }
-        12% {
-          opacity: 0.5;
-        }
-        88% {
-          opacity: 0.35;
-        }
-        100% {
-          transform: translateY(-115vh);
-          opacity: 0;
-        }
-      }
-
-      /* Tech-stack marquee */
-      .fe-marquee {
-        overflow: hidden;
-        mask-image: linear-gradient(
-          to right,
-          transparent 0%,
-          black 8%,
-          black 92%,
-          transparent 100%
-        );
-      }
-      .fe-marquee-track {
-        display: flex;
-        gap: 12px;
-        width: max-content;
-        animation: fe-scroll 28s linear infinite;
-      }
-      @keyframes fe-scroll {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
-      }
-      .fe-marquee:hover .fe-marquee-track {
-        animation-play-state: paused;
-      }
-
-      /* Hover lift */
-      .fe-lift {
-        transition:
-          transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-          box-shadow 0.25s ease;
-      }
-      .fe-lift:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 18px 40px -16px rgba(99, 102, 241, 0.45);
-      }
-
-      /* Syntax tokens in hero code block */
-      .tok-kw {
-        color: #c792ea;
-      }
-      .tok-var {
-        color: #82aaff;
-      }
-      .tok-str {
-        color: #c3e88d;
-      }
-      .tok-fn {
-        color: #ffcb6b;
-      }
-      .tok-com {
-        color: #546e7a;
-      }
-
-      /* Skill bars */
-      .fe-bar-fill {
-        width: 0;
-        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      /* Typing cursor */
-      .fe-cursor::after {
-        content: "▋";
-        margin-left: 2px;
-        color: #22d3ee;
-        animation: fe-blink 1s step-end infinite;
-      }
-      @keyframes fe-blink {
-        50% {
-          opacity: 0;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .fe-reveal,
-        .fe-float,
-        .fe-particle,
-        .fe-marquee-track {
-          transition: none;
-          animation: none;
-        }
-        .fe-particle {
-          display: none;
-        }
-        .fe-bar-fill {
-          transition: none;
-        }
-      }
-    </style>
-  </body>
-</html>
+<BaseLandingLayout
+  pageGroup="frontend"
+  adsSendTo={adsSendTo}
+  title={title}
+  description={description}
+  lang={lang}
+  canonicalUrl={canonicalUrl}
+  bodyClass="frontend-site"
+  fontsHref="https://fonts.googleapis.com/css2?family=DM+Mono&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+  revealSelector=".fe-reveal"
+  progressCssVar="--fe-progress"
+  progressBarClass="fe-scroll-progress"
+  skipLinkFocusClass="focus:text-[#6366f1]"
+  jsonLd={jsonLd}
+  productName={data.crm.productName}
+>
+  <slot />
+</BaseLandingLayout>

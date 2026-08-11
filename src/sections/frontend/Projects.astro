@@ -1,0 +1,60 @@
+---
+import content from "@/data/frontend.json";
+
+interface ProjectCard {
+  youtubeId: string;
+  title: string;
+  student: string;
+  time: string;
+}
+
+interface Props {
+  projects?: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    cards: ProjectCard[];
+  };
+}
+
+const projects = Astro.props.projects ?? content.projects;
+---
+
+<section id="projects" class="py-16 md:py-24 bg-[#0f172a] text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mb-12 fe-reveal">
+      <span
+        class="fe-mono inline-block bg-white/10 text-neon-cyan text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-[0.15em] mb-4 border border-white/15"
+        >{projects.eyebrow}</span
+      >
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {projects.title}
+      </h2>
+      <p class="text-slate-300 text-lg">{projects.subtitle}</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      {
+        projects.cards.map((card) => (
+          <div class="fe-reveal fe-lift rounded-xl overflow-hidden bg-[#1e293b] border border-white/10">
+            <div class="aspect-video bg-black">
+              <iframe
+                class="w-full h-full"
+                src={`https://www.youtube-nocookie.com/embed/${card.youtubeId}`}
+                title={card.title}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-xl font-bold">{card.title}</h3>
+              <p class="text-sm text-slate-400 mt-1">
+                {card.student} · {card.time}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

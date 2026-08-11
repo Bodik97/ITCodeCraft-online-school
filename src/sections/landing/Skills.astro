@@ -1,0 +1,161 @@
+---
+import TypingPanel from "@/sections/frontend/TypingPanel.astro";
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface SkillItem {
+  name: string;
+  level: number;
+}
+
+interface BlockStackItem {
+  text: string;
+  color: string;
+  rotate: string;
+  ml: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  skills: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: SkillItem[];
+    note: string;
+    /** Frontend typing lines */
+    typed?: string[];
+  };
+  /** FE / MC side image */
+  image?: { src: string; alt: string; aspectClass?: string };
+  /** Scratch colorful block stack */
+  blockStack?: BlockStackItem[];
+  /** MC floating badge under image */
+  imageBadge?: string;
+  /** Note prefix emoji/icon */
+  notePrefix?: string;
+  sectionClass?: string;
+}
+
+const {
+  prefix,
+  skills,
+  image,
+  blockStack,
+  imageBadge,
+  notePrefix,
+  sectionClass,
+} = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap =
+  sectionClass ??
+  (prefix === "fe"
+    ? "py-16 md:py-24 bg-white border-y border-slate-200"
+    : prefix === "sc"
+      ? "py-16 md:py-24"
+      : "py-16 md:py-24 bg-white border-b-2 border-[#1f2937]");
+const noteMark = notePrefix ?? (prefix === "mc" ? "✅" : "✨");
+---
+
+<section id="skills" class={wrap}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`max-w-2xl mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{skills.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {skills.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{skills.subtitle}</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+      <div id={`${prefix}-skills`} class={`${prefix}-reveal space-y-5`}>
+        {
+          skills.items.map((item) => (
+            <div>
+              <div class="flex justify-between items-baseline mb-1.5">
+                <span
+                  class={`font-semibold text-sm md:text-base ${t.skillNameColor}`}
+                >
+                  {item.name}
+                </span>
+                <span class={t.levelColor}>{item.level}%</span>
+              </div>
+              <div class={t.barTrack}>
+                <div
+                  class={`${prefix}-bar-fill h-full ${prefix === "mc" ? "" : "rounded-full"} ${t.barFillGradient}`}
+                  {...{ [`data-${prefix}-level`]: item.level }}
+                />
+              </div>
+            </div>
+          ))
+        }
+        <p class={`text-sm ${t.muted} pt-2`}>
+          {noteMark}{" "}{skills.note}
+        </p>
+      </div>
+
+      {
+        prefix === "fe" && image && skills.typed ? (
+          <div class="fe-reveal relative">
+            <div class="rounded-xl overflow-hidden border border-slate-200 shadow-xl bg-white">
+              <div class="flex items-center gap-1.5 px-4 py-3 border-b border-slate-100 bg-slate-50">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]" />
+              </div>
+              <img
+                src={image.src}
+                alt={image.alt}
+                width="600"
+                height="400"
+                loading="lazy"
+                decoding="async"
+                class={`w-full h-full object-cover ${image.aspectClass ?? "aspect-3/2"}`}
+              />
+            </div>
+            <TypingPanel lines={skills.typed} />
+          </div>
+        ) : prefix === "sc" && blockStack ? (
+          <div class="sc-reveal">
+            <div class="sc-float relative max-w-sm mx-auto space-y-2.5">
+              {blockStack.map((blk) => (
+                <div
+                  class:list={[
+                    "rounded-2xl font-bold px-5 py-3.5 shadow-lg text-[#241733]",
+                    blk.rotate,
+                    blk.ml,
+                  ]}
+                  style={`background:${blk.color}`}
+                >
+                  {blk.text}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : prefix === "mc" && image ? (
+          <div class="mc-reveal relative">
+            <div class="rounded-[12px] overflow-hidden mc-block bg-[#bfe3f5]">
+              <img
+                src={image.src}
+                alt={image.alt}
+                width="600"
+                height="450"
+                loading="lazy"
+                decoding="async"
+                class={`w-full h-full object-cover ${image.aspectClass ?? "aspect-[4/3]"}`}
+              />
+            </div>
+            {imageBadge && (
+              <div class="absolute -bottom-4 -right-4 rounded-[8px] bg-[#fbbf24] px-4 py-3 mc-block-sm rotate-[3deg]">
+                <p class="font-display font-bold text-sm text-[#1f2937]">
+                  {imageBadge}
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <slot name="visual" />
+        )
+      }
+    </div>
+  </div>
+</section>

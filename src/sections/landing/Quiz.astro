@@ -1,0 +1,121 @@
+---
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface QuizOption {
+  label: string;
+  tag: string;
+}
+
+interface QuizQuestion {
+  q: string;
+  options: QuizOption[];
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  quiz: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    questions: QuizQuestion[];
+    result: {
+      title: string;
+      lead: string;
+      ctaLabel: string;
+      restartLabel: string;
+    };
+  };
+  /** Override eyebrow (e.g. MC gold quiz badge) */
+  eyebrowClass?: string;
+  sectionClass?: string;
+  cardClass?: string;
+}
+
+const { prefix, quiz, eyebrowClass, sectionClass, cardClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap = sectionClass ?? `py-16 md:py-24 ${t.quizBg}`;
+const eyebrow =
+  eyebrowClass ??
+  (prefix === "mc"
+    ? "inline-block bg-[#fbbf24] text-[#1f2937] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[0.15em] mb-4 border-2 border-[#1f2937]"
+    : t.eyebrow);
+const card =
+  cardClass ??
+  (prefix === "mc"
+    ? "rounded-[14px] bg-white p-6 md:p-8 mc-block"
+    : `${t.cardClass} p-6 md:p-8`);
+const ctaRounded =
+  prefix === "fe"
+    ? "rounded-xl"
+    : prefix === "sc"
+      ? "rounded-2xl"
+      : "rounded-[8px]";
+---
+
+<section id="quiz" class={wrap}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`text-center max-w-2xl mx-auto mb-8 ${prefix}-reveal`}>
+      <span class={eyebrow}>{quiz.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {quiz.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{quiz.subtitle}</p>
+    </div>
+
+    <div id={`${prefix}-quiz`} class={`${prefix}-reveal ${card}`}>
+      <div class="flex items-center justify-between mb-2">
+        <span data-quiz-progress class={t.quizProgress}
+          >Крок 1/{quiz.questions.length}</span
+        >
+      </div>
+      <div class={t.quizTrack}>
+        <div
+          data-quiz-fill
+          class={t.quizFill}
+          style={`width:${100 / quiz.questions.length}%`}
+        >
+        </div>
+      </div>
+
+      {
+        quiz.questions.map((qq, qi) => (
+          <div class="quiz-step" data-quiz-step={qi} hidden={qi !== 0}>
+            <h3 class="font-display text-xl md:text-2xl font-bold mb-5">
+              {qq.q}
+            </h3>
+            <div class="grid sm:grid-cols-3 gap-3">
+              {qq.options.map((o) => (
+                <button
+                  type="button"
+                  class={t.quizOption}
+                  data-tag={o.tag}
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+
+      <div data-quiz-result hidden>
+        <h3 class="font-display text-2xl md:text-3xl font-bold mb-2">
+          {quiz.result.title}
+        </h3>
+        <p class={`${t.muted} mb-5`}>{quiz.result.lead}</p>
+        <ul data-quiz-tags class="space-y-2 mb-7"></ul>
+        <div class="flex flex-wrap items-center gap-4">
+          <a
+            href="#register"
+            class={`${t.btnPrimary} inline-flex items-center ${ctaRounded} px-6 py-4 text-base font-bold`}
+          >
+            {quiz.result.ctaLabel}
+          </a>
+          <button type="button" data-quiz-restart class={t.quizRestart}>
+            {quiz.result.restartLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

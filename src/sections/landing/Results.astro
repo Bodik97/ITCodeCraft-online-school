@@ -1,0 +1,71 @@
+---
+import { Icon } from "astro-icon/components";
+import { getLandingTheme, type LandingPrefix } from "./theme";
+
+interface ResultStage {
+  when: string;
+  text: string;
+  icon: string;
+  color: string;
+}
+
+interface Props {
+  prefix: LandingPrefix;
+  results: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    stages: ResultStage[];
+  };
+  sectionClass?: string;
+  lineClass?: string;
+}
+
+const { prefix, results, sectionClass, lineClass } = Astro.props;
+const t = getLandingTheme(prefix);
+const wrap =
+  sectionClass ??
+  (prefix === "sc"
+    ? "py-16 md:py-24 bg-white border-y-2 border-[#f0e6d6]"
+    : "py-16 md:py-24 bg-white border-b-2 border-[#1f2937]");
+const line = lineClass ?? t.resultsLine;
+const iconRounded =
+  prefix === "sc"
+    ? "rounded-2xl text-white shadow-lg"
+    : "rounded-[10px] text-white mc-block-sm";
+---
+
+<section id="results" class={wrap}>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`text-center max-w-2xl mx-auto mb-12 ${prefix}-reveal`}>
+      <span class={t.eyebrow}>{results.eyebrow}</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+        {results.title}
+      </h2>
+      <p class={`${t.muted} text-lg`}>{results.subtitle}</p>
+    </div>
+
+    <div class="relative grid md:grid-cols-3 gap-6 md:gap-4">
+      <div class={line} aria-hidden="true"></div>
+      {
+        results.stages.map((stage, i) => (
+          <div class={`${prefix}-reveal relative text-center px-2`}>
+            <div
+              class={`relative z-10 mx-auto inline-flex h-16 w-16 items-center justify-center ${iconRounded} mb-4`}
+              style={`background:${stage.color}`}
+            >
+              <Icon name={stage.icon} class="size-8" />
+              <span
+                class={`absolute -top-2 -right-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white border-2 border-[#1f2937] text-xs font-black ${prefix === "sc" ? "text-[#2b2440]" : "text-[#1f2937]"}`}
+              >
+                {i + 1}
+              </span>
+            </div>
+            <div class={t.resultsWhen}>{stage.when}</div>
+            <p class={t.resultsText}>{stage.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

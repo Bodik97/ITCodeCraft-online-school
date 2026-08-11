@@ -1,0 +1,874 @@
+---
+import FrontendLayout from "@/layouts/FrontendLayout.astro";
+import MessengerFab from "@/components/shared/MessengerFab.astro";
+import LeadModal from "@/components/shared/LeadModal.astro";
+import LandingMobileNav from "@/components/shared/LandingMobileNav.astro";
+import MobileStickyCta from "@/components/shared/MobileStickyCta.astro";
+import UseForm from "@/components/main/form/UseForm.astro";
+import Footer from "@/sections/main/Footer.astro";
+import { Icon } from "astro-icon/components";
+import Logo from "@/components/shared/Logo.astro";
+import content from "@/data/frontend.json";
+
+const {
+  hero,
+  stack,
+  why,
+  skills,
+  parentPerks,
+  how,
+  quiz,
+  projects,
+  testimonials,
+  faq,
+  register,
+  footer,
+  navigation,
+  brand,
+} = content;
+
+// Canonical school wordmark — same fixed colours on every page.
+const brandPrefix = brand.primary.startsWith("IT") ? "IT" : brand.primary.slice(0, 2);
+const brandBase = brand.primary.slice(brandPrefix.length);
+
+const particleTokens = [
+  { t: "</>", left: "8%", delay: "0s", duration: "16s", color: "#82aaff", size: 18 },
+  { t: "{ }", left: "22%", delay: "3s", duration: "13s", color: "#c792ea", size: 16 },
+  { t: "div", left: "40%", delay: "1.5s", duration: "18s", color: "#c3e88d", size: 14 },
+  { t: "css", left: "58%", delay: "5s", duration: "14s", color: "#ffcb6b", size: 15 },
+  { t: "()", left: "74%", delay: "2s", duration: "17s", color: "#82aaff", size: 18 },
+  { t: "<a>", left: "90%", delay: "6s", duration: "15s", color: "#c792ea", size: 14 },
+];
+
+const eyebrowLight =
+  "fe-mono inline-block bg-[#6366f1]/10 text-[#6366f1] text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-[0.15em] mb-4 border border-[#6366f1]/20";
+
+const heroStatColors = ["#818cf8", "#a78bfa", "#22d3ee"] as const;
+---
+
+<FrontendLayout>
+  {/* ---------- HEADER ---------- */}
+  <header
+    class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-sm"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
+    >
+      <Logo href={brand.homeUrl} />
+
+      <nav class="hidden lg:flex items-center gap-6">
+        {
+          navigation.links.map((link) => (
+            <a
+              href={`#${link.id}`}
+              class="text-sm font-semibold text-slate-700 hover:text-[#6366f1] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a
+          href={brand.homeUrl}
+          class="hidden lg:inline-flex text-sm font-semibold text-slate-700 hover:text-[#6366f1] transition-colors"
+          >← {navigation.backToMain}</a
+        >
+        <button
+          type="button"
+          data-lead-modal-open
+          class="fe-btn fe-btn-primary hidden lg:inline-flex items-center rounded-lg px-4 py-2 text-sm font-bold"
+        >
+          {navigation.ctaLabel}
+        </button>
+        <LandingMobileNav
+          links={navigation.links}
+          backUrl={brand.homeUrl}
+          backLabel={navigation.backToMain}
+          ctaLabel={navigation.ctaLabel}
+          toggleClass="border-[#6366f1] text-[#6366f1] hover:bg-[#6366f1]/10"
+          panelClass="bg-white border-slate-200"
+          linkClass="bg-[#f4f5fb] border-[#e2e5f3] text-[#475569] hover:bg-[#eef0fb] hover:border-[#6366f1]"
+          dotColor="#6366f1"
+          ctaClass="fe-btn fe-btn-primary"
+        />
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="flex-1">
+    {/* ---------- HERO ---------- */}
+    <section
+      class="relative overflow-hidden bg-linear-to-b from-[#0b1120] via-[#0f172a] to-[#131c33] text-white"
+    >
+      <div
+        class="pointer-events-none absolute -top-40 -left-32 w-120 h-120 rounded-full bg-[#6366f1]/30 blur-[120px]"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="pointer-events-none absolute -bottom-48 -right-28 w-135 h-135 rounded-full bg-neon-cyan/20 blur-[130px]"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="fe-particles"
+        aria-hidden="true"
+      >
+        {
+          particleTokens.map((p) => (
+            <span
+              class="fe-particle"
+              style={`left:${p.left};bottom:-30px;color:${p.color};font-size:${p.size}px;animation-delay:${p.delay};animation-duration:${p.duration}`}
+            >
+              {p.t}
+            </span>
+          ))
+        }
+      </div>
+
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="fe-reveal">
+          <div class="flex flex-wrap gap-2 mb-5">
+            {
+              hero.badges.map((b) => (
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 px-3 py-1 text-xs font-semibold text-[#a5f3fc]">
+                  <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+          <h1
+            class="font-display text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.1] mb-5"
+          >
+            {hero.title}{" "}
+            <span
+              class="bg-linear-to-r from-[#818cf8] via-[#a78bfa] to-neon-cyan bg-clip-text text-transparent"
+            >
+              {hero.titleAccent}
+            </span>
+          </h1>
+          <p class="text-base md:text-lg text-slate-600 max-w-xl mb-8">
+            {hero.subtitle}
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <button
+              type="button"
+              data-lead-modal-open
+              class="fe-btn fe-btn-primary inline-flex items-center gap-2 rounded-xl px-7 py-4 text-base font-bold"
+            >
+              {hero.ctaPrimary}
+              <span aria-hidden="true">→</span>
+            </button>
+            <a
+              href="#projects"
+              class="fe-btn fe-btn-ghost inline-flex items-center rounded-xl px-6 py-4 text-base font-bold"
+            >
+              Дивитись проєкти
+            </a>
+          </div>
+          <p class="mt-4 text-sm text-slate-400 font-medium">{hero.ctaNote}</p>
+
+          <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+            {
+              hero.stats.map((s, i) => (
+                <div class="rounded-xl bg-white/5 border border-white/10 px-2 py-4 text-center">
+                  <div
+                    class="fe-counter font-display text-2xl md:text-3xl font-bold"
+                    style={`color:${heroStatColors[i % heroStatColors.length]}`}
+                    data-fe-count={s.value}
+                  >
+                    {s.value}
+                  </div>
+                  <div class="text-[11px] md:text-xs text-slate-300 font-medium mt-1">
+                    {s.label}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* Browser window mockup + code card */}
+        <div class="fe-reveal relative">
+          <div class="fe-float rounded-xl overflow-hidden border border-white/15 shadow-2xl bg-[#1e293b]">
+            <div class="flex items-center gap-1.5 px-4 py-3 border-b border-white/10 bg-[#0f172a]">
+              <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+              <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+              <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              <span
+                class="fe-mono ml-3 text-[11px] text-slate-400 truncate"
+                >itcodecraft.tech/my-first-site</span
+              >
+            </div>
+            <img
+              src="/assets/courses/frontend2.webp"
+              alt="Сайт, створений учнем курсу Frontend"
+              width="600"
+              height="400"
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover aspect-3/2"
+            />
+          </div>
+          <div
+            class="absolute -bottom-5 -left-4 fe-mono text-xs sm:text-sm rounded-lg bg-[#1e293b] border border-white/15 px-4 py-3 shadow-xl leading-relaxed"
+          >
+            {
+              hero.codeLines.map((line) => (
+                <div set:html={line} />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Tech-stack marquee */}
+      <div class="relative z-10 border-y border-white/10 bg-[#070b16] py-4">
+        <div class="fe-marquee">
+          <div class="fe-marquee-track">
+            {
+              [...stack, ...stack].map((t) => (
+                <span class="inline-flex items-center gap-2 shrink-0 rounded-lg border border-white/15 bg-transparent px-4 py-2 transition-colors hover:border-white/35 hover:bg-white/5">
+                  <Icon name={t.icon} class="size-5 shrink-0" />
+                  <span class="fe-mono text-sm font-semibold text-slate-100">
+                    {t.name}
+                  </span>
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- WHY ---------- */}
+    <section id="why" class="py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 fe-reveal">
+          <span class={eyebrowLight}>{why.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {why.title}
+          </h2>
+          <p class="text-slate-700 text-lg">{why.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-6">
+          {
+            why.items.map((item) => (
+              <div class="fe-reveal fe-lift fe-card p-6">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#6366f1]/10 text-[#6366f1] mb-4">
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-xl font-bold mb-2">{item.title}</h3>
+                <p class="text-slate-700 leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- SKILLS ---------- */}
+    <section id="skills" class="py-16 md:py-24 bg-white border-y border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 fe-reveal">
+          <span class={eyebrowLight}>{skills.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {skills.title}
+          </h2>
+          <p class="text-slate-700 text-lg">{skills.subtitle}</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          {/* Skill bars */}
+          <div id="fe-skills" class="fe-reveal space-y-5">
+            {
+              skills.items.map((item) => (
+                <div>
+                  <div class="flex justify-between items-baseline mb-1.5">
+                    <span class="font-semibold text-sm md:text-base text-[#0f172a]">
+                      {item.name}
+                    </span>
+                    <span class="fe-mono text-xs font-bold text-[#6366f1]">
+                      {item.level}%
+                    </span>
+                  </div>
+                  <div class="h-3 w-full rounded-full bg-slate-100 overflow-hidden">
+                    <div
+                      class="fe-bar-fill h-full rounded-full bg-linear-to-r from-[#6366f1] to-neon-cyan"
+                      data-fe-level={item.level}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+            <p class="text-sm text-slate-700 pt-2">✨ {skills.note}</p>
+          </div>
+
+          {/* Image in browser frame + live typing console */}
+          <div class="fe-reveal relative">
+            <div class="rounded-xl overflow-hidden border border-slate-200 shadow-xl bg-white">
+              <div class="flex items-center gap-1.5 px-4 py-3 border-b border-slate-100 bg-slate-50">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              </div>
+              <img
+                src="/assets/courses/frontend.webp"
+                alt="Проєкт учня курсу Frontend"
+                width="600"
+                height="400"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover aspect-3/2"
+              />
+            </div>
+            <div
+              class="absolute -bottom-5 -right-3 sm:-right-5 fe-mono text-xs sm:text-sm rounded-lg bg-[#0f172a] text-slate-100 px-4 py-3 shadow-2xl border border-white/10 min-w-57.5"
+            >
+              <span
+                data-fe-type
+                data-fe-lines={JSON.stringify(skills.typed)}
+                class="fe-cursor whitespace-pre"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- QUIZ ---------- */}
+    <section id="quiz" class="py-16 md:py-24 bg-[#eef2ff]">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-8 fe-reveal">
+          <span class={eyebrowLight}>{quiz.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {quiz.title}
+          </h2>
+          <p class="text-slate-700 text-lg">{quiz.subtitle}</p>
+        </div>
+
+        <div id="fe-quiz" class="fe-reveal fe-card p-6 md:p-8">
+          <div class="flex items-center justify-between mb-2">
+            <span
+              data-quiz-progress
+              class="fe-mono text-xs font-bold uppercase tracking-[0.15em] text-[#6366f1]"
+              >Крок 1/{quiz.questions.length}</span
+            >
+          </div>
+          <div
+            class="h-2.5 w-full rounded-full bg-slate-200 overflow-hidden mb-6"
+          >
+            <div
+              data-quiz-fill
+              class="h-full bg-linear-to-r from-[#6366f1] to-neon-cyan transition-[width] duration-300"
+              style={`width:${100 / quiz.questions.length}%`}
+            >
+            </div>
+          </div>
+
+          {
+            quiz.questions.map((qq, qi) => (
+              <div class="quiz-step" data-quiz-step={qi} hidden={qi !== 0}>
+                <h3 class="font-display text-xl md:text-2xl font-bold mb-5">
+                  {qq.q}
+                </h3>
+                <div class="grid sm:grid-cols-3 gap-3">
+                  {qq.options.map((o) => (
+                    <button
+                      type="button"
+                      class="quiz-option fe-btn rounded-xl border-2 border-slate-200 bg-white px-4 py-4 text-sm font-bold text-[#0f172a] hover:border-[#6366f1] hover:bg-[#6366f1]/5 transition-colors"
+                      data-tag={o.tag}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+
+          <div data-quiz-result hidden>
+            <h3 class="font-display text-2xl md:text-3xl font-bold mb-2">
+              {quiz.result.title}
+            </h3>
+            <p class="text-slate-700 mb-5">{quiz.result.lead}</p>
+            <ul data-quiz-tags class="space-y-2 mb-7"></ul>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href="#register"
+                class="fe-btn fe-btn-primary inline-flex items-center rounded-xl px-6 py-4 text-base font-bold"
+              >
+                {quiz.result.ctaLabel}
+              </a>
+              <button
+                type="button"
+                data-quiz-restart
+                class="text-sm font-bold text-slate-500 underline hover:text-[#6366f1]"
+              >
+                {quiz.result.restartLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- HOW IT WORKS ---------- */}
+    <section id="how" class="py-16 md:py-24">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 fe-reveal">
+          <span class={eyebrowLight}>{how.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {how.title}
+          </h2>
+          <p class="text-slate-700 text-lg">{how.subtitle}</p>
+        </div>
+
+        <div class="space-y-4">
+          {
+            how.steps.map((item, i) => (
+              <article
+                class="fe-step fe-reveal group flex gap-4 sm:gap-6 items-start cursor-pointer"
+                data-step={i}
+              >
+                <div class="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-white border border-slate-200 text-slate-300 group-[.is-active]:bg-linear-to-br group-[.is-active]:from-[#6366f1] group-[.is-active]:to-[#8b5cf6] group-[.is-active]:border-transparent group-[.is-active]:text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
+                  {i + 1}
+                </div>
+                <div class="flex-1 fe-card p-5 sm:p-6 group-[.is-active]:border-[#6366f1]/40 group-[.is-active]:shadow-[0_18px_40px_-16px_rgba(99,102,241,0.45)] transition-all duration-300">
+                  <div class="flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                      <div class="fe-mono text-[10px] sm:text-xs font-bold text-slate-400 group-[.is-active]:text-[#6366f1] uppercase tracking-[0.15em] mb-1 transition-colors">
+                        {item.step}
+                      </div>
+                      <h3 class="font-display text-lg sm:text-xl font-bold leading-tight">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <span
+                      class="text-2xl text-[#6366f1] transition-transform duration-300 group-[.is-active]:rotate-45 shrink-0"
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </div>
+                  <p class="text-slate-700 text-sm sm:text-base mt-2 leading-relaxed">
+                    {item.text}
+                  </p>
+                  <div class="grid grid-rows-[0fr] opacity-0 group-[.is-active]:grid-rows-[1fr] group-[.is-active]:opacity-100 transition-all duration-500 ease-in-out">
+                    <div class="overflow-hidden">
+                      <div class="pt-5 mt-5 border-t border-slate-100">
+                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-4">
+                          {item.details}
+                        </p>
+                        <div class="flex items-start gap-3 bg-[#6366f1]/5 border border-[#6366f1]/20 p-3 rounded-xl">
+                          <span class="inline-flex w-6 h-6 rounded-md bg-[#6366f1] items-center justify-center text-white text-sm shrink-0">
+                            ✓
+                          </span>
+                          <span class="text-xs sm:text-sm font-bold text-[#6366f1] leading-tight">
+                            {item.outcome}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- PROJECTS ---------- */}
+    <section id="projects" class="py-16 md:py-24 bg-[#0f172a] text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 fe-reveal">
+          <span
+            class="fe-mono inline-block bg-white/10 text-neon-cyan text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-[0.15em] mb-4 border border-white/15"
+            >{projects.eyebrow}</span
+          >
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {projects.title}
+          </h2>
+          <p class="text-slate-300 text-lg">{projects.subtitle}</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          {
+            projects.cards.map((card) => (
+              <div class="fe-reveal fe-lift rounded-xl overflow-hidden bg-[#1e293b] border border-white/10">
+                <div class="aspect-video bg-black">
+                  <iframe
+                    class="w-full h-full"
+                    src={`https://www.youtube-nocookie.com/embed/${card.youtubeId}`}
+                    title={card.title}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                </div>
+                <div class="p-5">
+                  <h3 class="font-display text-xl font-bold">{card.title}</h3>
+                  <p class="text-sm text-slate-400 mt-1">
+                    {card.student} · {card.time}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- TESTIMONIALS ---------- */}
+    <section id="testimonials" class="py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 fe-reveal">
+          <span class={eyebrowLight}>{testimonials.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold">
+            {testimonials.title}
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          {
+            testimonials.items.map((t) => (
+              <figure class="fe-reveal fe-lift fe-card p-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] text-white font-bold">
+                    {t.name.charAt(0)}
+                  </span>
+                  <figcaption>
+                    <div class="font-bold leading-tight">{t.name}</div>
+                    <div class="text-xs text-slate-500">{t.role}</div>
+                  </figcaption>
+                </div>
+                <p class="text-slate-700 leading-relaxed">“{t.text}”</p>
+                <div class="mt-3 text-[#fbbf24]" aria-hidden="true">
+                  ★★★★★
+                </div>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- FAQ ---------- */}
+    <section id="faq" class="py-16 md:py-24 bg-[#f1f5f9]">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 fe-reveal">
+          <span class={eyebrowLight}>{faq.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold">{faq.title}</h2>
+        </div>
+        <div class="space-y-4">
+          {
+            faq.items.map((item) => (
+              <details class="fe-reveal group fe-card p-5">
+                <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg list-none">
+                  {item.question}
+                  <span
+                    class="ml-4 text-[#6366f1] transition-transform group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p class="mt-3 text-sm text-shadow-gray-700 leading-relaxed">{item.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- PARENT PERKS ---------- */}
+    <section id="parents" class="py-16 md:py-24 bg-white border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12 fe-reveal">
+          <span class={eyebrowLight}>{parentPerks.eyebrow}</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">
+            {parentPerks.title}
+          </h2>
+          <p class="text-slate-700 text-lg">{parentPerks.subtitle}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            parentPerks.items.map((item) => (
+              <div class="fe-reveal fe-lift fe-card p-6">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#6366f1]/10 text-[#6366f1] mb-4">
+                  <Icon name={item.icon} class="size-6" />
+                </div>
+                <h3 class="font-display text-lg font-bold mb-2">{item.title}</h3>
+                <p class="text-slate-700 text-sm leading-relaxed">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- REGISTER ---------- */}
+    <section
+      id="register"
+      class="py-16 md:py-24 bg-linear-to-br from-[#4f46e5] to-[#7c3aed]"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center"
+      >
+        <div class="fe-reveal text-white">
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+            {register.title}
+          </h2>
+          <p class="text-white/90 text-lg mb-8">{register.subtitle}</p>
+          <ul class="space-y-3">
+            {
+              register.features.map((f) => (
+                <li class="flex items-center gap-3 font-medium">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-white/20 text-white text-sm">
+                    ✓
+                  </span>
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div
+          class="fe-reveal rounded-2xl bg-surface p-6 md:p-8 shadow-2xl"
+          style="--form-accent:#6366f1;--form-accent-rgb:99, 102, 241;--form-accent-fg:#ffffff;"
+        >
+          <div data-fe-form>
+            <UseForm formId="frontend-landing" />
+          </div>
+          <div data-fe-success hidden class="text-center text-white py-6">
+            <div class="text-4xl mb-3" aria-hidden="true">🎉</div>
+            <h3 class="font-display text-2xl font-bold mb-2">Чудовий вибір!</h3>
+            <p class="text-white/80">
+              Ми отримали вашу заявку. Менеджер зателефонує найближчим часом.
+            </p>
+          </div>
+          <p
+            data-fe-error
+            hidden
+            class="mt-4 text-center text-sm font-medium text-[#fca5a5]"
+          >
+            Сталася помилка. Спробуйте ще раз або зателефонуйте нам:
+            {footer.phone}
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  {/* ---------- PAGE SCRIPTS ---------- */}
+  <script>
+    import { onFormError, onFormSuccess } from "@/lib/formEvents";
+
+    // Success / error feedback for the lead form
+    onFormSuccess(() => {
+      document.querySelector("[data-fe-form]")?.setAttribute("hidden", "");
+      document.querySelector("[data-fe-error]")?.setAttribute("hidden", "");
+      document.querySelector("[data-fe-success]")?.removeAttribute("hidden");
+      document
+        .getElementById("register")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    onFormError(() => {
+      document.querySelector("[data-fe-error]")?.removeAttribute("hidden");
+    });
+
+    // Interactive timeline accordion
+    const steps = Array.from(document.querySelectorAll<HTMLElement>(".fe-step"));
+    steps.forEach((step, i) => {
+      if (i === 0) step.classList.add("is-active");
+      step.addEventListener("click", () => {
+        const wasActive = step.classList.contains("is-active");
+        steps.forEach((s) => s.classList.remove("is-active"));
+        if (!wasActive) step.classList.add("is-active");
+      });
+    });
+
+    // Animated counters
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const counters =
+      document.querySelectorAll<HTMLElement>(".fe-counter[data-fe-count]");
+    const runCounter = (el: HTMLElement) => {
+      const raw = el.dataset.feCount || "";
+      const suffix = raw.replace(/[\d.]/g, "");
+      const target = parseFloat(raw);
+      if (isNaN(target)) return;
+      const isFloat = raw.includes(".");
+      const decimals = isFloat ? 1 : 0;
+      const duration = 1500;
+      const start = performance.now();
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const val = target * ease(p);
+        el.textContent =
+          (isFloat ? val.toFixed(decimals) : Math.floor(val).toString()) +
+          suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (!prefersReduced) {
+      const cio = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              runCounter(e.target as HTMLElement);
+              cio.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      counters.forEach((el) => cio.observe(el));
+    }
+
+    // Skill bars fill on scroll
+    const skillsWrap = document.getElementById("fe-skills");
+    if (skillsWrap) {
+      const bars =
+        skillsWrap.querySelectorAll<HTMLElement>(".fe-bar-fill[data-fe-level]");
+      const fill = () =>
+        bars.forEach((b) => {
+          b.style.width = `${b.dataset.feLevel}%`;
+        });
+      if (prefersReduced) {
+        fill();
+      } else {
+        const sio = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              fill();
+              sio.disconnect();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        sio.observe(skillsWrap);
+      }
+    }
+
+    // Typing console effect
+    const typeEl = document.querySelector<HTMLElement>("[data-fe-type]");
+    if (typeEl) {
+      let lines: string[] = [];
+      try {
+        lines = JSON.parse(typeEl.dataset.feLines || "[]");
+      } catch {
+        lines = [];
+      }
+      if (lines.length && !prefersReduced) {
+        const full = lines.join("\n");
+        let i = 0;
+        const type = () => {
+          typeEl.textContent = full.slice(0, i);
+          i += 1;
+          if (i <= full.length) {
+            setTimeout(type, full[i - 1] === "\n" ? 220 : 55);
+          } else {
+            setTimeout(() => {
+              i = 0;
+              type();
+            }, 2600);
+          }
+        };
+        type();
+      } else {
+        typeEl.textContent = lines.join("\n");
+      }
+    }
+
+    // Interactive quiz
+    const quizEl = document.getElementById("fe-quiz");
+    if (quizEl) {
+      const qSteps = Array.from(
+        quizEl.querySelectorAll<HTMLElement>("[data-quiz-step]"),
+      );
+      const total = qSteps.length;
+      const progressEl = quizEl.querySelector<HTMLElement>(
+        "[data-quiz-progress]",
+      );
+      const fillEl = quizEl.querySelector<HTMLElement>("[data-quiz-fill]");
+      const resultEl = quizEl.querySelector<HTMLElement>("[data-quiz-result]");
+      const tagsEl = quizEl.querySelector<HTMLElement>("[data-quiz-tags]");
+      const restartBtn = quizEl.querySelector<HTMLElement>("[data-quiz-restart]");
+      const answers: string[] = [];
+
+      const setProgress = (n: number) => {
+        if (fillEl) fillEl.style.width = `${(n / total) * 100}%`;
+      };
+      const showStep = (i: number) => {
+        qSteps.forEach((s, idx) => (s.hidden = idx !== i));
+        if (resultEl) resultEl.hidden = true;
+        if (progressEl) progressEl.textContent = `Крок ${i + 1}/${total}`;
+        setProgress(i + 1);
+      };
+      const showResult = () => {
+        qSteps.forEach((s) => (s.hidden = true));
+        if (progressEl) progressEl.textContent = "Готово!";
+        setProgress(total);
+        if (tagsEl) {
+          tagsEl.innerHTML = "";
+          answers.forEach((tag) => {
+            const li = document.createElement("li");
+            li.className = "flex items-start gap-3 text-slate-700";
+            li.innerHTML =
+              '<span class="inline-flex w-6 h-6 rounded-md bg-[#6366f1] items-center justify-center text-white text-sm shrink-0">✓</span><span class="leading-snug">' +
+              tag +
+              "</span>";
+            tagsEl.appendChild(li);
+          });
+        }
+        if (resultEl) resultEl.hidden = false;
+      };
+
+      qSteps.forEach((step, i) => {
+        step.querySelectorAll<HTMLElement>(".quiz-option").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            answers[i] = btn.getAttribute("data-tag") || "";
+            if (i < total - 1) showStep(i + 1);
+            else showResult();
+          });
+        });
+      });
+
+      restartBtn?.addEventListener("click", () => {
+        answers.length = 0;
+        showStep(0);
+      });
+    }
+  </script>
+  <div class="lg:hidden h-20" aria-hidden="true"></div>
+  <MobileStickyCta
+    label="Записати на безоплатний урок"
+    barClass="bg-white/92 border-t border-slate-200"
+    btnClass="fe-btn fe-btn-primary"
+  />
+  <MessengerFab
+    accent="#6366f1"
+    accentRgb="99, 102, 241"
+    accentDark="#4f46e5"
+    fg="#ffffff"
+    position="bottom-24 right-5 sm:right-6"
+  />
+  <LeadModal
+    formId="frontend-modal"
+    title={register.title}
+    accent="#6366f1"
+    accentRgb="99, 102, 241"
+    accentFg="#ffffff"
+    phone={footer.phone}
+  />
+</FrontendLayout>
