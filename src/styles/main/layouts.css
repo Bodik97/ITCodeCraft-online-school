@@ -137,9 +137,41 @@ body:not(.roblox-site) h6 {
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
 }
 
+html.light .header-shell {
+  background: rgba(244, 247, 252, 0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
 html.light .header-shell.is-scrolled {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Nav / controls: dark ink on the frosted bar (not slate-400 wash) */
+html.light .header-shell nav a {
+  color: #0f172a;
+}
+
+html.light .header-shell nav a:hover {
+  color: #0891b2;
+}
+
+html.light .header-shell #theme-toggle,
+html.light .header-shell #mobile-menu-toggle {
+  color: #334155;
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+html.light .header-shell #theme-toggle:hover,
+html.light .header-shell #mobile-menu-toggle:hover {
+  color: #0891b2;
+  border-color: rgba(8, 145, 178, 0.45);
+}
+
+html.light .header-shell .mobile-menu {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 .mobile-menu {
