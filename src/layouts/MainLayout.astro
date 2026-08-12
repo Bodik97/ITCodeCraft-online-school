@@ -76,9 +76,16 @@ const organizationJsonLd = JSON.stringify({
     <script is:inline>
       (function () {
         try {
-          // Default to dark mode; only switch to light if the user explicitly chose it.
-          if (localStorage.getItem("itcc-theme") === "light")
+          // Default theme is dark. Light only when the user explicitly chose it.
+          var theme = localStorage.getItem("itcc-theme");
+          if (theme === "light") {
             document.documentElement.classList.add("light");
+          } else {
+            document.documentElement.classList.remove("light");
+            if (theme !== "dark") {
+              localStorage.setItem("itcc-theme", "dark");
+            }
+          }
         } catch (e) {}
       })();
     </script>
@@ -298,6 +305,13 @@ const organizationJsonLd = JSON.stringify({
     </script>
 
     <style is:global>
+      html {
+        color-scheme: dark;
+      }
+      html.light {
+        color-scheme: light;
+      }
+
       /* Dark (default): notebook grid on the page background, matches hero .bg-grid (40px) */
       body:not(.roblox-site) {
         background-image:
