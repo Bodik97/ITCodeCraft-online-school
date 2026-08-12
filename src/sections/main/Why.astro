@@ -23,8 +23,9 @@ const brandPrefix = brandPrimary.startsWith("IT")
 const brandBase = brandPrimary.slice(brandPrefix.length);
 ---
 
-<section id="why-us" class="py-24 bg-transparent relative overflow-hidden">
-  {/* ---- Autonomous moving lines ---- */}
+<section id="why-us" class="why-section py-24 bg-transparent relative overflow-hidden">
+  {/* Soft blend from hero into this section */}
+  <div class="why-top-fade" aria-hidden="true"></div>
   <div
     class="why-deco absolute inset-0 z-0 pointer-events-none"
     aria-hidden="true"
@@ -107,6 +108,28 @@ const brandBase = brandPrimary.slice(brandPrefix.length);
 </section>
 
 <style>
+  .why-top-fade {
+    pointer-events: none;
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 7rem;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-paper) 35%, transparent),
+      transparent
+    );
+  }
+
+  :global(html.light) .why-top-fade {
+    background: linear-gradient(
+      to bottom,
+      rgba(248, 249, 252, 0.45),
+      transparent
+    );
+  }
+
   html.light .ic-name {
     padding-left: 4px;
   }

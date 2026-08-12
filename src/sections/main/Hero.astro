@@ -1,8 +1,13 @@
 ---
 import content from "@/data/main.json";
-import heroBgVideo from "@/assets/main/hero-bg.mp4";
-import UseForm from "@/components/main/form/UseForm.astro";
+import HeroScene from "@/components/main/hero/HeroScene";
 import { Icon } from "astro-icon/components";
+
+const section = content.hero;
+const getInitialCounterValue = (rawValue: string): string => {
+  const suffix = rawValue.replace(/[\d.]/g, "");
+  return `0${suffix}`;
+};
 
 const heroTypingStyles = [
   "text-neon-lime text-glow-lime",
@@ -15,72 +20,48 @@ const heroStatColors = [
   "text-neon-lime",
   "text-neon-orange",
 ] as const;
-
-const section = content.hero;
-const getInitialCounterValue = (rawValue: string): string => {
-  const suffix = rawValue.replace(/[\d.]/g, "");
-  return `0${suffix}`;
-};
 ---
 
 <section
   id="hero-section"
-  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper pt-40 pb-20"
+  class="hero-shell relative overflow-x-hidden pt-28 pb-20 md:pt-36 md:pb-28"
 >
-  <div
-    class="hero-video-bg absolute inset-0 z-0 overflow-hidden pointer-events-none"
-    aria-hidden="true"
-  >
-    <video
-      class="hero-video absolute inset-0 h-full w-full object-cover"
-      src={heroBgVideo}
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    />
-    <!-- Soft white mist — video still visible, without a harsh wash -->
-    <div class="absolute inset-0 bg-paper/40"></div>
-    <div
-      class="absolute inset-0 bg-linear-to-b from-paper/25 via-transparent to-paper/55"
-    >
-    </div>
-  </div>
+  <div class="hero-shell-glow" aria-hidden="true"></div>
 
-  <div
-    class="hero-parallax relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-full lg:w-full xl:max-w-7xl"
-    data-parallax="0.05"
-  >
-    <h1
-      class="hero-reveal text-4xl font-bold md:text-5xl max-w-100 xl:text-6xl font-display text-ink mb-6 leading-tight xl:max-w-287.5 md:max-w-157.5 lg:max-w-150 hero-title-shimmer"
-      style="transition-delay: 0.1s"
-    >
-      {content.hero.liveBadgePrefix}
-    </h1>
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
-      class="lg:grid lg:grid-cols-[550px_1fr] lg:gap-8 xl:grid-cols-[1fr_1fr] xl:items-end"
+      class="grid items-center gap-10 lg:gap-12 xl:gap-16"
     >
-      <div>
+      <!-- LEFT: content -->
+      <div class="hero-content relative z-20">
+        <h1
+          class="hero-headline hero-enter font-display text-3xl font-bold leading-tight text-ink md:text-4xl xl:max-w-230 xl:text-5xl 2xl:text-6xl 2xl:max-w-300"
+          style="--hero-delay: 0.08s"
+        >
+          {section.liveBadgePrefix}
+        </h1>
+
         <p
-          set:html={content.hero.subtitle}
-          class="hero-reveal text-sm max-w-115 md:text-lg text-white mb-4 md:max-w-125 lg:max-w-150 [text-shadow:0_1px_12px_rgba(15,23,42,0.35)]"
-          style="transition-delay: 0.25s"
-        />
-        <h2
-          class="hero-reveal text-lg md:text-2xl lg:text-4xl font-semibold font-display text-ink mb-10 leading-tight max-w-115 md:max-w-107.5 lg:max-w-150"
-          style="transition-delay: 0.4s"
+          class="hero-subtitle hero-enter mt-4 max-w-xl text-sm text-slate-500 md:text-lg lg:max-w-130 xl:max-w-160 2xl:text-xl 2xl:max-w-180"
+          style="--hero-delay: 0.18s"
+        >
+          {section.subtitle}
+        </p>
+
+        <div
+          class="hero-enter mt-6"
+          style="--hero-delay: 0.28s"
         >
           <div
             id="hero-typing"
             aria-live="polite"
-            class="h-[3.3em] text-base md:text-lg relative overflow-hidden md:h-[3.4em]"
+            class="relative h-[3.3em] overflow-hidden text-base md:h-[3.4em] md:text-lg lg:w-141.25 2xl:text-lg 2xl:w-160"
           >
             {
-              content.hero.typingTexts.map((text, index) => (
+              section.typingTexts.map((text, index) => (
                 <div
                   class:list={[
-                    "hero-typing-item text-lg absolute w-full left-0 right-0 md:text-2xl",
+                    "hero-typing-item absolute left-0 right-0 w-full text-lg font-semibold md:text-2xl",
                     heroTypingStyles[index % heroTypingStyles.length],
                     index === 0 && "is-active",
                   ]}
@@ -90,127 +71,185 @@ const getInitialCounterValue = (rawValue: string): string => {
               ))
             }
           </div>
-        </h2>
+        </div>
 
         <div
-          class="hero-reveal flex items-center gap-2 mb-8 flex-wrap lg:mb-0"
-          style="transition-delay: 0.55s"
+          class="hero-enter mt-6 flex flex-wrap gap-2"
+          style="--hero-delay: 0.38s"
         >
           {
             section.options.map((option) => (
-              <div class="hero-option text-sm font-medium text-slate-600 tracking-wide bg-neon-cyan/10 border border-neon-cyan/20 rounded-full px-4 py-2">
+              <span class="hero-option rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-slate-600">
                 {option}
-              </div>
+              </span>
             ))
           }
         </div>
-      </div>
-      <div class="hero-reveal" style="transition-delay: 0.5s">
-        <div class="relative">
-          <div
-            class="bg-surface min-h-92 md:min-h-96 xl:min-h-57.5 border border-slate-200 p-8 md:p-10 rounded-sm shadow-2xl relative animate-neon-pulse"
-          >
-            <div
-              class="absolute -top-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
-            >
-            </div>
-            <div
-              class="absolute -top-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
-            >
-            </div>
-            <div
-              class="absolute -bottom-2 -left-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
-            >
-            </div>
-            <div
-              class="absolute -bottom-2 -right-2 w-4 h-4 bg-paper border border-neon-cyan rounded-full"
-            >
-            </div>
 
-            <UseForm formId="hero" />
-          </div>
+        <div
+          class="hero-enter mt-8 flex flex-wrap items-center gap-4 lg:flex-col lg:items-start 2xl:flex-row 2xl:items-center 2xl:gap-6"
+          style="--hero-delay: 0.48s"
+        >
+          <button
+            type="button"
+            data-modal-open
+            class="hero-cta group inline-flex items-center gap-2 rounded-2xl bg-neon-cyan px-7 py-4 text-base font-bold text-[#062a31] shadow-[0_12px_28px_-12px_rgba(8,145,178,0.65)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-[#67e8f9] hover:shadow-[0_16px_34px_-12px_rgba(8,145,178,0.75)]"
+          >
+            {section.ctaPrimary}
+            <span
+              class="inline-block transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden="true">→</span
+            >
+          </button>
+          <p class="text-sm font-medium text-slate-500">{section.ctaNote}</p>
         </div>
+      </div>
+
+      <!-- RIGHT: interactive scene -->
+      <div
+        class="hero-enter relative z-10 lg:absolute lg:right-0 lg:top-16 lg:h-full lg:w-1/2 2xl:-right-35"
+        style="--hero-delay: 0.2s"
+      >
+        <HeroScene client:load />
       </div>
     </div>
 
+    <!-- Stats -->
     <div
-      class="hero-reveal hero-stats-border mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-slate-700 pt-8 max-w-4xl mx-auto"
-      style="transition-delay: 0.7s"
+      class="hero-enter hero-stats-border mt-14 grid max-w-4xl grid-cols-1 gap-8 border-t border-slate-700 pt-8 sm:mx-auto sm:grid-cols-3"
+      style="--hero-delay: 0.55s"
     >
       {
-        content.hero.stats.map((stat, index) => (
+        section.stats.map((stat, index) => (
           <div class="flex flex-col items-center">
             <div
               class:list={[
-                "flex items-center gap-2 mb-2",
+                "mb-2 flex items-center gap-2",
                 heroStatColors[index % heroStatColors.length],
               ]}
             >
               <span class="text-xl" aria-hidden="true">
-                {/* {stat.icon} */}
-                <Icon name={stat.icon} class="size-8" />
+                <Icon name={stat.icon} class="size-7" />
               </span>
               <span
-                class="text-3xl font-bold font-display hero-counter"
+                class="hero-counter font-display text-3xl font-bold"
                 data-target={stat.value}
               >
                 {getInitialCounterValue(stat.value)}
               </span>
             </div>
-            <span class="text-slate-500 text-sm">{stat.label}</span>
+            <span class="text-sm text-slate-500">{stat.label}</span>
           </div>
         ))
       }
     </div>
 
+    <!-- SEO paragraph -->
     <div
-      class="hero-reveal mt-16 max-w-3xl mx-auto text-center md:text-left lg:text-center"
-      style="transition-delay: 0.85s"
+      class="hero-enter mx-auto mt-12 max-w-3xl text-center md:text-left lg:text-center"
+      style="--hero-delay: 0.65s"
     >
-      <p class="text-slate-500 leading-relaxed text-lg">
+      <p class="text-lg leading-relaxed text-slate-500">
         <strong class="text-ink"
           >{content.brand.primary}{content.brand.accent}</strong
         >
-        {content.hero.seoLead}
-        <span class="text-neon-lime"> {content.hero.seoMinecraft}</span>, {
-          content.hero.seoMiddle
+        {section.seoLead}
+        <span class="text-neon-lime"> {section.seoMinecraft}</span>, {
+          section.seoMiddle
         }
-        <span class="text-neon-cyan"> {content.hero.seoRoblox}</span>, {
-          content.hero.seoTail
+        <span class="text-neon-cyan"> {section.seoRoblox}</span>, {
+          section.seoTail
         }
-        <span class="text-neon-orange"> {content.hero.seoWebsites}.</span>
+        <span class="text-neon-orange"> {section.seoWebsites}.</span>
       </p>
     </div>
   </div>
 </section>
 
 <style>
-  .hero-reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition:
-      transform 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
-      opacity 0.6s ease;
+  .hero-shell {
+    background: linear-gradient(
+      to bottom,
+      var(--color-paper) 0%,
+      var(--color-paper) 62%,
+      color-mix(in srgb, var(--color-paper) 72%, transparent) 78%,
+      color-mix(in srgb, var(--color-paper) 28%, transparent) 90%,
+      transparent 100%
+    );
   }
 
-  .hero-reveal.is-visible {
+  .hero-shell-glow {
+    pointer-events: none;
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 70%;
+    background:
+      radial-gradient(
+        55% 60% at 18% 30%,
+        rgba(34, 211, 238, 0.14),
+        transparent 70%
+      ),
+      radial-gradient(
+        45% 50% at 82% 25%,
+        rgba(132, 204, 22, 0.1),
+        transparent 72%
+      ),
+      radial-gradient(
+        40% 45% at 55% 80%,
+        rgba(245, 158, 11, 0.08),
+        transparent 70%
+      );
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  .hero-enter {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+    transition:
+      opacity 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+      transform 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+      filter 0.7s cubic-bezier(0.2, 0.65, 0.3, 1);
+    transition-delay: var(--hero-delay, 0s);
+  }
+
+  .hero-enter.is-visible {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 
-  .hero-reveal:nth-child(1) {
-    transition-delay: 0.1s;
+  .hero-headline {
+    letter-spacing: -0.02em;
   }
-  .hero-reveal:nth-child(2) {
-    transition-delay: 0.25s;
+
+  .hero-cta:focus-visible {
+    outline: 2px solid #0891b2;
+    outline-offset: 3px;
   }
-  .hero-reveal:nth-child(3) {
-    transition-delay: 0.4s;
+
+  :global(html.light) .hero-shell {
+    background: linear-gradient(
+      to bottom,
+      #f8f9fc 0%,
+      #f8f9fc 58%,
+      rgba(248, 249, 252, 0.75) 76%,
+      rgba(244, 247, 252, 0.28) 90%,
+      transparent 100%
+    );
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-video {
-      display: none;
+    .hero-enter {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
+
+    .hero-shell-glow {
+      opacity: 0.5;
     }
   }
 </style>
@@ -219,85 +258,23 @@ const getInitialCounterValue = (rawValue: string): string => {
   const heroSection = document.getElementById("hero-section");
 
   if (heroSection) {
-    const video = heroSection.querySelector<HTMLVideoElement>(".hero-video");
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (video) {
-      if (prefersReduced) {
-        video.pause();
-        video.removeAttribute("autoplay");
-      } else {
-        // iOS / some browsers ignore autoplay until a play() promise
-        video.play().catch(() => {});
-      }
-    }
-
-    // --- Parallax ---
-    const layers = [
-      ...heroSection.querySelectorAll<HTMLElement>(".hero-parallax"),
-    ].map((el) => ({
-      el,
-      speed: parseFloat(el.dataset.parallax || "0"),
-    }));
-
-    let sectionTop = 0;
-
-    let ticking = false;
-    let lastScrollY = 0;
-
-    const updateSectionTop = () => {
-      // sectionTop = heroSection.getBoundingClientRect().top + window.scrollY;
-      sectionTop = heroSection.offsetTop;
-    };
-
-    const applyParallax = () => {
-      const scrolled = lastScrollY - sectionTop;
-
-      for (const layer of layers) {
-        layer.el.style.transform = `translate3d(0, ${scrolled * layer.speed}px, 0)`;
-      }
-
-      ticking = false;
-    };
-    const onScroll = () => {
-      lastScrollY = window.scrollY;
-
-      if (!ticking) {
-        requestAnimationFrame(applyParallax);
-        ticking = true;
-      }
-    };
-
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
-
-    if (!mediaQuery.matches) {
-      window.addEventListener("scroll", onScroll, { passive: true });
-    }
-
-    requestAnimationFrame(() => {
-      updateSectionTop();
-      applyParallax();
-    });
-
-    // --- Staggered reveal on load ---
+    const reveals = heroSection.querySelectorAll(".hero-enter");
     if (prefersReduced) {
-      heroSection
-        .querySelectorAll(".hero-reveal")
-        .forEach((el) => el.classList.add("is-visible"));
+      reveals.forEach((el) => el.classList.add("is-visible"));
     } else {
       requestAnimationFrame(() => {
-        heroSection
-          .querySelectorAll(".hero-reveal")
-          .forEach((el) => el.classList.add("is-visible"));
+        reveals.forEach((el) => el.classList.add("is-visible"));
       });
     }
 
-    // --- Animated counters ---
     const counters = heroSection.querySelectorAll<HTMLElement>(".hero-counter");
     const DURATION = 1800;
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
     const animateCounter = (el: HTMLElement) => {
       const raw = el.dataset.target || "";
       const suffix = raw.replace(/[\d.]/g, "");
@@ -339,7 +316,7 @@ const getInitialCounterValue = (rawValue: string): string => {
             if (entry.isIntersecting) {
               setTimeout(
                 () => animateCounter(entry.target as HTMLElement),
-                800,
+                700,
               );
               counterObserver.unobserve(entry.target);
             }
