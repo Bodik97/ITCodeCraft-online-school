@@ -1,0 +1,47 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.faqSection;
+
+const faqJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: section.items.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+});
+---
+
+<script is:inline type="application/ld+json" set:html={faqJsonLd} />
+
+<section id="faq" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="faq-title">
+  <div class="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
+    <div class="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
+      <SectionHead id="faq-title" eyebrow="FAQ" prefix={section.titlePrefix} />
+      <div class="h-card h-reveal flex items-center gap-4 p-4 pr-5">
+        <span class="h-solid flex size-14 shrink-0 items-center justify-center rounded-2xl" aria-hidden="true"><Icon name="lucide:messages-square" class="size-6" /></span>
+        <p class="text-[15px] leading-snug text-[var(--h-soft)]">
+          <b class="text-[var(--h-text)]">Не знайшли відповідь?</b> Залиште заявку — менеджер зателефонує й відповість на всі питання.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      {
+        section.items.map((faq, i) => (
+          <details class="h-faq h-card h-reveal group" style={`--d: ${Math.min(i, 4) * 0.05}s`} open={i === 0}>
+            <summary class="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-[17px] font-extrabold">
+              {faq.question}
+              <span class="h-faq-icon flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--h-surface-2)] text-lg" aria-hidden="true">+</span>
+            </summary>
+            <p class="px-6 pb-6 text-[15px] leading-relaxed text-[var(--h-muted)]">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

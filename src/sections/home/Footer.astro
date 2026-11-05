@@ -1,0 +1,70 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+
+const f = content.footerSection;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="h-wrap pt-16 pb-3 md:pb-6">
+  <div class="h-card grid gap-10 p-7 sm:p-10 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div class="flex flex-col gap-5">
+      <a href="/" class="h-logo" aria-label="ITCodeCraft — на головну">
+        <b>IT<span>Code</span>Craft</b>
+        <small>IT SCHOOL · ONLINE</small>
+      </a>
+      <p class="max-w-[380px] text-[15px] leading-relaxed text-[var(--h-muted)]">{f.aboutText}</p>
+      <div class="flex gap-2">
+        {
+          f.socialLinks.map((link) => (
+            <a href={link.url} target="_blank" rel="noopener noreferrer" class="h-icon-btn" aria-label={link.label}>
+              <Icon name={link.label.toLowerCase()} class="size-5" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <nav class="flex flex-col gap-3" aria-label={f.navigationTitle}>
+      <h2 class="text-sm font-bold tracking-widest text-[var(--h-faint)] uppercase">{f.navigationTitle}</h2>
+      {f.navigationLinks.map((link) => <a href={link.href} class="font-semibold text-[var(--h-soft)] hover:text-[var(--h-text)]">{link.name}</a>)}
+    </nav>
+
+    <div class="flex flex-col gap-3">
+      <h2 class="text-sm font-bold tracking-widest text-[var(--h-faint)] uppercase">{f.contactsTitle}</h2>
+      <a href={`mailto:${f.email}`} data-email-link data-email-address={f.email} class="flex items-center gap-2.5 font-semibold text-[var(--h-soft)] hover:text-[var(--h-text)]">
+        <Icon name="email" class="size-5 text-[var(--h-faint)]" />
+        {f.email}
+      </a>
+      <a href={f.linkPhone} class="flex items-center gap-2.5 font-semibold text-[var(--h-soft)] hover:text-[var(--h-text)]">
+        <Icon name="phone" class="size-5 text-[var(--h-faint)]" />
+        {f.phone}
+      </a>
+      <p class="text-sm text-[var(--h-muted)]">{f.workHours}</p>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-[var(--h-line)] pt-6 text-sm text-[var(--h-muted)] md:col-span-3 md:flex-row md:items-center md:justify-between">
+      <p>© {currentYear} {f.copyrightSuffix}</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href={f.privacyPolicy.href} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--h-text)]">{f.privacyPolicy.text}</a>
+        <a href={f.offerAgreement.href} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--h-text)]">{f.offerAgreement.text}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+  const emailLink = document.querySelector("[data-email-link]");
+  if (emailLink instanceof HTMLAnchorElement) {
+    emailLink.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      const email = emailLink.dataset.emailAddress || "";
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
+      window.location.href = `mailto:${email}`;
+      window.setTimeout(() => {
+        if (document.hasFocus()) window.location.href = gmailUrl;
+      }, 700);
+    });
+  }
+</script>

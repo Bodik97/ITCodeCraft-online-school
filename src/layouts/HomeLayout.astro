@@ -1,5 +1,4 @@
 ---
-// import "../index.css";
 import "@/styles/global.css";
 import data from "@/data/main.json";
 import Analytics from "@/components/shared/Analytics.astro";
@@ -73,26 +72,10 @@ const organizationJsonLd = JSON.stringify({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script is:inline>
-      (function () {
-        try {
-          // Default theme is dark. Light only when the user explicitly chose it.
-          var theme = localStorage.getItem("itcc-theme");
-          if (theme === "light") {
-            document.documentElement.classList.add("light");
-          } else {
-            document.documentElement.classList.remove("light");
-            if (theme !== "dark") {
-              localStorage.setItem("itcc-theme", "dark");
-            }
-          }
-        } catch (e) {}
-      })();
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
@@ -138,11 +121,8 @@ const organizationJsonLd = JSON.stringify({
 
     <Analytics pageGroup="main" adsSendTo={adsSendTo} />
   </head>
-  <body
-    class="min-h-screen bg-paper text-ink selection:bg-neon-cyan/20 selection:text-ink"
-  >
+  <body class="home-site min-h-screen">
     <AnalyticsNoscript />
-    <div class="page-margin-line" aria-hidden="true"></div>
     <slot />
 
     <script
@@ -288,99 +268,63 @@ const organizationJsonLd = JSON.stringify({
       });
     </script>
 
-    <script is:inline>
-      document
-        .getElementById("theme-toggle")
-        ?.addEventListener("click", function () {
-          var isLight = document.documentElement.classList.toggle("light");
-          try {
-            localStorage.setItem("itcc-theme", isLight ? "light" : "dark");
-          } catch (e) {}
-        });
-    </script>
 
     <script>
       import { initCarousels } from "@/scripts/carousel";
       initCarousels();
     </script>
 
-    <style is:global>
-      html {
-        color-scheme: dark;
-      }
-      html.light {
-        color-scheme: light;
-      }
+    <script is:inline>
+      // Поява блоків при прокрутці: без JS і для reduced-motion усе видно одразу
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(".h-reveal"));
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.remove("is-pending");
+              io.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
+        );
+        nodes.forEach(function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+          el.classList.add("is-pending");
+          io.observe(el);
+        });
 
-      /* Dark (default): notebook grid on the page background, matches hero .bg-grid (40px) */
-      body:not(.roblox-site) {
-        background-image:
-          linear-gradient(to right, rgba(148, 163, 184, 0.045) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
-        background-size: 40px 40px;
-        background-attachment: scroll;
-      }
-      /* Left "поля" margin line aligned to the widest content column */
-      .page-margin-line {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: max(1rem, calc((100vw - 84rem) / 2));
-        width: 2px;
-        background: rgba(244, 63, 94, 0.1);
-        z-index: -1;
-        pointer-events: none;
-      }
+        // Лічильники в hero: 500+ / 50+ / 4.9
+        var counters = document.querySelectorAll("[data-counter]");
+        var cio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            cio.unobserve(el);
+            var raw = el.getAttribute("data-counter") || "";
+            var m = raw.match(/^([\d.]+)(.*)$/);
+            if (!m) return;
+            var target = parseFloat(m[1]);
+            var decimals = (m[1].split(".")[1] || "").length;
+            var suffix = m[2];
+            var start = performance.now();
+            var dur = 1200;
+            var tick = function (now) {
+              var p = Math.min(1, (now - start) / dur);
+              var eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = (target * eased).toFixed(decimals) + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          });
+        });
+        counters.forEach(function (el) {
+          cio.observe(el);
+        });
+      })();
+    </script>
 
-      /* Theme toggle icons */
-      html.light .theme-icon-moon {
-        display: none;
-      }
-      html.light .theme-icon-sun {
-        display: block;
-      }
-
-      /* Light theme (home only) */
-      html.light body:not(.roblox-site) {
-        --color-paper: #f4f7fc;
-        --color-card: #ffffff;
-        --color-ink: #0f172a;
-        --color-muted: #64748b;
-        --color-line: #e2e8f0;
-        --color-surface: #ffffff;
-        --color-surface-light: #f1f5f9;
-        --color-slate-200: #e2e8f0;
-        --color-slate-300: #334155;
-        --color-slate-400: #475569;
-        --color-slate-500: #64748b;
-        --color-slate-600: #475569;
-        --color-slate-700: #cbd5e1;
-        --color-gray-500: #6b7280;
-        --color-gray-600: #4b5563;
-        background-color: #f4f7fc;
-        color: #0f172a;
-        background-image:
-          linear-gradient(to right, rgba(100, 116, 139, 0.12) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(100, 116, 139, 0.12) 1px, transparent 1px);
-      }
-      /* Header follows light theme */
-      html.light .page-margin-line {
-        background: rgba(244, 63, 94, 0.18);
-      }
-      html.light .why-benefit-card,
-      html.light .sc-card,
-      html.light .faq-item {
-        box-shadow: 0 14px 30px -18px rgba(15, 23, 42, 0.25);
-      }
-      /* Footer is hardcoded dark in markup — flip it to light here */
-      html.light footer {
-        background: #eaeff7 !important;
-      }
-      /* Soften the bright neon glow shadows that look heavy on a light bg */
-      html.light .shadow-neon-cyan,
-      html.light .shadow-neon-magenta {
-        box-shadow: 0 8px 22px -10px rgba(15, 23, 42, 0.28);
-      }
-    </style>
   </body>
 </html>

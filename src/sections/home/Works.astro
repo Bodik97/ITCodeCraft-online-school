@@ -1,0 +1,126 @@
+---
+import content from "@/data/main.json";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.worksSection;
+---
+
+<section id="works" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="works-title">
+  <SectionHead id="works-title" eyebrow="Портфоліо" prefix={section.titlePrefix} highlight={section.titleHighlight} lead={section.description} />
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      section.cards.map((work, i) => (
+        <article class="h-card h-lift h-reveal group flex flex-col p-2.5" style={`--d: ${(i % 3) * 0.08}s`}>
+          <div
+            data-work-card
+            data-youtube-id={work.youtubeId ?? ""}
+            class="relative aspect-[4/3] cursor-pointer overflow-hidden rounded-[20px] bg-[var(--h-surface-2)]"
+          >
+            {work.video && (
+              <img
+                src={`/assets/projects/${work.video}.webp`}
+                alt={work.title}
+                width="400"
+                height="300"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            )}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" aria-hidden="true"></div>
+            {work.youtubeId && (
+              <button
+                type="button"
+                data-work-play
+                class="absolute bottom-3 left-3 flex h-11 items-center gap-2 h-glass rounded-full pr-4 pl-1.5 text-sm font-bold transition-transform group-hover:scale-105"
+                aria-label={`Відтворити відео: ${work.title}`}
+              >
+                <span class="flex size-8 items-center justify-center rounded-full h-solid" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="ml-0.5 size-3.5" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                Дивитись
+              </button>
+            )}
+            {work.time && <span class="h-chip absolute top-3 right-3 h-glass">{work.time}</span>}
+          </div>
+          <div class="flex flex-col gap-1 px-3.5 pt-4 pb-3">
+            <h3 class="text-lg font-extrabold">{work.title}</h3>
+            <p class="text-sm font-semibold text-[var(--h-muted)]">{work.student}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <!-- Модалка з відео YouTube -->
+  <div
+    id="work-video-modal"
+    class="h-video-modal fixed inset-0 z-[90] flex items-center justify-center bg-[rgb(21_21_40/0.7)] p-4 backdrop-blur-md"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="work-video-modal-title"
+  >
+    <div class="relative w-full max-w-4xl">
+      <h2 id="work-video-modal-title" class="sr-only">Відео проєкту</h2>
+      <button type="button" id="work-video-close" class="h-icon-btn absolute -top-14 right-0" aria-label="Закрити відео">
+        <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <div class="aspect-video w-full overflow-hidden rounded-[var(--h-radius)] bg-black shadow-2xl">
+        <iframe
+          id="work-video-iframe"
+          class="h-full w-full"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const modal = document.getElementById("work-video-modal");
+    const iframe = document.getElementById("work-video-iframe");
+    const closeBtn = document.getElementById("work-video-close");
+    if (!modal || !iframe) return;
+    let lastFocus = null;
+
+    const openModal = (youtubeId) => {
+      if (!youtubeId) return;
+      lastFocus = document.activeElement;
+      iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeBtn?.focus();
+    };
+    const closeModal = () => {
+      iframe.src = "";
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocus instanceof HTMLElement) lastFocus.focus();
+    };
+
+    closeBtn?.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.getAttribute("aria-hidden") !== "true") closeModal();
+    });
+
+    document.querySelector("#works")?.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-work-card]");
+      if (!card) return;
+      const youtubeId = card.getAttribute("data-youtube-id")?.trim();
+      if (youtubeId) {
+        e.preventDefault();
+        openModal(youtubeId);
+      }
+    });
+  })();
+</script>

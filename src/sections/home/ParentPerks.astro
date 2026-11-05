@@ -1,0 +1,49 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+import SectionHead from "./SectionHead.astro";
+
+const perks = content.parentPerks;
+const guarantee = content.guarantee;
+---
+
+<section id="parents" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="parents-title">
+  <SectionHead id="parents-title" eyebrow="Для батьків" prefix={perks.titlePrefix} highlight={perks.titleHighlight} lead={perks.subtitle} />
+
+  <div class="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr_1fr]">
+    {
+      perks.items.map((item, i) => (
+        <article class="h-card h-lift h-reveal flex items-start gap-4 p-6" style={`--d: ${(i % 3) * 0.08}s`}>
+          <span
+            class:list={[
+              "flex size-12 shrink-0 items-center justify-center rounded-full",
+              i === 0 ? "h-solid" : "bg-[var(--h-surface-2)] text-[var(--h-soft)]",
+            ]}
+            aria-hidden="true"
+          >
+            <Icon name={item.icon} class="size-5.5" />
+          </span>
+          <div class="flex flex-col gap-1.5">
+            <h3 class="text-lg font-extrabold">{item.title}</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--h-muted)]">{item.text}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <!-- Гарантія + робот -->
+  <div class="h-pearl h-reveal relative mt-4 flex flex-col gap-4 overflow-hidden rounded-[var(--h-radius)] p-7 shadow-[var(--h-shadow-soft)] sm:p-10 md:min-h-[260px] md:justify-center">
+    <div class="pointer-events-none absolute top-1/2 -right-24 hidden size-[340px] -translate-y-1/2 rounded-full border-[3px] border-[#3ee6ff]/80 shadow-[0_0_30px_rgb(62_230_255/0.5),inset_0_0_30px_rgb(62_230_255/0.3)] md:block" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute top-1/2 right-10 hidden size-[180px] -translate-y-1/2 rounded-full border border-dashed border-white/25 md:block" aria-hidden="true"></div>
+    <span class="h-chip h-chip-dark relative self-start">
+      <Icon name="lucide:shield-check" class="size-4" />
+      {guarantee.badge}
+    </span>
+    <h3 class="relative text-3xl font-extrabold tracking-tight md:text-4xl">{guarantee.title}</h3>
+    <p class="relative max-w-[600px] text-lg leading-relaxed text-[var(--h-soft)]">{guarantee.text}</p>
+    <button type="button" data-modal-open class="h-btn h-btn-primary relative mt-2 self-start">
+      {content.hero.ctaPrimary} <span aria-hidden="true">→</span>
+    </button>
+  </div>
+</section>

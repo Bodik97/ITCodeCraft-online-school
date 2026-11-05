@@ -1,0 +1,39 @@
+---
+import content from "@/data/main.json";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.showcaseSection;
+---
+
+<section id="showcase" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="showcase-title">
+  <SectionHead id="showcase-title" prefix={section.titlePrefix} highlight={section.titleHighlight} lead={section.subtitle}>
+    <a href="#courses" class="h-btn h-btn-ghost self-start md:self-auto">
+      Обрати напрямок <span aria-hidden="true">→</span>
+    </a>
+  </SectionHead>
+
+  <div class="mt-8 grid gap-4 md:grid-cols-3">
+    {
+      section.cards.map((card, i) => (
+        <article class="h-card h-lift h-reveal group flex flex-col overflow-hidden p-2.5" style={`--d: ${i * 0.08}s`}>
+          <div class="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-[var(--h-surface-2)]">
+            <img
+              src={`/assets/home/${card.image}.webp`}
+              alt={card.title}
+              width="480"
+              height="360"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <span class="h-chip absolute top-3 left-3 h-glass">0{i + 1}</span>
+          </div>
+          <div class="flex flex-col gap-2 px-4 pt-5 pb-4">
+            <h3 class="text-xl font-extrabold">{card.title}</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--h-muted)]">{card.text}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

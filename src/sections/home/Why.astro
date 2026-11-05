@@ -1,0 +1,34 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.whySection;
+---
+
+<section id="why" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="why-title">
+  <SectionHead id="why-title" eyebrow="Чому ми" prefix={section.titlePrefix} highlight={section.titleHighlight} lead={section.description} />
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      section.benefits.map((benefit, i) => (
+        <article class="h-card h-lift h-reveal flex flex-col gap-5 p-6" style={`--d: ${i * 0.08}s`}>
+          <div class="flex items-center justify-between">
+            <span
+              class:list={[
+                "flex size-12 items-center justify-center rounded-full",
+                i === 0 ? "h-iris text-white" : "bg-[var(--h-surface-2)] text-[var(--h-soft)]",
+              ]}
+              aria-hidden="true"
+            >
+              <Icon name={benefit.icon} class="size-6" />
+            </span>
+            <span class="font-mono text-sm font-bold text-[var(--h-faint)]">0{i + 1}</span>
+          </div>
+          <h3 class="text-xl font-extrabold">{benefit.title}</h3>
+          <p class="text-[15px] leading-relaxed text-[var(--h-muted)]">{benefit.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

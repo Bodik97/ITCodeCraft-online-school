@@ -1,0 +1,156 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+
+const section = content.hero;
+
+// Ключове слово заголовка підсвічуємо неоновим градієнтом
+const markWord = "творцями";
+const hasMark = section.liveBadgePrefix.includes(markWord);
+const [titleBefore, titleAfter] = hasMark ? section.liveBadgePrefix.split(markWord) : [section.liveBadgePrefix, ""];
+
+// Переваги 2×2 під заголовком (як «Recorded Sessions / Certification…» на референсі)
+const features = [
+  { icon: "lucide:video", text: "Записи всіх уроків" },
+  { icon: "lucide:code-xml", text: "Практика на проєктах" },
+  { icon: "lucide:award", text: "Іменний сертифікат" },
+  { icon: "lucide:messages-square", text: "Куратор на зв'язку" },
+];
+
+// Плаваючі «плитки» навколо кільця: позиція, розмір, фон, іконка
+const chips = [
+  { pos: "left-[4%] top-[20%]", size: "size-14", bg: "bg-[#5b7cff]", icon: "lucide:search", d: "0s" },
+  { pos: "right-[8%] top-[6%]", size: "size-16", bg: "bg-[#d84ff5] rounded-full", icon: "lucide:flag", d: "-1.2s" },
+  { pos: "right-[0%] top-[40%]", size: "size-[4.5rem]", bg: "bg-[#7b4dff]", icon: "lucide:message-square-text", d: "-2.4s" },
+  { pos: "left-[0%] top-[58%]", size: "size-12", bg: "bg-[#2b1d78] border border-white/15", icon: "lucide:settings", d: "-0.6s" },
+  { pos: "left-[16%] top-[4%]", size: "size-12", bg: "bg-[#ff5fa8]", icon: "lucide:mail", d: "-3s" },
+  { pos: "right-[14%] bottom-[8%]", size: "size-14", bg: "bg-[#3b2a9a] border border-[#3ee6ff]/50", icon: "lucide:play", d: "-1.8s" },
+  { pos: "left-[22%] bottom-[2%]", size: "size-11", bg: "bg-[#d84ff5] rounded-full", icon: "lucide:heart", d: "-4s" },
+];
+const dots = [
+  "left-[12%] top-[40%] size-2 bg-[#d84ff5]",
+  "right-[24%] top-[18%] size-1.5 bg-[#3ee6ff]",
+  "left-[30%] top-[12%] size-1.5 bg-white/70",
+  "right-[4%] top-[70%] size-2.5 bg-[#ff5fa8]",
+  "left-[8%] bottom-[22%] size-1.5 bg-[#3ee6ff]",
+  "right-[34%] bottom-[0%] size-2 bg-[#7b4dff]",
+];
+---
+
+<section id="hero" class="h-wrap pt-6 md:pt-10">
+  <div class="relative grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-6">
+    <!-- Ілюстрація: неонове кільце -->
+    <div class="h-rise relative order-2 lg:order-1" style="--d: 0.1s" aria-hidden="true">
+      <div class="h-orbit">
+        <div class="h-orbit-ring h-orbit-ring--dashed"></div>
+        <div class="h-orbit-ring"></div>
+        <div class="h-orbit-spin"></div>
+        <div class="h-orbit-ring h-orbit-ring--inner"></div>
+
+        <!-- Центр: «вікно коду» з прогресом -->
+        <div class="h-glass absolute top-1/2 left-1/2 flex w-[58%] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 rounded-[22px] p-4 sm:p-5">
+          <div class="flex items-center gap-1.5">
+            <span class="size-2.5 rounded-full bg-[#ff5f7a]"></span>
+            <span class="size-2.5 rounded-full bg-[#ffb53b]"></span>
+            <span class="size-2.5 rounded-full bg-[#3ee6a0]"></span>
+            <span class="ml-auto font-mono text-[10px] text-[var(--h-muted)]">game.lua</span>
+          </div>
+          <pre class="overflow-hidden font-mono text-[11px] leading-5 text-[var(--h-soft)] sm:text-xs sm:leading-6"><span class="text-[#d84ff5]">local</span> score = <span class="text-[#3ee6ff]">0</span>
+<span class="text-[#d84ff5]">function</span> <span class="text-[#7fefff]">onWin</span>()
+  score += <span class="text-[#3ee6ff]">100</span>
+<span class="text-[#d84ff5]">end</span></pre>
+          <div class="flex flex-col gap-1.5">
+            <div class="flex justify-between text-[10px] font-semibold text-[var(--h-muted)] sm:text-xs">
+              <span>Рівень 4</span><span class="font-mono text-[var(--h-text)]">80%</span>
+            </div>
+            <div class="h-2 overflow-hidden rounded-full bg-white/10">
+              <div class="h-iris h-bar h-full w-4/5 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        {
+          chips.map((c) => (
+            <div class:list={["h-orbit-chip h-float", c.pos, c.size, c.bg]} style={`--d: ${c.d}`}>
+              <Icon name={c.icon} class="size-[45%]" />
+            </div>
+          ))
+        }
+        {dots.map((d) => <span class:list={["h-orbit-dot", d]} />)}
+      </div>
+    </div>
+
+    <!-- Текст -->
+    <div class="relative order-1 flex flex-col gap-6 lg:order-2">
+      <p class="h-eyebrow h-rise" style="--d: 0s">
+        <span>7–17</span>
+        {section.kicker}
+      </p>
+      <h1 class="h-rise text-[36px] leading-[1.04] font-extrabold tracking-[-0.035em] sm:text-5xl xl:text-[62px]" style="--d: 0.08s">
+        {titleBefore}{hasMark && <span class="h-grad-text">{markWord}</span>}{titleAfter}
+      </h1>
+      <p class="h-lead h-rise max-w-[560px]" style="--d: 0.16s">{section.subtitle}</p>
+
+      <div class="h-rise flex items-center gap-3 border-l-2 border-[var(--h-accent)] pl-4" style="--d: 0.22s">
+        <div id="hero-typing" aria-live="polite" class="h-typing min-w-0 flex-1 text-base leading-snug font-bold text-[var(--h-accent)] sm:text-lg">
+          {
+            section.typingTexts.map((text, index) => (
+              <div class:list={["hero-typing-item", index === 0 && "is-active"]}>{text}</div>
+            ))
+          }
+        </div>
+      </div>
+
+      <ul class="h-rise grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2" style="--d: 0.28s">
+        {
+          features.map((f) => (
+            <li class="flex items-center gap-3 font-semibold text-[var(--h-soft)]">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--h-line-2)] text-[var(--h-accent)]">
+                <Icon name={f.icon} class="size-5" />
+              </span>
+              {f.text}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="h-rise flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:gap-5" style="--d: 0.34s">
+        <button type="button" data-modal-open class="h-btn h-btn-primary group h-14 px-7 text-base">
+          {section.ctaPrimary}
+          <span class="inline-block transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+        </button>
+        <p class="text-sm font-semibold text-[var(--h-muted)]">{section.ctaNote}</p>
+      </div>
+
+      <div class="h-rise flex flex-wrap gap-2" style="--d: 0.4s">
+        {section.options.map((option) => <span class="h-chip">{option}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <!-- Статистика -->
+  <dl class="mt-12 grid gap-4 sm:grid-cols-3">
+    {
+      section.stats.map((stat, i) => (
+        <div class="h-card h-rise flex items-center gap-4 p-5 sm:p-6" style={`--d: ${0.4 + i * 0.08}s`}>
+          <span class="h-solid flex size-12 shrink-0 items-center justify-center rounded-2xl" aria-hidden="true">
+            <Icon name={stat.icon} class="size-6" />
+          </span>
+          <div class="flex flex-col">
+            <dd class="text-[32px] leading-none font-extrabold tracking-tight" data-counter={stat.value}>{stat.value}</dd>
+            <dt class="order-first mb-1 text-sm font-semibold text-[var(--h-muted)]">{stat.label}</dt>
+          </div>
+        </div>
+      ))
+    }
+  </dl>
+
+  <!-- SEO-абзац -->
+  <p class="mx-auto mt-10 max-w-3xl text-center text-lg leading-relaxed text-[var(--h-muted)]">
+    <strong class="text-[var(--h-text)]">{content.brand.primary}{content.brand.accent}</strong>
+    {section.seoLead}
+    <b class="text-[var(--h-text)]">{section.seoMinecraft}</b>,{section.seoMiddle}
+    <b class="text-[var(--h-text)]">{section.seoRoblox}</b>, {section.seoTail}
+    <b class="text-[var(--h-text)]">{section.seoWebsites}</b>.
+  </p>
+</section>

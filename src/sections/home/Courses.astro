@@ -1,0 +1,96 @@
+---
+import content from "@/data/main.json";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.coursesSection;
+
+const courseLandings: Record<string, string> = {
+  Roblox: "/roblox",
+  Minecraft: "/minecraft",
+  Frontend: "/frontend",
+  Scratch: "/scratch",
+};
+
+const coursesJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: section.courses.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Course",
+      name: `${c.title} для дітей ${c.age}`,
+      description: c.description,
+      provider: {
+        "@type": "EducationalOrganization",
+        name: `${content.brand.primary}${content.brand.accent}`,
+        sameAs: content.meta.canonical,
+      },
+    },
+  })),
+});
+---
+
+<script type="application/ld+json" is:inline set:html={coursesJsonLd} />
+
+<section id="courses" class="h-light mt-20 scroll-mt-24 py-16 md:mt-28 md:py-24" aria-labelledby="courses-title">
+  <div class="h-wrap">
+    <SectionHead id="courses-title" eyebrow={`${section.courses.length} напрямків`} prefix={section.titlePrefix} highlight={section.titleHighlight} lead={section.description}>
+      <div class="hidden gap-2 md:flex">
+        <button type="button" data-scroll-prev aria-label="Попередні курси" class="h-icon-btn">
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" data-scroll-next aria-label="Наступні курси" class="h-icon-btn">
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </SectionHead>
+  </div>
+
+  <div data-scroller class="h-track mt-6">
+    {
+      section.courses.map((course) => {
+        const landing = courseLandings[course.title];
+        return (
+          <article class="h-card flex w-[86%] shrink-0 flex-col p-2.5 sm:w-[46%] lg:w-[31%] xl:w-[23.5%]">
+            <div class="relative aspect-[277/180] overflow-hidden rounded-[20px] bg-[var(--h-surface-2)]">
+              <img
+                src={`/assets/courses/${course.image}.webp`}
+                alt={course.alt}
+                width="277"
+                height="180"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                class="h-full w-full object-cover"
+              />
+              <span class="h-chip absolute top-3 left-3 h-glass">{course.age}</span>
+            </div>
+            <div class="flex flex-1 flex-col gap-3 px-3.5 pt-5 pb-3.5">
+              <h3 class="text-[22px] font-extrabold">{course.title}</h3>
+              <p class="line-clamp-4 text-[15px] leading-relaxed text-[var(--h-muted)]">{course.description}</p>
+              <div class="mt-auto pt-3">
+                {landing ? (
+                  <a href={landing} class="h-btn h-btn-primary w-full">
+                    Детальніше <span aria-hidden="true">→</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    data-modal-open
+                    data-product-name={course.title}
+                    data-product-color="text-[#6a4cf5]"
+                    class="h-btn h-btn-ghost w-full"
+                  >
+                    {section.enrollLabel}
+                  </button>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+  <div data-scroll-pagination class="mt-4 flex items-center justify-center gap-2"></div>
+</section>

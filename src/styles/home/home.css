@@ -1,0 +1,791 @@
+/*
+  Єдина тема головної ITCodeCraft — «neon e-learning»:
+  глибокий індиго-фіолетовий фон, скляні картки, неонове бірюзове кільце з плаваючими іконками,
+  фіолетово-рожеві градієнтні pill-кнопки. Окремі секції — світлі лавандові «смуги» (.h-light).
+  Темної/світлої теми й перемикача немає — одна тема на всю сторінку.
+  Усе обмежено body.home-site, щоб не зачепити лендинги Roblox / Minecraft / Scratch / Frontend.
+*/
+
+body.home-site {
+  /* Спільні токени для форми, модалки й тостів — вони лишаються світлими (білі панелі) */
+  --color-paper: #f4f1ff;
+  --color-card: #ffffff;
+  --color-ink: #1b1350;
+  --color-muted: #6b6599;
+  --color-line: #e6e0fb;
+  --color-surface: #ffffff;
+  --color-surface-light: #f4f1ff;
+  --color-slate-200: #d9d1f7;
+  --color-slate-300: #3d3577;
+  --color-slate-400: #3d3577;
+  --color-slate-500: #6b6599;
+  --color-slate-600: #3d3577;
+  --color-slate-700: #d9d1f7;
+  --color-gray-500: #6b6599;
+  --color-gray-600: #6b6599;
+
+  /* Токени сторінки (темні) */
+  --h-bg: #130b3b;
+  --h-bg-2: #1b1152;
+  --h-surface: rgb(255 255 255 / 0.045);
+  --h-surface-2: rgb(255 255 255 / 0.07);
+  --h-line: rgb(255 255 255 / 0.1);
+  --h-line-2: rgb(255 255 255 / 0.22);
+  --h-text: #f5f2ff;
+  --h-soft: #d6d0ff;
+  --h-muted: #a8a1dc;
+  --h-faint: #7f78b8;
+  --h-accent: #3ee6ff;
+  --h-violet: #7b4dff;
+  --h-magenta: #d84ff5;
+  --h-pink: #ff5fa8;
+  --h-good: #3ee6a0;
+  --h-amber: #ffb53b;
+  --h-radius: 26px;
+  --h-shadow-soft: 0 20px 50px -24px rgb(4 0 30 / 0.7);
+  --h-shadow-lift: 0 28px 60px -22px rgb(4 0 30 / 0.85), 0 0 0 1px rgb(255 255 255 / 0.14);
+  --h-shadow-pill: 0 10px 28px -10px rgb(123 77 255 / 0.65);
+  --h-grad: linear-gradient(100deg, #7b4dff 0%, #b04ff2 55%, #e04fd8 100%);
+  --h-iris: linear-gradient(90deg, #3ee6ff 0%, #7b4dff 55%, #e04fd8 100%);
+  --h-glow-cyan: 0 0 18px rgb(62 230 255 / 0.65), 0 0 46px rgb(62 230 255 / 0.35);
+
+  /* Акцент спільної форми (components/main/form) — фіолетова кнопка */
+  --form-accent: #7b4dff;
+  --form-accent-rgb: 123, 77, 255;
+  --form-accent-fg: #ffffff;
+
+  background-color: var(--h-bg);
+  background-image:
+    radial-gradient(48rem 34rem at 8% -6%, rgb(123 77 255 / 0.38), transparent 62%),
+    radial-gradient(40rem 30rem at 100% 12%, rgb(216 79 245 / 0.22), transparent 60%),
+    radial-gradient(46rem 36rem at 50% 108%, rgb(62 230 255 / 0.12), transparent 62%);
+  background-attachment: scroll;
+  color: var(--h-text);
+  font-family: "Manrope", system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+  scrollbar-color: #3a2f86 transparent;
+}
+
+/* Світла лавандова «смуга» — перевизначає токени для вкладених секцій */
+.h-light {
+  --h-surface: #ffffff;
+  --h-surface-2: #efeaff;
+  --h-line: #e3dcfb;
+  --h-line-2: #cfc4f6;
+  --h-text: #1b1350;
+  --h-soft: #3d3577;
+  --h-muted: #6b6599;
+  --h-faint: #9a94c4;
+  --h-accent: #6a3df5;
+  --h-good: #13915e;
+  --h-amber: #b5650d;
+  --h-shadow-soft: 0 1px 2px rgb(40 20 120 / 0.05), 0 16px 36px -18px rgb(60 30 160 / 0.28);
+  --h-shadow-lift: 0 2px 4px rgb(40 20 120 / 0.05), 0 26px 50px -20px rgb(60 30 160 / 0.38);
+  --h-shadow-pill: 0 8px 22px -10px rgb(123 77 255 / 0.55);
+  color: var(--h-text);
+  background: linear-gradient(180deg, #f6f3ff 0%, #ece6ff 100%);
+}
+
+body.home-site h1,
+body.home-site h2,
+body.home-site h3,
+body.home-site h4,
+body.home-site h5,
+body.home-site h6 {
+  font-family: "Manrope", system-ui, sans-serif;
+  letter-spacing: -0.025em;
+}
+
+body.home-site ::selection {
+  background: rgb(62 230 255 / 0.28);
+}
+
+body.home-site :focus-visible {
+  outline: 2px solid var(--h-accent);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* ── Базові «цеглинки» ─────────────────────────────────────────── */
+  .h-wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 768px) {
+    .h-wrap {
+      padding-inline: 24px;
+    }
+  }
+
+  .h-card {
+    border-radius: var(--h-radius);
+    background: var(--h-surface);
+    border: 1px solid var(--h-line);
+    box-shadow: var(--h-shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .h-tile {
+    border-radius: 18px;
+    background: var(--h-surface-2);
+  }
+  .h-glass {
+    background: rgb(22 13 70 / 0.72);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    color: #f5f2ff;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .h-light .h-glass {
+    background: rgb(255 255 255 / 0.9);
+    border-color: #e3dcfb;
+    color: #1b1350;
+  }
+  .h-solid {
+    background-image: var(--h-grad);
+    color: #fff;
+  }
+  .h-lift {
+    transition:
+      translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .h-lift:hover {
+    translate: 0 -4px;
+    box-shadow: var(--h-shadow-lift);
+    border-color: var(--h-line-2);
+  }
+
+  .h-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding-inline: 1.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      translate 0.2s ease,
+      box-shadow 0.25s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      filter 0.2s ease;
+  }
+  .h-btn:hover {
+    translate: 0 -2px;
+  }
+  .h-btn:active {
+    translate: 0 0;
+  }
+  .h-btn-primary {
+    background-image: var(--h-grad);
+    color: #fff;
+    box-shadow: var(--h-shadow-pill);
+  }
+  .h-btn-primary:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 16px 36px -10px rgb(176 79 242 / 0.8);
+  }
+  .h-btn-ghost {
+    background: transparent;
+    color: var(--h-text);
+    border: 1.5px solid var(--h-line-2);
+  }
+  .h-btn-ghost:hover {
+    border-color: var(--h-accent);
+    box-shadow: 0 0 0 4px rgb(62 230 255 / 0.12);
+  }
+  .h-light .h-btn-ghost:hover {
+    box-shadow: 0 0 0 4px rgb(106 61 245 / 0.12);
+  }
+
+  .h-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2.25rem;
+    padding-inline: 0.875rem;
+    border-radius: 9999px;
+    background: var(--h-surface-2);
+    border: 1px solid var(--h-line);
+    color: var(--h-soft);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .h-chip-dark {
+    background-image: var(--h-grad);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .h-icon-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--h-line-2);
+    background: var(--h-surface);
+    color: var(--h-text);
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s,
+      opacity 0.2s;
+  }
+  .h-icon-btn:hover:not(:disabled) {
+    border-color: var(--h-accent);
+    box-shadow: 0 0 0 4px rgb(62 230 255 / 0.12);
+  }
+  .h-icon-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .h-iris {
+    background-image: var(--h-iris);
+  }
+  /* Темна градієнтна панель з неоновими плямами (банери гарантії / запису) */
+  .h-pearl {
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgb(216 79 245 / 0.45), transparent 60%),
+      radial-gradient(50% 70% at 0% 100%, rgb(62 230 255 / 0.22), transparent 60%),
+      linear-gradient(135deg, #2a1578 0%, #1b1152 100%);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    color: #f5f2ff;
+  }
+
+  .h-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    border-radius: 9999px;
+    background: var(--h-surface-2);
+    border: 1px solid var(--h-line);
+    padding: 0.375rem 1rem 0.375rem 0.375rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    font-weight: 700;
+    color: var(--h-soft);
+  }
+  .h-eyebrow > span:first-child {
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-radius: 9999px;
+    background-image: var(--h-grad);
+    color: #fff;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+  }
+  .h-eyebrow-plain {
+    padding-left: 0.875rem;
+  }
+  .h-eyebrow-plain::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--h-accent);
+    box-shadow: 0 0 10px var(--h-accent);
+  }
+
+  .h-title {
+    font-size: clamp(1.875rem, 1.2rem + 2.4vw, 2.75rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .h-lead {
+    color: var(--h-muted);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  /* Неонове підкреслення ключового слова */
+  .h-mark {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+  }
+  .h-mark::after {
+    content: "";
+    position: absolute;
+    inset-inline: -0.08em;
+    bottom: 0.04em;
+    height: 0.16em;
+    border-radius: 9999px;
+    background-image: var(--h-iris);
+    box-shadow: 0 0 14px rgb(62 230 255 / 0.55);
+    z-index: -1;
+  }
+  .h-light .h-mark::after {
+    box-shadow: none;
+  }
+  /* Градієнтний текст */
+  .h-grad-text {
+    background-image: linear-gradient(90deg, #7fefff 0%, #b79bff 50%, #f08bff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ── Шапка ─────────────────────────────────────────────────────── */
+  .h-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    padding-top: 12px;
+  }
+  .h-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    height: 4rem;
+    padding-inline: 1.25rem 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(22 13 70 / 0.6);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition:
+      background-color 0.3s,
+      box-shadow 0.3s;
+  }
+  @media (min-width: 768px) {
+    .h-header-bar {
+      height: 4.5rem;
+      padding-inline: 1.75rem 0.75rem;
+    }
+  }
+  .h-header.is-scrolled .h-header-bar {
+    background: rgb(22 13 70 / 0.88);
+    box-shadow: 0 18px 40px -20px rgb(4 0 30 / 0.9);
+  }
+  .h-nav {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  @media (min-width: 1024px) {
+    .h-nav {
+      display: flex;
+    }
+  }
+  .h-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--h-soft);
+    transition: color 0.2s;
+  }
+  .h-nav a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 1rem;
+    bottom: 0.35rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--h-accent);
+    box-shadow: 0 0 8px var(--h-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .h-nav a:hover {
+    color: #fff;
+  }
+  .h-nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .h-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      grid-template-rows 0.3s ease,
+      opacity 0.2s ease,
+      margin 0.3s ease;
+  }
+  .h-menu > div {
+    overflow: hidden;
+  }
+  .h-menu.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 0.5rem;
+  }
+  @media (min-width: 1024px) {
+    .h-menu {
+      display: none;
+    }
+  }
+
+  /* ── Логотип ───────────────────────────────────────────────────── */
+  .h-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    line-height: 1;
+  }
+  .h-logo b {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--h-text);
+  }
+  .h-logo b span {
+    color: var(--h-accent);
+  }
+  .h-logo small {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--h-faint);
+  }
+
+  /* ── Hero: неонове кільце з плаваючими іконками ─────────────────── */
+  .h-orbit {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+  .h-orbit-ring {
+    position: absolute;
+    inset: 9%;
+    border-radius: 9999px;
+    border: 3px solid rgb(62 230 255 / 0.9);
+    box-shadow:
+      var(--h-glow-cyan),
+      inset 0 0 26px rgb(62 230 255 / 0.4);
+  }
+  .h-orbit-ring--inner {
+    inset: 19%;
+    border-width: 1.5px;
+    border-color: rgb(62 230 255 / 0.45);
+    box-shadow: inset 0 0 40px rgb(123 77 255 / 0.35);
+    background: radial-gradient(circle, rgb(123 77 255 / 0.35), transparent 70%);
+  }
+  .h-orbit-ring--dashed {
+    inset: 2%;
+    border: 1px dashed rgb(255 255 255 / 0.18);
+    box-shadow: none;
+  }
+  /* «Комета» на кільці */
+  .h-orbit-spin {
+    position: absolute;
+    inset: 9%;
+    border-radius: 9999px;
+    background: conic-gradient(from 0deg, transparent 0 78%, rgb(62 230 255 / 0.95) 92%, transparent 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+    animation: h-spin 6s linear infinite;
+    filter: drop-shadow(0 0 8px rgb(62 230 255 / 0.9));
+  }
+  .h-orbit-chip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    color: #fff;
+    box-shadow: 0 14px 30px -12px rgb(4 0 30 / 0.8);
+  }
+  .h-orbit-dot {
+    position: absolute;
+    border-radius: 9999px;
+  }
+
+  /* ── Hero: зміна рядків-напрямків ─────────────────────────────── */
+  .h-typing {
+    position: relative;
+    height: 4.4em;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .h-typing {
+      height: 3.2em;
+    }
+  }
+  .h-typing .hero-typing-item {
+    position: absolute;
+    inset-inline: 0;
+    opacity: 0;
+    translate: 0 0.8em;
+    transition:
+      opacity 0.45s ease,
+      translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .h-typing .hero-typing-item.is-active {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .h-rise {
+    animation: h-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  .h-float {
+    animation: h-float 6s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .h-bar {
+    transform-origin: left;
+    animation: h-bar 1.4s 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Поява при прокрутці (scripts у HomeLayout) */
+  .h-reveal {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .h-reveal.is-pending {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+
+  /* ── Горизонтальні треки (курси, відгуки) — керує scripts/carousel.ts ── */
+  .h-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-block: 0.5rem 1.25rem;
+    padding-inline: max(16px, calc((100% - 1240px) / 2 + 16px));
+    scroll-padding-inline: max(16px, calc((100% - 1240px) / 2 + 16px));
+  }
+  @media (min-width: 768px) {
+    .h-track {
+      padding-inline: max(24px, calc((100% - 1240px) / 2 + 24px));
+      scroll-padding-inline: max(24px, calc((100% - 1240px) / 2 + 24px));
+    }
+  }
+  .h-track::-webkit-scrollbar {
+    display: none;
+  }
+  .h-track > * {
+    scroll-snap-align: start;
+  }
+  @media (pointer: fine) {
+    .h-track {
+      cursor: grab;
+    }
+    .h-track.is-grabbing {
+      cursor: grabbing;
+      scroll-snap-type: none;
+    }
+  }
+
+  /* ── FAQ ───────────────────────────────────────────────────────── */
+  .h-faq summary {
+    list-style: none;
+  }
+  .h-faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .h-faq[open] {
+    border-color: rgb(62 230 255 / 0.35);
+  }
+  .h-faq[open] .h-faq-icon {
+    rotate: 45deg;
+    background-image: var(--h-grad);
+    color: #fff;
+  }
+  .h-faq-icon {
+    transition:
+      rotate 0.3s ease,
+      color 0.3s;
+  }
+}
+
+@keyframes h-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes h-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes h-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes h-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Пагінація-крапки від carousel.ts */
+body.home-site [data-scroll-pagination] button {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--h-line-2);
+  transition:
+    width 0.3s,
+    background-color 0.3s;
+}
+body.home-site [data-scroll-pagination] button.is-active {
+  width: 24px;
+  background-image: var(--h-grad);
+}
+
+/* Відеомодалка робіт (поза шаром — інакше утиліта flex перебиває display:none) */
+.h-video-modal[aria-hidden="true"] {
+  display: none;
+}
+
+/* Форма запису на головній — в одну колонку, як у модалці */
+body.home-site #register form {
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+/* ── Спільні компоненти (модалка, форма, тост) — світлі панелі з фіолетовим акцентом ── */
+body.home-site .modal-overlay {
+  background: rgb(10 4 40 / 0.6);
+}
+body.home-site .modal-panel {
+  background-image: none;
+  background-color: #fff;
+  border-color: transparent;
+  border-radius: 26px;
+  box-shadow: 0 30px 80px -20px rgb(10 4 40 / 0.7);
+}
+body.home-site .modal-title {
+  text-shadow: none;
+  font-weight: 800;
+}
+body.home-site .modal-close-btn {
+  background: #f1ecff;
+  border-color: transparent;
+}
+body.home-site .modal-close-btn:hover {
+  color: #6a3df5;
+  border-color: #cfc4f6;
+}
+/* Назва курсу в заголовку модалки (Modal.astro за замовчуванням додає text-neon-cyan) */
+body.home-site .modal-title .text-neon-cyan,
+body.home-site .modal-title [class*="text-neon"] {
+  color: #6a3df5;
+  text-shadow: none;
+}
+
+body.home-site .input-label .input-field,
+body.home-site .input-label .iti__tel-input {
+  background: #f4f1ff;
+  border-color: transparent;
+  border-radius: 16px;
+}
+body.home-site .input-label .input-field:focus,
+body.home-site .input-label .iti--lead-form:focus-within input.iti__tel-input {
+  background: #fff;
+  border-color: #cfc4f6;
+  box-shadow: 0 0 0 4px rgb(123 77 255 / 0.14);
+}
+body.home-site .input-label .input-field.input-field--error {
+  border-color: #e53935;
+}
+body.home-site .input-label:has(.input-field:focus) .input-label-title {
+  color: #6a3df5;
+}
+body.home-site .form-btn {
+  border-radius: 9999px;
+  background-image: linear-gradient(100deg, #7b4dff 0%, #b04ff2 55%, #e04fd8 100%);
+  box-shadow: 0 10px 28px -10px rgb(123 77 255 / 0.65);
+}
+body.home-site .checkbox-label [type="checkbox"]:checked + .checkbox {
+  border-color: #7b4dff;
+  background: #7b4dff;
+}
+body.home-site .checkbox-label:hover .checkbox {
+  border-color: #7b4dff;
+  background: #f1ecff;
+}
+
+body.home-site .notification-toast > div {
+  border-left: 0;
+  border-radius: 9999px;
+  background: rgb(27 17 82 / 0.92);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  box-shadow: 0 20px 44px -18px rgb(4 0 30 / 0.9);
+  padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+}
+body.home-site #notification-avatar {
+  background-image: linear-gradient(100deg, #7b4dff, #e04fd8);
+  color: #fff;
+}
+body.home-site #notification-name {
+  color: #f5f2ff;
+}
+body.home-site #notification-action {
+  color: #a8a1dc;
+}
+body.home-site #notification-time {
+  color: #3ee6ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h-rise,
+  .h-float,
+  .h-bar,
+  .h-orbit-spin {
+    animation: none !important;
+  }
+  .h-reveal,
+  .h-typing .hero-typing-item {
+    transition: none !important;
+  }
+  .h-reveal.is-pending {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Поля форми в світлій картці запису — білі з рамкою, щоб не зливалися з лавандовим фоном */
+body.home-site #register .input-label .input-field,
+body.home-site #register .input-label .iti__tel-input {
+  background: #fff;
+  border-color: #e3dcfb;
+}
