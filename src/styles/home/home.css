@@ -36,7 +36,7 @@ body.home-site {
   --h-text: #1d2140;
   --h-soft: #444a6b;
   --h-muted: #6e7491;
-  --h-faint: #9aa0b8;
+  --h-faint: #767c98; /* ≥4.5:1 на білому — WCAG AA для дрібного тексту */
   --h-accent: #6457f0;
   --h-accent-soft: #eeecff;
   --h-good: #1fa463;
@@ -276,6 +276,11 @@ body.home-site :focus-visible {
     padding: 0.125rem 0.625rem;
     font-size: 0.75rem;
   }
+  @media (max-width: 400px) {
+    .h-eyebrow {
+      font-size: 0.75rem;
+    }
+  }
   .h-eyebrow-plain {
     padding-left: 0.875rem;
   }
@@ -409,6 +414,9 @@ body.home-site :focus-visible {
   .h-menu > div {
     overflow: hidden;
   }
+  .h-menu:not(.is-open) {
+    visibility: hidden;
+  }
   .h-menu.is-open {
     grid-template-rows: 1fr;
     opacity: 1;
@@ -441,7 +449,7 @@ body.home-site :focus-visible {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 3px;
-    color: var(--h-faint);
+    color: var(--h-muted);
   }
 
   /* ── Hero: кільце прогресу (як «Your Daily Goal») ───────────── */
@@ -466,28 +474,35 @@ body.home-site :focus-visible {
   }
 
   /* ── Hero: зміна рядків-напрямків ─────────────────────────────── */
+  /* Висота під найдовший рядок: 4 рядки на вузьких екранах, 2 — на ширших */
   .h-typing {
     position: relative;
-    height: 4.4em;
+    height: 5.6em;
     overflow: hidden;
   }
-  @media (min-width: 640px) {
+  @media (min-width: 480px) {
     .h-typing {
-      height: 3.2em;
+      height: 4.2em;
+    }
+  }
+  @media (min-width: 1024px) {
+    .h-typing {
+      height: 2.8em;
     }
   }
   .h-typing .hero-typing-item {
     position: absolute;
     inset-inline: 0;
+    top: 50%;
     opacity: 0;
-    translate: 0 0.8em;
+    translate: 0 -20%;
     transition:
       opacity 0.45s ease,
       translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .h-typing .hero-typing-item.is-active {
     opacity: 1;
-    translate: 0 0;
+    translate: 0 -50%;
   }
 
   .h-rise {
@@ -606,6 +621,7 @@ body.home-site :focus-visible {
 
 /* Пагінація-крапки від carousel.ts */
 body.home-site [data-scroll-pagination] button {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 9999px;
@@ -613,6 +629,12 @@ body.home-site [data-scroll-pagination] button {
   transition:
     width 0.3s,
     background-color 0.3s;
+}
+/* Зона натиску 32×32 при візуальній крапці 8px */
+body.home-site [data-scroll-pagination] button::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
 }
 body.home-site [data-scroll-pagination] button.is-active {
   width: 24px;
@@ -718,9 +740,9 @@ body.home-site #notification-time {
   .h-rise,
   .h-float,
   .h-bar,
-
   .h-reveal,
   .h-typing .hero-typing-item {
+    animation: none !important;
     transition: none !important;
   }
   .h-reveal.is-pending {
@@ -729,9 +751,19 @@ body.home-site #notification-time {
   }
 }
 
-/* Поля форми в світлій картці запису — білі з рамкою, щоб не зливалися з лавандовим фоном */
+/* Поля форми в картці запису — білі з рамкою, щоб не зливалися з фоном */
 body.home-site #register .input-label .input-field,
 body.home-site #register .input-label .iti__tel-input {
   background: #fff;
   border-color: #e6e8f0;
+}
+
+/* Липка CTA і кнопка месенджерів на мобільних ховаються, поки видно кнопку hero (index.astro) */
+.h-fixed-reveal {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.h-fixed-reveal.is-concealed {
+  opacity: 0;
+  transform: translateY(1rem);
+  pointer-events: none;
 }

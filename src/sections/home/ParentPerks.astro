@@ -30,18 +30,18 @@ const tones = ["h-tone-violet", "h-tone-teal", "h-tone-amber", "h-tone-green", "
     }
   </div>
 
-  <!-- Гарантія + робот -->
-  <div class="h-pearl h-reveal relative mt-4 flex flex-col gap-4 overflow-hidden rounded-[var(--h-radius)] p-7 shadow-[var(--h-shadow-soft)] sm:p-10 md:min-h-[260px] md:justify-center">
-    <div class="pointer-events-none absolute top-1/2 -right-16 hidden size-[300px] -translate-y-1/2 rounded-full bg-[#fff2da] md:block" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute top-[12%] right-[210px] hidden size-[110px] rounded-full bg-[#eeecff] md:block" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute top-1/2 right-[90px] hidden size-[92px] -translate-y-1/2 items-center justify-center rounded-[28px] bg-white text-[var(--h-good)] shadow-[var(--h-shadow-lift)] md:flex" aria-hidden="true"><Icon name="lucide:shield-check" class="size-11" /></div>
+  <!-- Гарантія -->
+  <div class="h-pearl h-reveal relative mt-4 flex flex-col gap-4 overflow-hidden rounded-[var(--h-radius)] p-7 shadow-[var(--h-shadow-soft)] sm:p-10 md:min-h-[260px] md:justify-center lg:pr-[360px]">
+    <div class="pointer-events-none absolute top-1/2 -right-16 hidden size-[300px] -translate-y-1/2 rounded-full bg-[#fff2da] lg:block" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute top-[12%] right-[210px] hidden size-[110px] rounded-full bg-[#eeecff] lg:block" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute top-1/2 right-[90px] hidden size-[92px] -translate-y-1/2 items-center justify-center rounded-[28px] bg-white text-[var(--h-good)] shadow-[var(--h-shadow-lift)] lg:flex" aria-hidden="true"><Icon name="lucide:shield-check" class="size-11" /></div>
     <span class="h-chip h-chip-dark relative self-start">
       <Icon name="lucide:shield-check" class="size-4" />
       {guarantee.badge}
     </span>
     <h3 class="relative text-3xl font-extrabold tracking-tight md:text-4xl">{guarantee.title}</h3>
     <p class="relative max-w-[600px] text-lg leading-relaxed text-[var(--h-soft)]">{guarantee.text}</p>
-    <button type="button" data-modal-open class="h-btn h-btn-primary relative mt-2 self-start">
+    <button type="button" data-modal-open class="h-btn h-btn-primary relative mt-2 h-auto min-h-12 w-full py-3 text-center whitespace-normal sm:w-auto sm:self-start sm:whitespace-nowrap">
       {content.hero.ctaPrimary} <span aria-hidden="true">→</span>
     </button>
   </div>

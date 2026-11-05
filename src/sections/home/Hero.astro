@@ -33,10 +33,10 @@ const features = content.registerSection.features;
     <!-- Ліва колонка -->
     <div class="flex min-w-0 flex-col gap-4">
       <!-- Банер-привітання -->
-      <div class="h-pearl relative grid overflow-hidden rounded-[var(--h-radius)] shadow-[var(--h-shadow-soft)] grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <div class="h-pearl relative grid overflow-hidden rounded-[var(--h-radius)] shadow-[var(--h-shadow-soft)] grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)] xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)]">
         <div class="relative z-10 flex min-w-0 flex-col gap-5 p-6 sm:p-10">
           <p class="h-eyebrow h-rise" style="--d: 0s"><span>7–17</span>{section.kicker}</p>
-          <h1 class="h-rise text-[32px] leading-[1.1] font-black tracking-[-0.025em] sm:text-[40px] xl:text-[44px]" style="--d: 0.08s">
+          <h1 class="h-rise text-[30px] leading-[1.1] font-black tracking-[-0.025em] min-[400px]:text-[34px] sm:text-[40px] xl:text-[42px]" style="--d: 0.08s">
             {titleBefore}{hasMark && <span class="h-grad-text">{markWord}</span>}{titleAfter}
           </h1>
           <p class="h-rise max-w-[460px] text-[17px] leading-relaxed font-semibold text-[var(--h-soft)]" style="--d: 0.16s">{section.subtitle}</p>
@@ -50,7 +50,7 @@ const features = content.registerSection.features;
         </div>
 
         <!-- Колаж: обкладинки курсів + «віджети» гри -->
-        <div class="relative hidden min-h-[360px] md:block" aria-hidden="true">
+        <div class="relative hidden min-h-[360px] md:block lg:hidden xl:block" aria-hidden="true">
           {
             collage.map((c, i) => (
               <div
@@ -80,10 +80,10 @@ const features = content.registerSection.features;
       <!-- Напрямки -->
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between px-1">
-          <h2 class="text-lg font-extrabold">Обери свій напрямок</h2>
-          <a href="#courses" class="flex items-center gap-1 text-sm font-extrabold text-[var(--h-accent)] hover:underline">Усі курси <Icon name="lucide:chevron-right" class="size-4" /></a>
+          <h2 class="text-lg font-extrabold">Оберіть напрямок</h2>
+          <a href="#courses" class="flex min-h-11 items-center gap-1 px-1 text-sm font-extrabold text-[var(--h-accent)] hover:underline">Усі курси <Icon name="lucide:chevron-right" class="size-4" /></a>
         </div>
-        <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        <div class="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 xl:grid-cols-4">
           {
             skills.map((s, i) => (
               <a href={s.href} class:list={["h-skill h-lift h-rise group flex items-center gap-3 rounded-[20px] p-3.5 sm:p-4", s.tone]} style={`--d: ${0.3 + i * 0.06}s`}>
@@ -92,7 +92,7 @@ const features = content.registerSection.features;
                 </span>
                 <span class="flex min-w-0 flex-1 flex-col">
                   <span class="font-extrabold">{s.title}</span>
-                  <span class="truncate text-xs font-semibold text-[var(--h-muted)]">{s.age}</span>
+                  <span class="text-xs font-bold text-[var(--h-soft)]">{s.age}</span>
                 </span>
                 <Icon name="lucide:arrow-right" class="hidden size-4 shrink-0 text-[var(--h-muted)] transition-transform group-hover:translate-x-0.5 sm:block" />
               </a>
@@ -106,7 +106,7 @@ const features = content.registerSection.features;
     <aside class="flex flex-col gap-4">
       <!-- «Ціль дня» → безоплатний пробний урок -->
       <div class="h-card h-rise flex flex-col gap-5 p-6" style="--d: 0.2s">
-        <h2 class="text-lg font-extrabold">Твій перший крок</h2>
+        <h2 class="text-lg font-extrabold">Перший крок</h2>
         <div class="flex items-center gap-5">
           <div class="h-ring size-[112px] shrink-0" style="--p: 100" aria-hidden="true">
             <div class="flex flex-col items-center leading-none">
@@ -117,12 +117,12 @@ const features = content.registerSection.features;
           </div>
           <div class="flex flex-col gap-1">
             <span class="font-extrabold">Пробний урок</span>
-            <span class="text-sm leading-snug font-semibold text-[var(--h-muted)]">безоплатно, онлайн, з викладачем</span>
+            <span class="text-sm leading-snug font-semibold text-[var(--h-muted)]">безоплатно, онлайн, із викладачем</span>
           </div>
         </div>
         <ul class="flex flex-col gap-2">
           {
-            features.map((f) => (
+            features.slice(1).map((f) => (
               <li class="flex items-center gap-2.5 text-sm font-bold text-[var(--h-soft)]">
                 <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--h-accent)] text-white"><Icon name="lucide:check" class="size-3.5" /></span>
                 {f}
@@ -153,10 +153,10 @@ const features = content.registerSection.features;
   </div>
 
   <!-- Напрямки, що змінюються, + теги -->
-  <div class="h-card mt-4 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+  <div class="h-card mt-4 flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
     <div class="flex min-w-0 flex-1 items-center gap-3">
       <span class="h-skill-icon h-tone-violet flex size-10 shrink-0 items-center justify-center rounded-2xl" aria-hidden="true"><Icon name="lucide:sparkles" class="size-5" /></span>
-      <div id="hero-typing" aria-live="polite" class="h-typing min-w-0 flex-1 text-[15px] leading-snug font-extrabold sm:text-base">
+      <div id="hero-typing" class="h-typing min-w-0 flex-1 text-[15px] leading-snug font-extrabold sm:text-base">
         {section.typingTexts.map((text, index) => <div class:list={["hero-typing-item", index === 0 && "is-active"]}>{text}</div>)}
       </div>
     </div>
@@ -170,7 +170,7 @@ const features = content.registerSection.features;
     <strong class="text-[var(--h-text)]">{content.brand.primary}{content.brand.accent}</strong>
     {section.seoLead}
     <b class="text-[var(--h-text)]">{section.seoMinecraft}</b>,{section.seoMiddle}
-    <b class="text-[var(--h-text)]">{section.seoRoblox}</b>, {section.seoTail}
+    <b class="text-[var(--h-text)]">{section.seoRoblox}</b> {section.seoTail}
     <b class="text-[var(--h-text)]">{section.seoWebsites}</b>.
   </p>
 </section>

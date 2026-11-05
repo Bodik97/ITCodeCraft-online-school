@@ -50,19 +50,6 @@ const organizationJsonLd = JSON.stringify({
   email: data.footerSection.email,
   telephone: data.footerSection.linkPhone.replace("tel:", ""),
   sameAs: data.footerSection.socialLinks.map((link) => link.url),
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: String(data.reviewsSection.reviews.length),
-    bestRating: "5",
-    worstRating: "1",
-  },
-  review: data.reviewsSection.reviews.slice(0, 5).map((r) => ({
-    "@type": "Review",
-    author: { "@type": "Person", name: r.name },
-    reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-    reviewBody: r.text,
-  })),
 });
 
 ---
@@ -184,15 +171,25 @@ const organizationJsonLd = JSON.stringify({
         }
       });
 
-      mobileMenu?.querySelectorAll("a").forEach((node) => {
+      mobileMenu?.querySelectorAll("a, [data-modal-open]").forEach((node) => {
         node.addEventListener("click", closeMobileMenu);
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileMenu?.classList.contains("is-open")) {
+          closeMobileMenu();
+          mobileToggle?.focus();
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (!mobileMenu?.classList.contains("is-open")) return;
+        if (!header?.contains(e.target)) closeMobileMenu();
       });
 
       const typingItems = Array.from(
         document.querySelectorAll(".hero-typing-item"),
       );
       let typingIndex = 0;
-      if (typingItems.length > 1) {
+      if (typingItems.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         window.setInterval(() => {
           typingItems[typingIndex]?.classList.remove("is-active");
           typingIndex = (typingIndex + 1) % typingItems.length;
@@ -201,77 +198,14 @@ const organizationJsonLd = JSON.stringify({
       }
     </script>
 
-    <script is:inline>
-      (typeof requestIdleCallback === "function"
-        ? requestIdleCallback
-        : (fn) => setTimeout(fn, 200))(function () {
-        const dynamicDataNode = document.getElementById("dynamic-data");
-        const dynamicData = dynamicDataNode
-          ? JSON.parse(dynamicDataNode.textContent || "{}")
-          : {};
-
-        const notifications = Array.isArray(dynamicData.notifications)
-          ? dynamicData.notifications
-          : [];
-        const notificationRoot = document.getElementById("signup-notification");
-        const notificationAvatar = document.getElementById(
-          "notification-avatar",
-        );
-        const notificationName = document.getElementById("notification-name");
-        const notificationAction = document.getElementById(
-          "notification-action",
-        );
-        const notificationTime = document.getElementById("notification-time");
-
-        const renderNotification = (item) => {
-          if (
-            !notificationRoot ||
-            !notificationName ||
-            !notificationAction ||
-            !notificationTime ||
-            !notificationAvatar
-          )
-            return;
-          notificationName.textContent = item.name || "";
-          notificationAction.textContent = item.action || "";
-          notificationTime.innerHTML = `<span aria-hidden="true">✔</span> ${item.time || ""}`;
-          notificationAvatar.textContent = (
-            item.name ||
-            dynamicData.defaultAvatar ||
-            ""
-          ).charAt(0);
-          notificationRoot.classList.remove("is-hidden");
-          notificationRoot.classList.add("is-visible");
-        };
-
-        const hideNotification = () => {
-          if (!notificationRoot) return;
-          notificationRoot.classList.remove("is-visible");
-          notificationRoot.classList.add("is-hidden");
-        };
-
-        const runNotifications = () => {
-          if (!notifications.length) return;
-          const item =
-            notifications[Math.floor(Math.random() * notifications.length)];
-          renderNotification(item);
-          window.setTimeout(() => {
-            hideNotification();
-            const nextDelay =
-              Math.floor(Math.random() * (5 * 60 * 1000 - 60 * 1000 + 1)) +
-              60 * 1000;
-            window.setTimeout(runNotifications, nextDelay);
-          }, 4000);
-        };
-
-        window.setTimeout(runNotifications, 5000);
-      });
-    </script>
 
 
     <script>
       import { initCarousels } from "@/scripts/carousel";
+      import { trapFocus } from "@/lib/dialogFocus";
       initCarousels();
+      // для інлайн-скриптів модалок (Modal.astro)
+      (window as unknown as { itccTrapFocus: typeof trapFocus }).itccTrapFocus = trapFocus;
     </script>
 
     <script is:inline>

@@ -5,7 +5,7 @@
   inert
 >
   <div
-    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-red-400/35 px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
+    class="modal-panel relative max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100dvw-2rem)] scale-[0.97] translate-y-4 overflow-y-auto rounded-2xl border border-transparent px-5 py-8 pt-11 opacity-0 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] sm:max-w-[calc(100dvw-15rem)] sm:px-6 sm:py-10 md:max-w-[560px]"
     role="dialog"
     aria-modal="true"
     aria-labelledby="error-modal-title"
@@ -34,27 +34,27 @@
     </button>
 
     <div
-      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 shadow-[0_0_25px_rgba(239,68,68,0.3)]"
+      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#ffece8]"
     >
-      <span class="text-3xl text-red-400" aria-hidden="true">!</span>
+      <span class="text-3xl font-black text-[#d6402a]" aria-hidden="true">!</span>
     </div>
 
     <h2
       id="error-modal-title"
-      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_14px_rgba(239,68,68,0.28)]"
+      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-extrabold leading-[1.15] text-ink"
     >
-      Помилка відправлення
+      Заявку не надіслано
     </h2>
     <p
-      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-slate-100 sm:text-base"
+      class="mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-[#444a6b] sm:text-base"
     >
-      Не вдалося надіслати форму. Спробуйте ще раз через кілька хвилин або
-      звʼяжіться з нами за телефоном.
+      Спробуйте ще раз за кілька хвилин або зателефонуйте нам:
+      <a href="tel:+380930610913" class="font-bold whitespace-nowrap text-[#6457f0] underline">+38 (093) 061-09-13</a>.
     </p>
 
     <button
       type="button"
-      class="mt-6 w-full rounded-xl bg-red-500 px-4 py-3 text-sm font-bold text-white transition hover:scale-[1.02] hover:bg-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+      class="mt-6 w-full rounded-full bg-[#d6402a] px-4 py-3.5 text-sm font-bold text-white transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#d6402a]/25"
       data-modal-error-close
     >
       Зрозуміло
@@ -64,6 +64,7 @@
 
 <script>
   import { onFormError } from "@/lib/formEvents";
+  import { trapFocus, type FocusTrap } from "@/lib/dialogFocus";
 
   const errorModalRoot = document.querySelector("[data-modal-error-root]");
   const errorModalContent = document.querySelector("[data-modal-error-content]");
@@ -72,6 +73,7 @@
   );
 
   if (errorModalRoot instanceof HTMLElement) {
+    let trap: FocusTrap | null = null;
     const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
     const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
 
@@ -89,10 +91,15 @@
         errorModalRoot.classList.remove("opacity-0");
         errorModalContent?.classList.remove(...hiddenContentClasses);
       });
+      document.body.style.overflow = "hidden";
+      if (errorModalContent instanceof HTMLElement) trap = trapFocus(errorModalContent);
     };
 
     const closeModal = () => {
       if (isModalClosed()) return;
+      trap?.release();
+      trap = null;
+      if (!document.querySelector("[data-modal-root][aria-hidden='false']")) document.body.style.overflow = "";
       errorModalRoot.classList.add(...hiddenModalClasses);
       errorModalContent?.classList.add(...hiddenContentClasses);
       errorModalRoot.setAttribute("aria-hidden", "true");

@@ -1,6 +1,7 @@
 ---
 import content from "@/data/main.json";
 import UseForm from "@/components/main/form/UseForm.astro";
+import { Icon } from "astro-icon/components";
 
 const section = content.registerSection;
 ---
@@ -15,16 +16,10 @@ const section = content.registerSection;
       <p class="relative text-lg leading-relaxed text-[var(--h-soft)]">{section.description}</p>
       <ul class="relative flex flex-col gap-2">
         {
-          section.features.map((feature, i) => (
+          section.features.map((feature) => (
             <li class="h-glass flex items-center gap-3 self-start rounded-full py-1.5 pr-5 pl-1.5 font-bold">
-              <span
-                class:list={[
-                  "flex size-8 items-center justify-center rounded-full text-sm",
-                  i === 0 ? "h-solid" : "bg-[var(--h-surface-2)]",
-                ]}
-                aria-hidden="true"
-              >
-                ✔
+              <span class="h-solid flex size-8 items-center justify-center rounded-full" aria-hidden="true">
+                <Icon name="lucide:check" class="size-4" />
               </span>
               {feature}
             </li>
@@ -39,6 +34,10 @@ const section = content.registerSection;
         <p class="text-[15px] text-[var(--h-muted)]">{section.forms.inputsFields.ctaSecondary}</p>
       </div>
       <UseForm formId="register-section" />
+      <p class="text-xs leading-relaxed text-[var(--h-muted)]">
+        Натискаючи кнопку, ви погоджуєтеся з
+        <a href={content.footerSection.privacyPolicy.href} target="_blank" rel="noopener noreferrer" class="font-bold text-[var(--h-accent)] underline">політикою конфіденційності</a>.
+      </p>
     </div>
   </div>
 </section>

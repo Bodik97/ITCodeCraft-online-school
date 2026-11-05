@@ -1,0 +1,36 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.trialSection;
+const tones = ["h-tone-violet", "h-tone-teal", "h-tone-green", "h-tone-amber"];
+---
+
+<section id="trial" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="trial-title">
+  <SectionHead id="trial-title" eyebrow={section.eyebrow} prefix={section.titlePrefix} highlight={section.titleHighlight} lead={section.lead} />
+
+  <ol class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      section.steps.map((step, i) => (
+        <li class="h-card h-reveal relative flex flex-col gap-4 p-6" style={`--d: ${i * 0.08}s`}>
+          <div class="flex items-center justify-between">
+            <span class:list={["h-skill-icon flex size-12 items-center justify-center rounded-2xl", tones[i % tones.length]]} aria-hidden="true">
+              <Icon name={step.icon} class="size-6" />
+            </span>
+            <span class="font-mono text-sm font-bold text-[var(--h-muted)]">Крок {i + 1}</span>
+          </div>
+          <h3 class="text-lg font-extrabold">{step.title}</h3>
+          <p class="text-[15px] leading-relaxed text-[var(--h-muted)]">{step.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="mt-6 flex flex-col items-center gap-2 text-center">
+    <button type="button" data-modal-open class="h-btn h-btn-primary h-auto min-h-14 px-7 py-3 text-base whitespace-normal">
+      {content.hero.ctaPrimary} <Icon name="lucide:arrow-right" class="size-5" />
+    </button>
+    <p class="text-sm font-bold text-[var(--h-muted)]">{content.hero.ctaNote}</p>
+  </div>
+</section>
