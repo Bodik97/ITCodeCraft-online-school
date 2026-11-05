@@ -1,92 +1,84 @@
 /*
-  Єдина тема головної ITCodeCraft — «neon e-learning»:
-  глибокий індиго-фіолетовий фон, скляні картки, неонове бірюзове кільце з плаваючими іконками,
-  фіолетово-рожеві градієнтні pill-кнопки. Окремі секції — світлі лавандові «смуги» (.h-light).
+  Єдина тема головної ITCodeCraft — «friendly learning app»:
+  світлий нейтральний фон, білі картки з великим радіусом і м'якими тінями, банер-привітання,
+  кольорові плитки напрямків, кільце прогресу й геймифікація (серія, XP).
+  Палітра гендерно-нейтральна: основний — фіолетово-індиговий, акценти рівномірно розподілені
+  між бурштиновим, зеленим, кораловим і бірюзовим (без переваги рожевого чи блакитного).
   Темної/світлої теми й перемикача немає — одна тема на всю сторінку.
   Усе обмежено body.home-site, щоб не зачепити лендинги Roblox / Minecraft / Scratch / Frontend.
 */
 
 body.home-site {
-  /* Спільні токени для форми, модалки й тостів — вони лишаються світлими (білі панелі) */
-  --color-paper: #f4f1ff;
+  /* Спільні токени для форми, модалки й тостів */
+  --color-paper: #f4f5fa;
   --color-card: #ffffff;
-  --color-ink: #1b1350;
-  --color-muted: #6b6599;
-  --color-line: #e6e0fb;
+  --color-ink: #1d2140;
+  --color-muted: #6e7491;
+  --color-line: #e6e8f0;
   --color-surface: #ffffff;
-  --color-surface-light: #f4f1ff;
-  --color-slate-200: #d9d1f7;
-  --color-slate-300: #3d3577;
-  --color-slate-400: #3d3577;
-  --color-slate-500: #6b6599;
-  --color-slate-600: #3d3577;
-  --color-slate-700: #d9d1f7;
-  --color-gray-500: #6b6599;
-  --color-gray-600: #6b6599;
+  --color-surface-light: #f4f5fa;
+  --color-slate-200: #dfe2ec;
+  --color-slate-300: #444a6b;
+  --color-slate-400: #444a6b;
+  --color-slate-500: #6e7491;
+  --color-slate-600: #444a6b;
+  --color-slate-700: #dfe2ec;
+  --color-gray-500: #6e7491;
+  --color-gray-600: #6e7491;
 
-  /* Токени сторінки (темні) */
-  --h-bg: #130b3b;
-  --h-bg-2: #1b1152;
-  --h-surface: rgb(255 255 255 / 0.045);
-  --h-surface-2: rgb(255 255 255 / 0.07);
-  --h-line: rgb(255 255 255 / 0.1);
-  --h-line-2: rgb(255 255 255 / 0.22);
-  --h-text: #f5f2ff;
-  --h-soft: #d6d0ff;
-  --h-muted: #a8a1dc;
-  --h-faint: #7f78b8;
-  --h-accent: #3ee6ff;
-  --h-violet: #7b4dff;
-  --h-magenta: #d84ff5;
-  --h-pink: #ff5fa8;
-  --h-good: #3ee6a0;
-  --h-amber: #ffb53b;
+  /* Токени сторінки */
+  --h-bg: #f4f5fa;
+  --h-bg-2: #eceef6;
+  --h-surface: #ffffff;
+  --h-surface-2: #f2f3f8;
+  --h-line: #e6e8f0;
+  --h-line-2: #d6d9e6;
+  --h-text: #1d2140;
+  --h-soft: #444a6b;
+  --h-muted: #6e7491;
+  --h-faint: #9aa0b8;
+  --h-accent: #6457f0;
+  --h-accent-soft: #eeecff;
+  --h-good: #1fa463;
+  --h-amber: #e08a00;
+  --h-coral: #ef5f48;
+  --h-teal: #10a39a;
   --h-radius: 26px;
-  --h-shadow-soft: 0 20px 50px -24px rgb(4 0 30 / 0.7);
-  --h-shadow-lift: 0 28px 60px -22px rgb(4 0 30 / 0.85), 0 0 0 1px rgb(255 255 255 / 0.14);
-  --h-shadow-pill: 0 10px 28px -10px rgb(123 77 255 / 0.65);
-  --h-grad: linear-gradient(100deg, #7b4dff 0%, #b04ff2 55%, #e04fd8 100%);
-  --h-iris: linear-gradient(90deg, #3ee6ff 0%, #7b4dff 55%, #e04fd8 100%);
-  --h-glow-cyan: 0 0 18px rgb(62 230 255 / 0.65), 0 0 46px rgb(62 230 255 / 0.35);
+  --h-shadow-soft: 0 1px 2px rgb(29 33 64 / 0.04), 0 14px 34px -18px rgb(29 33 64 / 0.18);
+  --h-shadow-lift: 0 2px 4px rgb(29 33 64 / 0.05), 0 24px 48px -20px rgb(29 33 64 / 0.26);
+  --h-shadow-pill: 0 10px 22px -10px rgb(100 87 240 / 0.6);
+  --h-grad: linear-gradient(100deg, #6457f0 0%, #7a6cf5 100%);
+  --h-iris: linear-gradient(90deg, #6457f0 0%, #10a39a 100%);
+  --h-glow-cyan: none;
 
-  /* Акцент спільної форми (components/main/form) — фіолетова кнопка */
-  --form-accent: #7b4dff;
-  --form-accent-rgb: 123, 77, 255;
+  /* Акцент спільної форми (components/main/form) */
+  --form-accent: #6457f0;
+  --form-accent-rgb: 100, 87, 240;
   --form-accent-fg: #ffffff;
 
   background-color: var(--h-bg);
   background-image:
-    radial-gradient(48rem 34rem at 8% -6%, rgb(123 77 255 / 0.38), transparent 62%),
-    radial-gradient(40rem 30rem at 100% 12%, rgb(216 79 245 / 0.22), transparent 60%),
-    radial-gradient(46rem 36rem at 50% 108%, rgb(62 230 255 / 0.12), transparent 62%);
+    radial-gradient(42rem 28rem at 0% 0%, rgb(100 87 240 / 0.08), transparent 60%),
+    radial-gradient(40rem 28rem at 100% 0%, rgb(255 190 80 / 0.1), transparent 60%);
   background-attachment: scroll;
   color: var(--h-text);
-  font-family: "Manrope", system-ui, sans-serif;
-  font-feature-settings: "ss01", "cv11";
+  font-family: "Nunito", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  color-scheme: dark;
-  scrollbar-color: #3a2f86 transparent;
+  color-scheme: light;
+  scrollbar-color: #cdd1e0 transparent;
 }
 
-/* Світла лавандова «смуга» — перевизначає токени для вкладених секцій */
+/* Окрема смуга (курси) — легка біла підкладка */
 .h-light {
-  --h-surface: #ffffff;
-  --h-surface-2: #efeaff;
-  --h-line: #e3dcfb;
-  --h-line-2: #cfc4f6;
-  --h-text: #1b1350;
-  --h-soft: #3d3577;
-  --h-muted: #6b6599;
-  --h-faint: #9a94c4;
-  --h-accent: #6a3df5;
-  --h-good: #13915e;
-  --h-amber: #b5650d;
-  --h-shadow-soft: 0 1px 2px rgb(40 20 120 / 0.05), 0 16px 36px -18px rgb(60 30 160 / 0.28);
-  --h-shadow-lift: 0 2px 4px rgb(40 20 120 / 0.05), 0 26px 50px -20px rgb(60 30 160 / 0.38);
-  --h-shadow-pill: 0 8px 22px -10px rgb(123 77 255 / 0.55);
-  color: var(--h-text);
-  background: linear-gradient(180deg, #f6f3ff 0%, #ece6ff 100%);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0));
 }
+
+/* Кольорові «плитки» напрямків, як Listening / Speaking / Vocabulary / Grammar на референсі */
+.h-tone-violet { --tone: #6457f0; --tone-bg: #eeecff; }
+.h-tone-coral { --tone: #ef5f48; --tone-bg: #ffece8; }
+.h-tone-green { --tone: #1fa463; --tone-bg: #e4f6ec; }
+.h-tone-amber { --tone: #e08a00; --tone-bg: #fff2da; }
+.h-tone-teal { --tone: #10a39a; --tone-bg: #def5f3; }
 
 body.home-site h1,
 body.home-site h2,
@@ -94,12 +86,12 @@ body.home-site h3,
 body.home-site h4,
 body.home-site h5,
 body.home-site h6 {
-  font-family: "Manrope", system-ui, sans-serif;
-  letter-spacing: -0.025em;
+  font-family: "Nunito", system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 body.home-site ::selection {
-  background: rgb(62 230 255 / 0.28);
+  background: rgb(100 87 240 / 0.18);
 }
 
 body.home-site :focus-visible {
@@ -134,16 +126,12 @@ body.home-site :focus-visible {
     background: var(--h-surface-2);
   }
   .h-glass {
-    background: rgb(22 13 70 / 0.72);
-    border: 1px solid rgb(255 255 255 / 0.14);
-    color: #f5f2ff;
+    background: rgb(255 255 255 / 0.92);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    color: var(--h-text);
+    box-shadow: 0 10px 26px -14px rgb(29 33 64 / 0.3);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-  }
-  .h-light .h-glass {
-    background: rgb(255 255 255 / 0.9);
-    border-color: #e3dcfb;
-    color: #1b1350;
   }
   .h-solid {
     background-image: var(--h-grad);
@@ -190,20 +178,17 @@ body.home-site :focus-visible {
     box-shadow: var(--h-shadow-pill);
   }
   .h-btn-primary:hover {
-    filter: brightness(1.08);
-    box-shadow: 0 16px 36px -10px rgb(176 79 242 / 0.8);
+    filter: brightness(1.06);
+    box-shadow: 0 16px 32px -10px rgb(100 87 240 / 0.7);
   }
   .h-btn-ghost {
-    background: transparent;
-    color: var(--h-text);
-    border: 1.5px solid var(--h-line-2);
+    background: #fff;
+    color: var(--h-accent);
+    border: 1.5px solid var(--h-line);
   }
   .h-btn-ghost:hover {
     border-color: var(--h-accent);
-    box-shadow: 0 0 0 4px rgb(62 230 255 / 0.12);
-  }
-  .h-light .h-btn-ghost:hover {
-    box-shadow: 0 0 0 4px rgb(106 61 245 / 0.12);
+    box-shadow: 0 0 0 4px rgb(100 87 240 / 0.12);
   }
 
   .h-chip {
@@ -234,9 +219,10 @@ body.home-site :focus-visible {
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 9999px;
-    border: 1px solid var(--h-line-2);
+    border: 1px solid var(--h-line);
     background: var(--h-surface);
     color: var(--h-text);
+    box-shadow: 0 6px 16px -10px rgb(29 33 64 / 0.25);
     transition:
       color 0.2s,
       border-color 0.2s,
@@ -245,7 +231,8 @@ body.home-site :focus-visible {
   }
   .h-icon-btn:hover:not(:disabled) {
     border-color: var(--h-accent);
-    box-shadow: 0 0 0 4px rgb(62 230 255 / 0.12);
+    color: var(--h-accent);
+    box-shadow: 0 0 0 4px rgb(100 87 240 / 0.12);
   }
   .h-icon-btn:disabled {
     opacity: 0.35;
@@ -255,14 +242,14 @@ body.home-site :focus-visible {
   .h-iris {
     background-image: var(--h-iris);
   }
-  /* Темна градієнтна панель з неоновими плямами (банери гарантії / запису) */
+  /* Світлий «повітряний» банер (як hero-банер референсу), нейтральні відтінки */
   .h-pearl {
     background:
-      radial-gradient(60% 80% at 100% 0%, rgb(216 79 245 / 0.45), transparent 60%),
-      radial-gradient(50% 70% at 0% 100%, rgb(62 230 255 / 0.22), transparent 60%),
-      linear-gradient(135deg, #2a1578 0%, #1b1152 100%);
-    border: 1px solid rgb(255 255 255 / 0.1);
-    color: #f5f2ff;
+      radial-gradient(55% 70% at 100% 0%, rgb(255 205 120 / 0.45), transparent 60%),
+      radial-gradient(55% 80% at 0% 100%, rgb(110 220 190 / 0.35), transparent 60%),
+      linear-gradient(135deg, #ecebff 0%, #f4f2ff 50%, #fff6e8 100%);
+    border: 1px solid #fff;
+    color: var(--h-text);
   }
 
   .h-eyebrow {
@@ -271,8 +258,9 @@ body.home-site :focus-visible {
     gap: 0.5rem;
     align-self: flex-start;
     border-radius: 9999px;
-    background: var(--h-surface-2);
+    background: #fff;
     border: 1px solid var(--h-line);
+    box-shadow: 0 6px 16px -12px rgb(29 33 64 / 0.3);
     padding: 0.375rem 1rem 0.375rem 0.375rem;
     font-size: 0.8125rem;
     line-height: 1.3;
@@ -297,7 +285,6 @@ body.home-site :focus-visible {
     height: 8px;
     border-radius: 9999px;
     background: var(--h-accent);
-    box-shadow: 0 0 10px var(--h-accent);
   }
 
   .h-title {
@@ -322,22 +309,16 @@ body.home-site :focus-visible {
     content: "";
     position: absolute;
     inset-inline: -0.08em;
-    bottom: 0.04em;
-    height: 0.16em;
+    bottom: 0.06em;
+    height: 0.3em;
     border-radius: 9999px;
-    background-image: var(--h-iris);
-    box-shadow: 0 0 14px rgb(62 230 255 / 0.55);
+    background: #ffd27a;
+    opacity: 0.75;
     z-index: -1;
-  }
-  .h-light .h-mark::after {
-    box-shadow: none;
   }
   /* Градієнтний текст */
   .h-grad-text {
-    background-image: linear-gradient(90deg, #7fefff 0%, #b79bff 50%, #f08bff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--h-accent);
   }
 
   /* ── Шапка ─────────────────────────────────────────────────────── */
@@ -355,8 +336,9 @@ body.home-site :focus-visible {
     height: 4rem;
     padding-inline: 1.25rem 0.5rem;
     border-radius: 9999px;
-    border: 1px solid rgb(255 255 255 / 0.1);
-    background: rgb(22 13 70 / 0.6);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    background: rgb(255 255 255 / 0.82);
+    box-shadow: 0 10px 30px -20px rgb(29 33 64 / 0.35);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     transition:
@@ -370,8 +352,8 @@ body.home-site :focus-visible {
     }
   }
   .h-header.is-scrolled .h-header-bar {
-    background: rgb(22 13 70 / 0.88);
-    box-shadow: 0 18px 40px -20px rgb(4 0 30 / 0.9);
+    background: rgb(255 255 255 / 0.95);
+    box-shadow: 0 18px 40px -22px rgb(29 33 64 / 0.45);
   }
   .h-nav {
     display: none;
@@ -403,13 +385,12 @@ body.home-site :focus-visible {
     height: 2px;
     border-radius: 2px;
     background: var(--h-accent);
-    box-shadow: 0 0 8px var(--h-accent);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
   }
   .h-nav a:hover {
-    color: #fff;
+    color: var(--h-accent);
   }
   .h-nav a:hover::after {
     transform: scaleX(1);
@@ -463,58 +444,25 @@ body.home-site :focus-visible {
     color: var(--h-faint);
   }
 
-  /* ── Hero: неонове кільце з плаваючими іконками ─────────────────── */
-  .h-orbit {
+  /* ── Hero: кільце прогресу (як «Your Daily Goal») ───────────── */
+  .h-ring {
+    --p: 70;
     position: relative;
-    aspect-ratio: 1;
-    width: 100%;
-    max-width: 520px;
-    margin-inline: auto;
-  }
-  .h-orbit-ring {
-    position: absolute;
-    inset: 9%;
+    display: grid;
+    place-items: center;
     border-radius: 9999px;
-    border: 3px solid rgb(62 230 255 / 0.9);
-    box-shadow:
-      var(--h-glow-cyan),
-      inset 0 0 26px rgb(62 230 255 / 0.4);
+    background:
+      radial-gradient(closest-side, #fff calc(100% - 12px), transparent calc(100% - 11px)),
+      conic-gradient(var(--h-accent) calc(var(--p) * 1%), var(--h-accent-soft) 0);
   }
-  .h-orbit-ring--inner {
-    inset: 19%;
-    border-width: 1.5px;
-    border-color: rgb(62 230 255 / 0.45);
-    box-shadow: inset 0 0 40px rgb(123 77 255 / 0.35);
-    background: radial-gradient(circle, rgb(123 77 255 / 0.35), transparent 70%);
+  /* Плитки напрямків */
+  .h-skill {
+    background: var(--tone-bg);
+    color: var(--h-text);
   }
-  .h-orbit-ring--dashed {
-    inset: 2%;
-    border: 1px dashed rgb(255 255 255 / 0.18);
-    box-shadow: none;
-  }
-  /* «Комета» на кільці */
-  .h-orbit-spin {
-    position: absolute;
-    inset: 9%;
-    border-radius: 9999px;
-    background: conic-gradient(from 0deg, transparent 0 78%, rgb(62 230 255 / 0.95) 92%, transparent 100%);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
-    animation: h-spin 6s linear infinite;
-    filter: drop-shadow(0 0 8px rgb(62 230 255 / 0.9));
-  }
-  .h-orbit-chip {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 16px;
+  .h-skill-icon {
+    background: var(--tone);
     color: #fff;
-    box-shadow: 0 14px 30px -12px rgb(4 0 30 / 0.8);
-  }
-  .h-orbit-dot {
-    position: absolute;
-    border-radius: 9999px;
   }
 
   /* ── Hero: зміна рядків-напрямків ─────────────────────────────── */
@@ -609,7 +557,7 @@ body.home-site :focus-visible {
     display: none;
   }
   .h-faq[open] {
-    border-color: rgb(62 230 255 / 0.35);
+    border-color: rgb(100 87 240 / 0.35);
   }
   .h-faq[open] .h-faq-icon {
     rotate: 45deg;
@@ -684,95 +632,93 @@ body.home-site #register form {
 
 /* ── Спільні компоненти (модалка, форма, тост) — світлі панелі з фіолетовим акцентом ── */
 body.home-site .modal-overlay {
-  background: rgb(10 4 40 / 0.6);
+  background: rgb(29 33 64 / 0.45);
 }
 body.home-site .modal-panel {
   background-image: none;
   background-color: #fff;
   border-color: transparent;
   border-radius: 26px;
-  box-shadow: 0 30px 80px -20px rgb(10 4 40 / 0.7);
+  box-shadow: 0 30px 80px -20px rgb(29 33 64 / 0.45);
 }
 body.home-site .modal-title {
   text-shadow: none;
   font-weight: 800;
 }
 body.home-site .modal-close-btn {
-  background: #f1ecff;
+  background: #f2f3f8;
   border-color: transparent;
 }
 body.home-site .modal-close-btn:hover {
-  color: #6a3df5;
-  border-color: #cfc4f6;
+  color: #6457f0;
+  border-color: #d6d9e6;
 }
 /* Назва курсу в заголовку модалки (Modal.astro за замовчуванням додає text-neon-cyan) */
 body.home-site .modal-title .text-neon-cyan,
 body.home-site .modal-title [class*="text-neon"] {
-  color: #6a3df5;
+  color: #6457f0;
   text-shadow: none;
 }
 
 body.home-site .input-label .input-field,
 body.home-site .input-label .iti__tel-input {
-  background: #f4f1ff;
+  background: #f2f3f8;
   border-color: transparent;
   border-radius: 16px;
 }
 body.home-site .input-label .input-field:focus,
 body.home-site .input-label .iti--lead-form:focus-within input.iti__tel-input {
   background: #fff;
-  border-color: #cfc4f6;
-  box-shadow: 0 0 0 4px rgb(123 77 255 / 0.14);
+  border-color: #d6d9e6;
+  box-shadow: 0 0 0 4px rgb(100 87 240 / 0.14);
 }
 body.home-site .input-label .input-field.input-field--error {
   border-color: #e53935;
 }
 body.home-site .input-label:has(.input-field:focus) .input-label-title {
-  color: #6a3df5;
+  color: #6457f0;
 }
 body.home-site .form-btn {
   border-radius: 9999px;
-  background-image: linear-gradient(100deg, #7b4dff 0%, #b04ff2 55%, #e04fd8 100%);
-  box-shadow: 0 10px 28px -10px rgb(123 77 255 / 0.65);
+  background-image: linear-gradient(100deg, #6457f0 0%, #7a6cf5 100%);
+  box-shadow: 0 10px 24px -10px rgb(100 87 240 / 0.6);
 }
 body.home-site .checkbox-label [type="checkbox"]:checked + .checkbox {
-  border-color: #7b4dff;
-  background: #7b4dff;
+  border-color: #6457f0;
+  background: #6457f0;
 }
 body.home-site .checkbox-label:hover .checkbox {
-  border-color: #7b4dff;
-  background: #f1ecff;
+  border-color: #6457f0;
+  background: #eeecff;
 }
 
 body.home-site .notification-toast > div {
   border-left: 0;
   border-radius: 9999px;
-  background: rgb(27 17 82 / 0.92);
-  border: 1px solid rgb(255 255 255 / 0.14);
-  box-shadow: 0 20px 44px -18px rgb(4 0 30 / 0.9);
+  background: rgb(255 255 255 / 0.96);
+  border: 1px solid #e6e8f0;
+  box-shadow: 0 20px 44px -18px rgb(29 33 64 / 0.35);
   padding: 0.5rem 1.25rem 0.5rem 0.5rem;
 }
 body.home-site #notification-avatar {
-  background-image: linear-gradient(100deg, #7b4dff, #e04fd8);
+  background: #6457f0;
   color: #fff;
 }
 body.home-site #notification-name {
-  color: #f5f2ff;
+  color: #1d2140;
 }
 body.home-site #notification-action {
-  color: #a8a1dc;
+  color: #6e7491;
 }
 body.home-site #notification-time {
-  color: #3ee6ff;
+  color: #1fa463;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .h-rise,
   .h-float,
   .h-bar,
-  .h-orbit-spin {
-    animation: none !important;
-  }
+
   .h-reveal,
   .h-typing .hero-typing-item {
     transition: none !important;
@@ -787,5 +733,5 @@ body.home-site #notification-time {
 body.home-site #register .input-label .input-field,
 body.home-site #register .input-label .iti__tel-input {
   background: #fff;
-  border-color: #e3dcfb;
+  border-color: #e6e8f0;
 }

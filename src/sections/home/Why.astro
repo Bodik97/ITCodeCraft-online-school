@@ -4,6 +4,7 @@ import { Icon } from "astro-icon/components";
 import SectionHead from "./SectionHead.astro";
 
 const section = content.whySection;
+const tones = ["h-tone-violet", "h-tone-green", "h-tone-amber", "h-tone-coral"];
 ---
 
 <section id="why" class="h-wrap scroll-mt-28 pt-20 md:pt-28" aria-labelledby="why-title">
@@ -15,10 +16,7 @@ const section = content.whySection;
         <article class="h-card h-lift h-reveal flex flex-col gap-5 p-6" style={`--d: ${i * 0.08}s`}>
           <div class="flex items-center justify-between">
             <span
-              class:list={[
-                "flex size-12 items-center justify-center rounded-full",
-                i === 0 ? "h-iris text-white" : "bg-[var(--h-surface-2)] text-[var(--h-soft)]",
-              ]}
+              class:list={["h-skill-icon flex size-12 items-center justify-center rounded-2xl", tones[i % tones.length]]}
               aria-hidden="true"
             >
               <Icon name={benefit.icon} class="size-6" />
