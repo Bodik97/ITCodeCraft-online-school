@@ -42,7 +42,7 @@ const success = data.registerSection.success;
     <div
       class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#e4f6ec]"
     >
-      <span class="text-3xl text-[#1fa463]" aria-hidden="true">✔</span>
+      <span class="text-3xl text-[#13804a]" aria-hidden="true">✔</span>
     </div>
 
     <h2
@@ -83,24 +83,12 @@ const success = data.registerSection.success;
     let trap: FocusTrap | null = null;
     const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
     const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
-    const body = document.body;
-    const docEl = document.documentElement;
-    const lockClass = "is-scroll-locked";
-    let scrollLockedBySuccessModal = false;
 
     const isModalClosed = () =>
       hiddenModalClasses.every((className) =>
         successModalRoot.classList.contains(className),
       );
 
-    let cachedScrollbarWidth = -1;
-    const getScrollbarWidth = () => {
-      if (cachedScrollbarWidth < 0) {
-        cachedScrollbarWidth =
-          window.innerWidth - document.documentElement.clientWidth;
-      }
-      return cachedScrollbarWidth;
-    };
 
 
 

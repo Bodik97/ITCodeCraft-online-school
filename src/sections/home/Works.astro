@@ -53,6 +53,13 @@ const section = content.worksSection;
     }
   </div>
 
+  <div class="mt-6 flex flex-col items-center gap-2 text-center">
+    <p class="text-lg font-extrabold">Хочете, щоб ваша дитина теж створила свій проєкт?</p>
+    <button type="button" data-modal-open class="h-btn h-btn-ghost h-auto min-h-12 px-6 py-3 whitespace-normal">
+      {content.hero.ctaPrimary} <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
   <!-- Модалка з відео YouTube -->
   <div
     id="work-video-modal"
@@ -89,6 +96,7 @@ const section = content.worksSection;
     const closeBtn = document.getElementById("work-video-close");
     if (!modal || !iframe) return;
     let lastFocus = null;
+    let focusTrap = null; // src/lib/dialogFocus.ts через window.itccTrapFocus (HomeLayout)
 
     const openModal = (youtubeId) => {
       if (!youtubeId) return;
@@ -96,13 +104,23 @@ const section = content.worksSection;
       iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
-      closeBtn?.focus();
+      const dialog = modal.firstElementChild;
+      if (typeof window.itccTrapFocus === "function" && dialog instanceof HTMLElement) {
+        focusTrap = window.itccTrapFocus(dialog, closeBtn);
+      } else {
+        closeBtn?.focus();
+      }
     };
     const closeModal = () => {
       iframe.src = "";
       modal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-      if (lastFocus instanceof HTMLElement) lastFocus.focus();
+      if (focusTrap) {
+        focusTrap.release();
+        focusTrap = null;
+      } else if (lastFocus instanceof HTMLElement) {
+        lastFocus.focus();
+      }
     };
 
     closeBtn?.addEventListener("click", closeModal);

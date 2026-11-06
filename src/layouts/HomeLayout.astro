@@ -3,18 +3,9 @@ import "@/styles/global.css";
 import data from "@/data/main.json";
 import Analytics from "@/components/shared/Analytics.astro";
 import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
-type NotificationItem = {
-  name: string;
-  action: string;
-  time: string;
-};
-
 type RuntimeData = {
-  notifications: NotificationItem[];
-  onlineCount: number;
   openMenuLabel: string;
   closeMenuLabel: string;
-  defaultAvatar: string;
 };
 
 interface Props {

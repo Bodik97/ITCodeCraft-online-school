@@ -767,3 +767,8 @@ body.home-site #register .input-label .iti__tel-input {
   transform: translateY(1rem);
   pointer-events: none;
 }
+
+/* Опис у вікні успіху: спільне правило .modal-success-desc (світлий сірий для темної теми) перебиває утиліту */
+body.home-site .modal-success-desc {
+  color: #444a6b;
+}

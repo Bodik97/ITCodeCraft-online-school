@@ -157,7 +157,7 @@ const modal = data.modal;
         modalContent?.classList.remove(...hiddenContentClasses);
       });
       if (modalContent instanceof HTMLElement && typeof window.itccTrapFocus === "function") {
-        focusTrap = window.itccTrapFocus(modalContent, modalContent.querySelector("input:not([type=hidden])"));
+        focusTrap = window.itccTrapFocus(modalContent, modalContent.querySelector('input[name="name"]'));
       }
     };
 

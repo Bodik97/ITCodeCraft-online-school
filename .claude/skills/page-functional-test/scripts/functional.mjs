@@ -260,7 +260,8 @@ try {
     await page.waitForTimeout(500);
     const overlap = await page.evaluate(() => {
       const f = document.querySelector("footer");
-      const last = f?.querySelector("p, a:last-child");
+      // останній текстовий рядок футера (копірайт / юридичні посилання), а не перший абзац
+      const last = f ? [...f.querySelectorAll("p, a")].filter((e) => e.getBoundingClientRect().height > 0).pop() : null;
       if (!last) return false;
       const r = last.getBoundingClientRect();
       const hit = document.elementFromPoint(r.left + 4, r.top + r.height / 2);

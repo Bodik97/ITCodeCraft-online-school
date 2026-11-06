@@ -316,6 +316,20 @@ const rootStyle = `--fab-accent:${accent};--fab-accent-rgb:${accentRgb};--fab-ac
         0 0 44px rgba(var(--fab-accent-rgb), 0.2);
     }
   }
+
+  /* Повага до налаштування «зменшити рух»: без пульсації й «дихання» кнопки */
+  @media (prefers-reduced-motion: reduce) {
+    .messenger-fab-pulse,
+    .messenger-fab-pulse-ring,
+    .messenger-fab-toggle {
+      animation: none !important;
+    }
+    .messenger-fab-panel,
+    .messenger-fab-icon-chat,
+    .messenger-fab-icon-close {
+      transition: none !important;
+    }
+  }
 </style>
 
 <script is:inline>
