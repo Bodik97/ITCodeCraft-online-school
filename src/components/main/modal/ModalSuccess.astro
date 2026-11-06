@@ -40,35 +40,36 @@ const success = data.registerSection.success;
     </button>
 
     <div
-      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-lime-300 bg-lime-50 shadow-[0_0_25px_rgba(163,230,53,0.2)]"
+      class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#e4f6ec]"
     >
-      <span class="text-3xl text-lime-600" aria-hidden="true">✔</span>
+      <span class="text-3xl text-[#13804a]" aria-hidden="true">✔</span>
     </div>
 
     <h2
       id="success-modal-title"
-      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-bold leading-[1.15] text-ink [text-shadow:0_0_10px_rgba(56,189,248,0.2)]"
+      class="mb-4 text-center text-[clamp(1.3rem,1.1rem+1vw,2rem)] font-extrabold leading-[1.15] text-ink"
     >
       {success.title}
     </h2>
     <p
-      class="modal-success-desc mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed sm:text-base"
+      class="modal-success-desc mx-auto mb-5 max-w-[46ch] text-center text-sm leading-relaxed text-[#444a6b] sm:text-base"
     >
       {success.description}
     </p>
 
     <button
       type="button"
-      class="mt-6 w-full rounded-xl bg-neon-cyan px-4 py-3 text-sm font-bold text-white shadow-neon-cyan transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/40"
+      class="mt-6 w-full rounded-full bg-[#6457f0] px-4 py-3.5 text-sm font-bold text-white shadow-[0_10px_22px_-10px_rgb(100_87_240/0.6)] transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#6457f0]/25"
       data-modal-success-close
     >
-      Супер, дякую!
+      Чудово!
     </button>
   </div>
 </div>
 
 <script>
   import { onFormSuccess } from "@/lib/formEvents";
+  import { trapFocus, type FocusTrap } from "@/lib/dialogFocus";
 
   const successModalRoot = document.querySelector("[data-modal-success-root]");
   const successModalContent = document.querySelector(
@@ -79,26 +80,15 @@ const success = data.registerSection.success;
   );
 
   if (successModalRoot instanceof HTMLElement) {
+    let trap: FocusTrap | null = null;
     const hiddenModalClasses = ["opacity-0", "pointer-events-none"];
     const hiddenContentClasses = ["opacity-0", "translate-y-4", "scale-[0.97]"];
-    const body = document.body;
-    const docEl = document.documentElement;
-    const lockClass = "is-scroll-locked";
-    let scrollLockedBySuccessModal = false;
 
     const isModalClosed = () =>
       hiddenModalClasses.every((className) =>
         successModalRoot.classList.contains(className),
       );
 
-    let cachedScrollbarWidth = -1;
-    const getScrollbarWidth = () => {
-      if (cachedScrollbarWidth < 0) {
-        cachedScrollbarWidth =
-          window.innerWidth - document.documentElement.clientWidth;
-      }
-      return cachedScrollbarWidth;
-    };
 
 
 
@@ -111,12 +101,17 @@ const success = data.registerSection.success;
         successModalRoot.classList.remove("opacity-0");
         successModalContent?.classList.remove(...hiddenContentClasses);
       });
+      document.body.style.overflow = "hidden";
+      if (successModalContent instanceof HTMLElement) trap = trapFocus(successModalContent);
       // lockScroll();
     };
 
     const closeModal = () => {
       if (isModalClosed()) return;
       delete window.productName;
+      trap?.release();
+      trap = null;
+      if (!document.querySelector("[data-modal-root][aria-hidden='false']")) document.body.style.overflow = "";
       successModalRoot.classList.add(...hiddenModalClasses);
       successModalContent?.classList.add(...hiddenContentClasses);
       successModalRoot.setAttribute("aria-hidden", "true");

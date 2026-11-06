@@ -1,0 +1,255 @@
+---
+import "@/styles/global.css";
+import data from "@/data/main.json";
+import Analytics from "@/components/shared/Analytics.astro";
+import AnalyticsNoscript from "@/components/shared/AnalyticsNoscript.astro";
+type RuntimeData = {
+  openMenuLabel: string;
+  closeMenuLabel: string;
+};
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  runtimeData: RuntimeData;
+}
+
+const { lang, title, description, runtimeData, canonicalUrl } =
+  Astro.props as Props;
+
+const site = Astro.site;
+if (!site) {
+  throw new Error("Set `site` in astro.config for canonical and sitemap URLs.");
+}
+
+const hrefBase = canonicalUrl ?? new URL(Astro.url.pathname, site).href;
+const canonical = new URL(hrefBase, site).href.replace(/\/+$/, "") + "/";
+const ogImageFb = new URL("/assets/OGP/fb.png", canonical).href;
+const ogImageTw = new URL("/assets/OGP/tw.png", canonical).href;
+const adsSendTo = import.meta.env.PUBLIC_GOOGLE_ADS_SEND_TO_MAIN?.trim();
+
+const organizationJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: `${data.brand.primary}${data.brand.accent}`,
+  url: canonical,
+  description,
+  inLanguage: lang,
+  logo: new URL("/assets/favicon/android-chrome-512x512.png", canonical).href,
+  email: data.footerSection.email,
+  telephone: data.footerSection.linkPhone.replace("tel:", ""),
+  sameAs: data.footerSection.socialLinks.map((link) => link.url),
+});
+
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageFb} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="uk_UA" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageTw} />
+
+    <script is:inline type="application/ld+json" set:html={organizationJsonLd} />
+
+    <link rel="icon" href="/assets/home/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+
+    <Analytics pageGroup="main" adsSendTo={adsSendTo} />
+  </head>
+  <body class="home-site min-h-screen">
+    <AnalyticsNoscript />
+    <slot />
+
+    <script
+      is:inline
+      id="dynamic-data"
+      type="application/json"
+      set:html={JSON.stringify(runtimeData)}
+    />
+
+    <script is:inline>
+      const dynamicDataNode = document.getElementById("dynamic-data");
+      const dynamicData = dynamicDataNode
+        ? JSON.parse(dynamicDataNode.textContent || "{}")
+        : {};
+
+      const header = document.getElementById("site-header");
+      const headerScrolledClass = "is-scrolled";
+      const syncHeader = () => {
+        if (!header) return;
+        if (window.scrollY > 50) {
+          header.classList.add(headerScrolledClass);
+        } else {
+          header.classList.remove(headerScrolledClass);
+        }
+      };
+      syncHeader();
+      window.addEventListener("scroll", syncHeader, { passive: true });
+
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileToggle = document.getElementById("mobile-menu-toggle");
+      const menuIconOpen = document.getElementById("menu-icon-open");
+      const menuIconClose = document.getElementById("menu-icon-close");
+      const closeMobileMenu = () => {
+        if (!mobileMenu || !mobileToggle) return;
+        mobileMenu.classList.remove("is-open");
+        mobileToggle.setAttribute("aria-expanded", "false");
+        mobileToggle.setAttribute(
+          "aria-label",
+          dynamicData.openMenuLabel || "",
+        );
+        menuIconOpen?.classList.remove("hidden");
+        menuIconClose?.classList.add("hidden");
+      };
+
+      mobileToggle?.addEventListener("click", () => {
+        if (!mobileMenu || !mobileToggle) return;
+        const shouldOpen = !mobileMenu.classList.contains("is-open");
+        if (shouldOpen) {
+          mobileMenu.classList.add("is-open");
+          mobileToggle.setAttribute("aria-expanded", "true");
+          mobileToggle.setAttribute(
+            "aria-label",
+            dynamicData.closeMenuLabel || "",
+          );
+          menuIconOpen?.classList.add("hidden");
+          menuIconClose?.classList.remove("hidden");
+        } else {
+          closeMobileMenu();
+        }
+      });
+
+      mobileMenu?.querySelectorAll("a, [data-modal-open]").forEach((node) => {
+        node.addEventListener("click", closeMobileMenu);
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileMenu?.classList.contains("is-open")) {
+          closeMobileMenu();
+          mobileToggle?.focus();
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (!mobileMenu?.classList.contains("is-open")) return;
+        if (!header?.contains(e.target)) closeMobileMenu();
+      });
+
+      const typingItems = Array.from(
+        document.querySelectorAll(".hero-typing-item"),
+      );
+      let typingIndex = 0;
+      if (typingItems.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        window.setInterval(() => {
+          typingItems[typingIndex]?.classList.remove("is-active");
+          typingIndex = (typingIndex + 1) % typingItems.length;
+          typingItems[typingIndex]?.classList.add("is-active");
+        }, 2800);
+      }
+    </script>
+
+
+
+    <script>
+      import { initCarousels } from "@/scripts/carousel";
+      import { trapFocus } from "@/lib/dialogFocus";
+      initCarousels();
+      // для інлайн-скриптів модалок (Modal.astro)
+      (window as unknown as { itccTrapFocus: typeof trapFocus }).itccTrapFocus = trapFocus;
+    </script>
+
+    <script is:inline>
+      // Поява блоків при прокрутці: без JS і для reduced-motion усе видно одразу
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(".h-reveal"));
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.remove("is-pending");
+              io.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
+        );
+        nodes.forEach(function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+          el.classList.add("is-pending");
+          io.observe(el);
+        });
+
+        // Лічильники в hero: 500+ / 50+ / 4.9
+        var counters = document.querySelectorAll("[data-counter]");
+        var cio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            cio.unobserve(el);
+            var raw = el.getAttribute("data-counter") || "";
+            var m = raw.match(/^([\d.]+)(.*)$/);
+            if (!m) return;
+            var target = parseFloat(m[1]);
+            var decimals = (m[1].split(".")[1] || "").length;
+            var suffix = m[2];
+            var start = performance.now();
+            var dur = 1200;
+            var tick = function (now) {
+              var p = Math.min(1, (now - start) / dur);
+              var eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = (target * eased).toFixed(decimals) + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          });
+        });
+        counters.forEach(function (el) {
+          cio.observe(el);
+        });
+      })();
+    </script>
+
+  </body>
+</html>

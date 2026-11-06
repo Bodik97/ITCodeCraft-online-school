@@ -1,0 +1,176 @@
+---
+import content from "@/data/main.json";
+import { Icon } from "astro-icon/components";
+
+const section = content.hero;
+const courses = content.coursesSection.courses;
+
+// Ключове слово заголовка — кольором бренду
+const markWord = "творцями";
+const hasMark = section.liveBadgePrefix.includes(markWord);
+const [titleBefore, titleAfter] = hasMark ? section.liveBadgePrefix.split(markWord) : [section.liveBadgePrefix, ""];
+
+// Плитки напрямків (як «Build Your Skills» на референсі) — лише ті, що мають власні лендинги
+const skillMeta: Record<string, { href: string; icon: string; tone: string }> = {
+  Minecraft: { href: "/minecraft", icon: "lucide:pickaxe", tone: "h-tone-green" },
+  Roblox: { href: "/roblox", icon: "lucide:gamepad-2", tone: "h-tone-coral" },
+  Frontend: { href: "/frontend", icon: "lucide:code-xml", tone: "h-tone-violet" },
+  Scratch: { href: "/scratch", icon: "lucide:puzzle", tone: "h-tone-amber" },
+};
+const skills = courses
+  .filter((c) => skillMeta[c.title])
+  .map((c) => ({ ...skillMeta[c.title], title: c.title, age: c.age }));
+
+// Колаж обкладинок курсів у банері
+const collage = ["minecraft", "roblox", "frontend"].map((img) => courses.find((c) => c.image === img)).filter(Boolean);
+
+const statTones = ["h-tone-violet", "h-tone-green", "h-tone-amber"];
+const features = content.registerSection.features;
+---
+
+<section id="hero" class="h-wrap pt-5 md:pt-7">
+  <div class="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <!-- Ліва колонка -->
+    <div class="flex min-w-0 flex-col gap-4">
+      <!-- Банер-привітання -->
+      <div class="h-pearl relative grid overflow-hidden rounded-[var(--h-radius)] shadow-[var(--h-shadow-soft)] grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)] xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)]">
+        <div class="relative z-10 flex min-w-0 flex-col gap-5 p-6 sm:p-10">
+          <p class="h-eyebrow h-rise" style="--d: 0s"><span>7–17</span>{section.kicker}</p>
+          <h1 class="h-rise text-[30px] leading-[1.1] font-black tracking-[-0.025em] min-[400px]:text-[34px] sm:text-[40px] xl:text-[42px]" style="--d: 0.08s">
+            {titleBefore}{hasMark && <span class="h-grad-text">{markWord}</span>}{titleAfter}
+          </h1>
+          <p class="h-rise max-w-[460px] text-[17px] leading-relaxed font-semibold text-[var(--h-soft)]" style="--d: 0.16s">{section.subtitle}</p>
+          <div class="h-rise flex flex-col gap-3 sm:flex-row sm:items-center" style="--d: 0.24s">
+            <button type="button" data-modal-open class="h-btn h-btn-primary group h-auto min-h-14 px-6 py-3 text-center text-base whitespace-normal sm:px-7 sm:whitespace-nowrap">
+              {section.ctaPrimary}
+              <Icon name="lucide:arrow-right" class="size-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
+          </div>
+          <p class="h-rise text-sm font-bold text-[var(--h-muted)]" style="--d: 0.3s">{section.ctaNote}</p>
+        </div>
+
+        <!-- Колаж: обкладинки курсів + «віджети» гри -->
+        <div class="relative hidden min-h-[360px] md:block lg:hidden xl:block" aria-hidden="true">
+          {
+            collage.map((c, i) => (
+              <div
+                class:list={[
+                  "h-float absolute overflow-hidden rounded-[20px] border-4 border-white bg-white shadow-[var(--h-shadow-lift)]",
+                  i === 0 && "top-[14%] left-[2%] w-[62%] -rotate-6",
+                  i === 1 && "top-[34%] right-[2%] w-[58%] rotate-[5deg]",
+                  i === 2 && "bottom-[14%] left-[8%] w-[54%] -rotate-2",
+                ]}
+                style={`--d: ${-i * 1.6}s`}
+              >
+                <img src={`/assets/courses/${c!.image}.webp`} alt="" width="277" height="180" decoding="async" class="aspect-[277/180] w-full object-cover" />
+              </div>
+            ))
+          }
+          <div class="h-glass h-rise absolute top-5 right-5 flex items-center gap-2 rounded-full py-1.5 pr-4 pl-1.5" style="--d: 0.5s">
+            <span class="flex size-8 items-center justify-center rounded-full bg-[#fff2da] text-[var(--h-amber)]"><Icon name="lucide:flame" class="size-4.5" /></span>
+            <span class="text-sm font-extrabold">7 днів поспіль</span>
+          </div>
+          <div class="h-glass h-rise absolute bottom-5 right-5 flex items-center gap-2 rounded-full py-1.5 pr-4 pl-1.5" style="--d: 0.65s">
+            <span class="flex size-8 items-center justify-center rounded-full bg-[#def5f3] text-[var(--h-teal)]"><Icon name="lucide:gem" class="size-4.5" /></span>
+            <span class="text-sm font-extrabold">+100 XP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Напрямки -->
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between px-1">
+          <h2 class="text-lg font-extrabold">Оберіть напрямок</h2>
+          <a href="#courses" class="flex min-h-11 items-center gap-1 px-1 text-sm font-extrabold text-[var(--h-accent)] hover:underline">Усі курси <Icon name="lucide:chevron-right" class="size-4" /></a>
+        </div>
+        <div class="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 xl:grid-cols-4">
+          {
+            skills.map((s, i) => (
+              <a href={s.href} class:list={["h-skill h-lift h-rise group flex items-center gap-3 rounded-[20px] p-3.5 sm:p-4", s.tone]} style={`--d: ${0.3 + i * 0.06}s`}>
+                <span class="h-skill-icon flex size-11 shrink-0 items-center justify-center rounded-2xl sm:size-12">
+                  <Icon name={s.icon} class="size-5.5" />
+                </span>
+                <span class="flex min-w-0 flex-1 flex-col">
+                  <span class="font-extrabold">{s.title}</span>
+                  <span class="text-xs font-bold text-[var(--h-soft)]">{s.age}</span>
+                </span>
+                <Icon name="lucide:arrow-right" class="hidden size-4 shrink-0 text-[var(--h-muted)] transition-transform group-hover:translate-x-0.5 sm:block" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Права колонка -->
+    <aside class="flex flex-col gap-4">
+      <!-- «Ціль дня» → безоплатний пробний урок -->
+      <div class="h-card h-rise flex flex-col gap-5 p-6" style="--d: 0.2s">
+        <h2 class="text-lg font-extrabold">Перший крок</h2>
+        <div class="flex items-center gap-5">
+          <div class="h-ring size-[112px] shrink-0" style="--p: 100" aria-hidden="true">
+            <div class="flex flex-col items-center leading-none">
+              <Icon name="lucide:target" class="mb-1 size-5 text-[var(--h-accent)]" />
+              <span class="text-2xl font-black">45</span>
+              <span class="text-xs font-bold text-[var(--h-muted)]">хвилин</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="font-extrabold">Пробний урок</span>
+            <span class="text-sm leading-snug font-semibold text-[var(--h-muted)]">безоплатно, онлайн, із викладачем</span>
+          </div>
+        </div>
+        <ul class="flex flex-col gap-2">
+          {
+            features.slice(1).map((f) => (
+              <li class="flex items-center gap-2.5 text-sm font-bold text-[var(--h-soft)]">
+                <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--h-accent)] text-white"><Icon name="lucide:check" class="size-3.5" /></span>
+                {f}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Цифри школи — у стилі «лідерборду» -->
+      <div class="h-card h-rise flex flex-col gap-2 p-4" style="--d: 0.3s">
+        <h2 class="px-2 pt-1 pb-1 text-lg font-extrabold">ITCodeCraft у цифрах</h2>
+        <dl class="flex flex-col gap-1.5">
+          {
+            section.stats.map((stat, i) => (
+              <div class:list={["flex items-center gap-3 rounded-2xl px-2 py-2", i === 0 && "bg-[var(--h-surface-2)]"]}>
+                <span class:list={["h-skill-icon flex size-10 shrink-0 items-center justify-center rounded-full", statTones[i % statTones.length]]} aria-hidden="true">
+                  <Icon name={stat.icon} class="size-5" />
+                </span>
+                <dt class="flex-1 text-sm font-bold text-[var(--h-soft)]">{stat.label}</dt>
+                <dd class="text-xl font-black" data-counter={stat.value}>{stat.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Напрямки, що змінюються, + теги -->
+  <div class="h-card mt-4 flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex min-w-0 flex-1 items-center gap-3">
+      <span class="h-skill-icon h-tone-violet flex size-10 shrink-0 items-center justify-center rounded-2xl" aria-hidden="true"><Icon name="lucide:sparkles" class="size-5" /></span>
+      <div id="hero-typing" class="h-typing min-w-0 flex-1 text-[15px] leading-snug font-extrabold sm:text-base">
+        {section.typingTexts.map((text, index) => <div class:list={["hero-typing-item", index === 0 && "is-active"]}>{text}</div>)}
+      </div>
+    </div>
+    <div class="flex shrink-0 flex-wrap gap-2">
+      {section.options.map((option) => <span class="h-chip">{option}</span>)}
+    </div>
+  </div>
+
+  <!-- SEO-абзац -->
+  <p class="mx-auto mt-10 max-w-3xl text-center text-lg leading-relaxed font-semibold text-[var(--h-muted)]">
+    <strong class="text-[var(--h-text)]">{content.brand.primary}{content.brand.accent}</strong>
+    {section.seoLead}
+    <b class="text-[var(--h-text)]">{section.seoMinecraft}</b>,{section.seoMiddle}
+    <b class="text-[var(--h-text)]">{section.seoRoblox}</b> {section.seoTail}
+    <b class="text-[var(--h-text)]">{section.seoWebsites}</b>.
+  </p>
+</section>

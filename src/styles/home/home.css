@@ -1,0 +1,774 @@
+/*
+  Єдина тема головної ITCodeCraft — «friendly learning app»:
+  світлий нейтральний фон, білі картки з великим радіусом і м'якими тінями, банер-привітання,
+  кольорові плитки напрямків, кільце прогресу й геймифікація (серія, XP).
+  Палітра гендерно-нейтральна: основний — фіолетово-індиговий, акценти рівномірно розподілені
+  між бурштиновим, зеленим, кораловим і бірюзовим (без переваги рожевого чи блакитного).
+  Темної/світлої теми й перемикача немає — одна тема на всю сторінку.
+  Усе обмежено body.home-site, щоб не зачепити лендинги Roblox / Minecraft / Scratch / Frontend.
+*/
+
+body.home-site {
+  /* Спільні токени для форми, модалки й тостів */
+  --color-paper: #f4f5fa;
+  --color-card: #ffffff;
+  --color-ink: #1d2140;
+  --color-muted: #6e7491;
+  --color-line: #e6e8f0;
+  --color-surface: #ffffff;
+  --color-surface-light: #f4f5fa;
+  --color-slate-200: #dfe2ec;
+  --color-slate-300: #444a6b;
+  --color-slate-400: #444a6b;
+  --color-slate-500: #6e7491;
+  --color-slate-600: #444a6b;
+  --color-slate-700: #dfe2ec;
+  --color-gray-500: #6e7491;
+  --color-gray-600: #6e7491;
+
+  /* Токени сторінки */
+  --h-bg: #f4f5fa;
+  --h-bg-2: #eceef6;
+  --h-surface: #ffffff;
+  --h-surface-2: #f2f3f8;
+  --h-line: #e6e8f0;
+  --h-line-2: #d6d9e6;
+  --h-text: #1d2140;
+  --h-soft: #444a6b;
+  --h-muted: #6e7491;
+  --h-faint: #767c98; /* ≥4.5:1 на білому — WCAG AA для дрібного тексту */
+  --h-accent: #6457f0;
+  --h-accent-soft: #eeecff;
+  --h-good: #1fa463;
+  --h-amber: #e08a00;
+  --h-coral: #ef5f48;
+  --h-teal: #10a39a;
+  --h-radius: 26px;
+  --h-shadow-soft: 0 1px 2px rgb(29 33 64 / 0.04), 0 14px 34px -18px rgb(29 33 64 / 0.18);
+  --h-shadow-lift: 0 2px 4px rgb(29 33 64 / 0.05), 0 24px 48px -20px rgb(29 33 64 / 0.26);
+  --h-shadow-pill: 0 10px 22px -10px rgb(100 87 240 / 0.6);
+  --h-grad: linear-gradient(100deg, #6457f0 0%, #7a6cf5 100%);
+  --h-iris: linear-gradient(90deg, #6457f0 0%, #10a39a 100%);
+  --h-glow-cyan: none;
+
+  /* Акцент спільної форми (components/main/form) */
+  --form-accent: #6457f0;
+  --form-accent-rgb: 100, 87, 240;
+  --form-accent-fg: #ffffff;
+
+  background-color: var(--h-bg);
+  background-image:
+    radial-gradient(42rem 28rem at 0% 0%, rgb(100 87 240 / 0.08), transparent 60%),
+    radial-gradient(40rem 28rem at 100% 0%, rgb(255 190 80 / 0.1), transparent 60%);
+  background-attachment: scroll;
+  color: var(--h-text);
+  font-family: "Nunito", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+  scrollbar-color: #cdd1e0 transparent;
+}
+
+/* Окрема смуга (курси) — легка біла підкладка */
+.h-light {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0));
+}
+
+/* Кольорові «плитки» напрямків, як Listening / Speaking / Vocabulary / Grammar на референсі */
+.h-tone-violet { --tone: #6457f0; --tone-bg: #eeecff; }
+.h-tone-coral { --tone: #ef5f48; --tone-bg: #ffece8; }
+.h-tone-green { --tone: #1fa463; --tone-bg: #e4f6ec; }
+.h-tone-amber { --tone: #e08a00; --tone-bg: #fff2da; }
+.h-tone-teal { --tone: #10a39a; --tone-bg: #def5f3; }
+
+body.home-site h1,
+body.home-site h2,
+body.home-site h3,
+body.home-site h4,
+body.home-site h5,
+body.home-site h6 {
+  font-family: "Nunito", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+body.home-site ::selection {
+  background: rgb(100 87 240 / 0.18);
+}
+
+body.home-site :focus-visible {
+  outline: 2px solid var(--h-accent);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* ── Базові «цеглинки» ─────────────────────────────────────────── */
+  .h-wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 768px) {
+    .h-wrap {
+      padding-inline: 24px;
+    }
+  }
+
+  .h-card {
+    border-radius: var(--h-radius);
+    background: var(--h-surface);
+    border: 1px solid var(--h-line);
+    box-shadow: var(--h-shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .h-tile {
+    border-radius: 18px;
+    background: var(--h-surface-2);
+  }
+  .h-glass {
+    background: rgb(255 255 255 / 0.92);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    color: var(--h-text);
+    box-shadow: 0 10px 26px -14px rgb(29 33 64 / 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .h-solid {
+    background-image: var(--h-grad);
+    color: #fff;
+  }
+  .h-lift {
+    transition:
+      translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .h-lift:hover {
+    translate: 0 -4px;
+    box-shadow: var(--h-shadow-lift);
+    border-color: var(--h-line-2);
+  }
+
+  .h-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding-inline: 1.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      translate 0.2s ease,
+      box-shadow 0.25s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      filter 0.2s ease;
+  }
+  .h-btn:hover {
+    translate: 0 -2px;
+  }
+  .h-btn:active {
+    translate: 0 0;
+  }
+  .h-btn-primary {
+    background-image: var(--h-grad);
+    color: #fff;
+    box-shadow: var(--h-shadow-pill);
+  }
+  .h-btn-primary:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 16px 32px -10px rgb(100 87 240 / 0.7);
+  }
+  .h-btn-ghost {
+    background: #fff;
+    color: var(--h-accent);
+    border: 1.5px solid var(--h-line);
+  }
+  .h-btn-ghost:hover {
+    border-color: var(--h-accent);
+    box-shadow: 0 0 0 4px rgb(100 87 240 / 0.12);
+  }
+
+  .h-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2.25rem;
+    padding-inline: 0.875rem;
+    border-radius: 9999px;
+    background: var(--h-surface-2);
+    border: 1px solid var(--h-line);
+    color: var(--h-soft);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .h-chip-dark {
+    background-image: var(--h-grad);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .h-icon-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--h-line);
+    background: var(--h-surface);
+    color: var(--h-text);
+    box-shadow: 0 6px 16px -10px rgb(29 33 64 / 0.25);
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s,
+      opacity 0.2s;
+  }
+  .h-icon-btn:hover:not(:disabled) {
+    border-color: var(--h-accent);
+    color: var(--h-accent);
+    box-shadow: 0 0 0 4px rgb(100 87 240 / 0.12);
+  }
+  .h-icon-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .h-iris {
+    background-image: var(--h-iris);
+  }
+  /* Світлий «повітряний» банер (як hero-банер референсу), нейтральні відтінки */
+  .h-pearl {
+    background:
+      radial-gradient(55% 70% at 100% 0%, rgb(255 205 120 / 0.45), transparent 60%),
+      radial-gradient(55% 80% at 0% 100%, rgb(110 220 190 / 0.35), transparent 60%),
+      linear-gradient(135deg, #ecebff 0%, #f4f2ff 50%, #fff6e8 100%);
+    border: 1px solid #fff;
+    color: var(--h-text);
+  }
+
+  .h-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    border-radius: 9999px;
+    background: #fff;
+    border: 1px solid var(--h-line);
+    box-shadow: 0 6px 16px -12px rgb(29 33 64 / 0.3);
+    padding: 0.375rem 1rem 0.375rem 0.375rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    font-weight: 700;
+    color: var(--h-soft);
+  }
+  .h-eyebrow > span:first-child {
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-radius: 9999px;
+    background-image: var(--h-grad);
+    color: #fff;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+  }
+  @media (max-width: 400px) {
+    .h-eyebrow {
+      font-size: 0.75rem;
+    }
+  }
+  .h-eyebrow-plain {
+    padding-left: 0.875rem;
+  }
+  .h-eyebrow-plain::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--h-accent);
+  }
+
+  .h-title {
+    font-size: clamp(1.875rem, 1.2rem + 2.4vw, 2.75rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .h-lead {
+    color: var(--h-muted);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  /* Неонове підкреслення ключового слова */
+  .h-mark {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+  }
+  .h-mark::after {
+    content: "";
+    position: absolute;
+    inset-inline: -0.08em;
+    bottom: 0.06em;
+    height: 0.3em;
+    border-radius: 9999px;
+    background: #ffd27a;
+    opacity: 0.75;
+    z-index: -1;
+  }
+  /* Градієнтний текст */
+  .h-grad-text {
+    color: var(--h-accent);
+  }
+
+  /* ── Шапка ─────────────────────────────────────────────────────── */
+  .h-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    padding-top: 12px;
+  }
+  .h-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    height: 4rem;
+    padding-inline: 1.25rem 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.9);
+    background: rgb(255 255 255 / 0.82);
+    box-shadow: 0 10px 30px -20px rgb(29 33 64 / 0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition:
+      background-color 0.3s,
+      box-shadow 0.3s;
+  }
+  @media (min-width: 768px) {
+    .h-header-bar {
+      height: 4.5rem;
+      padding-inline: 1.75rem 0.75rem;
+    }
+  }
+  .h-header.is-scrolled .h-header-bar {
+    background: rgb(255 255 255 / 0.95);
+    box-shadow: 0 18px 40px -22px rgb(29 33 64 / 0.45);
+  }
+  .h-nav {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  @media (min-width: 1024px) {
+    .h-nav {
+      display: flex;
+    }
+  }
+  .h-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--h-soft);
+    transition: color 0.2s;
+  }
+  .h-nav a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 1rem;
+    bottom: 0.35rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--h-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .h-nav a:hover {
+    color: var(--h-accent);
+  }
+  .h-nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .h-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      grid-template-rows 0.3s ease,
+      opacity 0.2s ease,
+      margin 0.3s ease;
+  }
+  .h-menu > div {
+    overflow: hidden;
+  }
+  .h-menu:not(.is-open) {
+    visibility: hidden;
+  }
+  .h-menu.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 0.5rem;
+  }
+  @media (min-width: 1024px) {
+    .h-menu {
+      display: none;
+    }
+  }
+
+  /* ── Логотип ───────────────────────────────────────────────────── */
+  .h-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    line-height: 1;
+  }
+  .h-logo b {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--h-text);
+  }
+  .h-logo b span {
+    color: var(--h-accent);
+  }
+  .h-logo small {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--h-muted);
+  }
+
+  /* ── Hero: кільце прогресу (як «Your Daily Goal») ───────────── */
+  .h-ring {
+    --p: 70;
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 9999px;
+    background:
+      radial-gradient(closest-side, #fff calc(100% - 12px), transparent calc(100% - 11px)),
+      conic-gradient(var(--h-accent) calc(var(--p) * 1%), var(--h-accent-soft) 0);
+  }
+  /* Плитки напрямків */
+  .h-skill {
+    background: var(--tone-bg);
+    color: var(--h-text);
+  }
+  .h-skill-icon {
+    background: var(--tone);
+    color: #fff;
+  }
+
+  /* ── Hero: зміна рядків-напрямків ─────────────────────────────── */
+  /* Висота під найдовший рядок: 4 рядки на вузьких екранах, 2 — на ширших */
+  .h-typing {
+    position: relative;
+    height: 5.6em;
+    overflow: hidden;
+  }
+  @media (min-width: 480px) {
+    .h-typing {
+      height: 4.2em;
+    }
+  }
+  @media (min-width: 1024px) {
+    .h-typing {
+      height: 2.8em;
+    }
+  }
+  .h-typing .hero-typing-item {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    opacity: 0;
+    translate: 0 -20%;
+    transition:
+      opacity 0.45s ease,
+      translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .h-typing .hero-typing-item.is-active {
+    opacity: 1;
+    translate: 0 -50%;
+  }
+
+  .h-rise {
+    animation: h-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  .h-float {
+    animation: h-float 6s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .h-bar {
+    transform-origin: left;
+    animation: h-bar 1.4s 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Поява при прокрутці (scripts у HomeLayout) */
+  .h-reveal {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .h-reveal.is-pending {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+
+  /* ── Горизонтальні треки (курси, відгуки) — керує scripts/carousel.ts ── */
+  .h-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-block: 0.5rem 1.25rem;
+    padding-inline: max(16px, calc((100% - 1240px) / 2 + 16px));
+    scroll-padding-inline: max(16px, calc((100% - 1240px) / 2 + 16px));
+  }
+  @media (min-width: 768px) {
+    .h-track {
+      padding-inline: max(24px, calc((100% - 1240px) / 2 + 24px));
+      scroll-padding-inline: max(24px, calc((100% - 1240px) / 2 + 24px));
+    }
+  }
+  .h-track::-webkit-scrollbar {
+    display: none;
+  }
+  .h-track > * {
+    scroll-snap-align: start;
+  }
+  @media (pointer: fine) {
+    .h-track {
+      cursor: grab;
+    }
+    .h-track.is-grabbing {
+      cursor: grabbing;
+      scroll-snap-type: none;
+    }
+  }
+
+  /* ── FAQ ───────────────────────────────────────────────────────── */
+  .h-faq summary {
+    list-style: none;
+  }
+  .h-faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .h-faq[open] {
+    border-color: rgb(100 87 240 / 0.35);
+  }
+  .h-faq[open] .h-faq-icon {
+    rotate: 45deg;
+    background-image: var(--h-grad);
+    color: #fff;
+  }
+  .h-faq-icon {
+    transition:
+      rotate 0.3s ease,
+      color 0.3s;
+  }
+}
+
+@keyframes h-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes h-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes h-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes h-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Пагінація-крапки від carousel.ts */
+body.home-site [data-scroll-pagination] button {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--h-line-2);
+  transition:
+    width 0.3s,
+    background-color 0.3s;
+}
+/* Зона натиску 32×32 при візуальній крапці 8px */
+body.home-site [data-scroll-pagination] button::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+body.home-site [data-scroll-pagination] button.is-active {
+  width: 24px;
+  background-image: var(--h-grad);
+}
+
+/* Відеомодалка робіт (поза шаром — інакше утиліта flex перебиває display:none) */
+.h-video-modal[aria-hidden="true"] {
+  display: none;
+}
+
+/* Форма запису на головній — в одну колонку, як у модалці */
+body.home-site #register form {
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+/* ── Спільні компоненти (модалка, форма, тост) — світлі панелі з фіолетовим акцентом ── */
+body.home-site .modal-overlay {
+  background: rgb(29 33 64 / 0.45);
+}
+body.home-site .modal-panel {
+  background-image: none;
+  background-color: #fff;
+  border-color: transparent;
+  border-radius: 26px;
+  box-shadow: 0 30px 80px -20px rgb(29 33 64 / 0.45);
+}
+body.home-site .modal-title {
+  text-shadow: none;
+  font-weight: 800;
+}
+body.home-site .modal-close-btn {
+  background: #f2f3f8;
+  border-color: transparent;
+}
+body.home-site .modal-close-btn:hover {
+  color: #6457f0;
+  border-color: #d6d9e6;
+}
+/* Назва курсу в заголовку модалки (Modal.astro за замовчуванням додає text-neon-cyan) */
+body.home-site .modal-title .text-neon-cyan,
+body.home-site .modal-title [class*="text-neon"] {
+  color: #6457f0;
+  text-shadow: none;
+}
+
+body.home-site .input-label .input-field,
+body.home-site .input-label .iti__tel-input {
+  background: #f2f3f8;
+  border-color: transparent;
+  border-radius: 16px;
+}
+body.home-site .input-label .input-field:focus,
+body.home-site .input-label .iti--lead-form:focus-within input.iti__tel-input {
+  background: #fff;
+  border-color: #d6d9e6;
+  box-shadow: 0 0 0 4px rgb(100 87 240 / 0.14);
+}
+body.home-site .input-label .input-field.input-field--error {
+  border-color: #e53935;
+}
+body.home-site .input-label:has(.input-field:focus) .input-label-title {
+  color: #6457f0;
+}
+body.home-site .form-btn {
+  border-radius: 9999px;
+  background-image: linear-gradient(100deg, #6457f0 0%, #7a6cf5 100%);
+  box-shadow: 0 10px 24px -10px rgb(100 87 240 / 0.6);
+}
+body.home-site .checkbox-label [type="checkbox"]:checked + .checkbox {
+  border-color: #6457f0;
+  background: #6457f0;
+}
+body.home-site .checkbox-label:hover .checkbox {
+  border-color: #6457f0;
+  background: #eeecff;
+}
+
+body.home-site .notification-toast > div {
+  border-left: 0;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.96);
+  border: 1px solid #e6e8f0;
+  box-shadow: 0 20px 44px -18px rgb(29 33 64 / 0.35);
+  padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+}
+body.home-site #notification-avatar {
+  background: #6457f0;
+  color: #fff;
+}
+body.home-site #notification-name {
+  color: #1d2140;
+}
+body.home-site #notification-action {
+  color: #6e7491;
+}
+body.home-site #notification-time {
+  color: #1fa463;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h-rise,
+  .h-float,
+  .h-bar,
+  .h-reveal,
+  .h-typing .hero-typing-item {
+    animation: none !important;
+    transition: none !important;
+  }
+  .h-reveal.is-pending {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Поля форми в картці запису — білі з рамкою, щоб не зливалися з фоном */
+body.home-site #register .input-label .input-field,
+body.home-site #register .input-label .iti__tel-input {
+  background: #fff;
+  border-color: #e6e8f0;
+}
+
+/* Липка CTA і кнопка месенджерів на мобільних ховаються, поки видно кнопку hero (index.astro) */
+.h-fixed-reveal {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.h-fixed-reveal.is-concealed {
+  opacity: 0;
+  transform: translateY(1rem);
+  pointer-events: none;
+}
+
+/* Опис у вікні успіху: спільне правило .modal-success-desc (світлий сірий для темної теми) перебиває утиліту */
+body.home-site .modal-success-desc {
+  color: #444a6b;
+}

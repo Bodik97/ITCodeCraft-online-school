@@ -53,7 +53,7 @@ function initCarousel(scroller: HTMLElement): void {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `scroll-bullet ${getCardColorClass(card)}`;
-      btn.setAttribute("aria-label", `Go to slide ${i + 1}`);
+      btn.setAttribute("aria-label", `Слайд ${i + 1} з ${cards.length}`);
       btn.addEventListener("click", () => {
         scroller.scrollTo({
           left: (cards[i] as HTMLElement).offsetLeft - scroller.offsetLeft,
@@ -66,24 +66,32 @@ function initCarousel(scroller: HTMLElement): void {
 
     const updateBullets = () => {
       if (!bullets.length) return;
-      const scrollerCenter = scroller.scrollLeft + scroller.clientWidth / 2;
+      // Картки прилипають початком (scroll-snap start), тож активна — та, чий початок найближчий
+      // до лівого краю видимої області. У кінці прокрутки — завжди остання (інакше крайні крапки
+      // ніколи не ставали активними).
+      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+      const padStart = Number.parseFloat(getComputedStyle(scroller).scrollPaddingLeft) || 0;
+      const viewStart = scroller.scrollLeft + padStart;
       let activeIndex = 0;
-      let minDistance = Infinity;
-
-      cards.forEach((card, i) => {
-        const cardCenter =
-          (card as HTMLElement).offsetLeft -
-          scroller.offsetLeft +
-          card.clientWidth / 2;
-        const distance = Math.abs(cardCenter - scrollerCenter);
-        if (distance < minDistance) {
-          minDistance = distance;
-          activeIndex = i;
-        }
-      });
+      if (maxScroll > 0 && scroller.scrollLeft >= maxScroll - 2) {
+        activeIndex = cards.length - 1;
+      } else {
+        let minDistance = Infinity;
+        cards.forEach((card, i) => {
+          const cardStart = (card as HTMLElement).offsetLeft - scroller.offsetLeft;
+          const distance = Math.abs(cardStart - viewStart);
+          if (distance < minDistance) {
+            minDistance = distance;
+            activeIndex = i;
+          }
+        });
+      }
 
       bullets.forEach((btn, i) => {
-        btn.classList.toggle("is-active", i === activeIndex);
+        const active = i === activeIndex;
+        btn.classList.toggle("is-active", active);
+        if (active) btn.setAttribute("aria-current", "true");
+        else btn.removeAttribute("aria-current");
       });
     };
 

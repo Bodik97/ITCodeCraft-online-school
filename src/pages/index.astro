@@ -1,36 +1,31 @@
 ---
-import MainLayout from "@/layouts/MainLayout.astro";
-import SignupNotification from "@/components/shared/SignupNotification.astro";
+import HomeLayout from "@/layouts/HomeLayout.astro";
 import MessengerFab from "@/components/shared/MessengerFab.astro";
 import Modal from "@/components/main/modal/Modal.astro";
 import ModalError from "@/components/main/modal/ModalError.astro";
 import ModalSuccess from "@/components/main/modal/ModalSuccess.astro";
 import content from "@/data/main.json";
-import Header from "@/sections/main/Header.astro";
-import Hero from "@/sections/main/Hero.astro";
-import Why from "@/sections/main/Why.astro";
-import Showcase from "@/sections/main/Showcase.astro";
-import Courses from "@/sections/main/Courses.astro";
-import Works from "@/sections/main/Works.astro";
-import Reviews from "@/sections/main/Reviews.astro";
-import FAQ from "@/sections/main/FAQ.astro";
-import ParentPerks from "@/sections/main/ParentPerks.astro";
-import RegisterForm from "@/sections/main/RegisterForm.astro";
-import Footer from "@/sections/main/Footer.astro";
+import Header from "@/sections/home/Header.astro";
+import Hero from "@/sections/home/Hero.astro";
+import Why from "@/sections/home/Why.astro";
+import Showcase from "@/sections/home/Showcase.astro";
+import Courses from "@/sections/home/Courses.astro";
+import TrialSteps from "@/sections/home/TrialSteps.astro";
+import Works from "@/sections/home/Works.astro";
+import Reviews from "@/sections/home/Reviews.astro";
+import FAQ from "@/sections/home/FAQ.astro";
+import ParentPerks from "@/sections/home/ParentPerks.astro";
+import RegisterForm from "@/sections/home/RegisterForm.astro";
+import Footer from "@/sections/home/Footer.astro";
 
-const initialNotificationAvatar =
-  content.signupNotifications[0]?.name?.charAt(0) ?? "";
-
+// Сповіщення «хтось щойно записався» прибрано: дані не реальні, це підриває довіру батьків
 const runtimeData = {
-  notifications: content.signupNotifications,
-  onlineCount: content.navigation.initialOnlineCount,
   openMenuLabel: content.navigation.openMenuLabel,
   closeMenuLabel: content.navigation.closeMenuLabel,
-  defaultAvatar: initialNotificationAvatar,
 };
 ---
 
-<MainLayout
+<HomeLayout
   lang={content.meta.lang}
   title={content.meta.title}
   description={content.meta.description}
@@ -40,11 +35,13 @@ const runtimeData = {
   <Header />
 
   <main>
+    <!-- Обіцянка → напрямки → докази → як проходить урок → чому ми → відгуки → гарантія → заперечення → дія -->
     <Hero />
-    <Why />
-    <Showcase />
     <Courses />
     <Works />
+    <TrialSteps />
+    <Why />
+    <Showcase />
     <Reviews />
     <ParentPerks />
     <FAQ />
@@ -52,25 +49,44 @@ const runtimeData = {
   </main>
 
   <Footer />
-  <div class="lg:hidden h-20" aria-hidden="true"></div>
-  <SignupNotification initialAvatar={initialNotificationAvatar} />
-  <MessengerFab />
+  <div class="h-20 lg:hidden" aria-hidden="true"></div>
+  <MessengerFab accent="#7a6cf5" accentRgb="100, 87, 240" accentDark="#6457f0" fg="#ffffff" position="bottom-24 right-3 sm:right-6 lg:bottom-6" />
 
-  <div
-    class="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-neon-cyan/30 bg-paper/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
-  >
-    <div class="px-4 py-2">
-      <button
-        type="button"
-        data-modal-open
-        class="w-full px-4 py-2.5 bg-neon-cyan text-[#062a31] font-bold text-sm rounded-lg shadow-neon-cyan flex items-center justify-center gap-2"
-      >
-        {content.hero.ctaPrimary}
-        <span aria-hidden="true">→</span>
-      </button>
-    </div>
+  <!-- Мобільна «липка» кнопка запису: з'являється, коли кнопка в hero вже прокручена -->
+  <div data-sticky-cta class="h-fixed-reveal fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(12px,env(safe-area-inset-bottom))] lg:hidden">
+    <button type="button" data-modal-open class="h-btn h-btn-primary h-13 w-full shadow-[var(--h-shadow-lift)]">
+      {content.hero.ctaPrimary}
+      <span aria-hidden="true">→</span>
+    </button>
   </div>
   <Modal />
   <ModalError />
   <ModalSuccess />
-</MainLayout>
+</HomeLayout>
+
+<script is:inline>
+  // На мобільних ховаємо липку CTA й кнопку месенджерів, поки видно головну кнопку hero:
+  // не дублюємо дію на першому екрані й не перекриваємо контент
+  (function () {
+    var heroCta = document.querySelector("#hero [data-modal-open]");
+    var targets = [document.querySelector("[data-sticky-cta]"), document.getElementById("messenger-fab-root")].filter(Boolean);
+    if (!heroCta || !("IntersectionObserver" in window)) return;
+    targets.forEach(function (el) {
+      el.classList.add("h-fixed-reveal");
+    });
+    var mq = window.matchMedia("(max-width: 1023px)");
+    var heroVisible = true;
+    var sync = function () {
+      var hide = mq.matches && heroVisible;
+      targets.forEach(function (el) {
+        el.classList.toggle("is-concealed", hide);
+      });
+    };
+    new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+      sync();
+    }).observe(heroCta);
+    mq.addEventListener("change", sync);
+    sync();
+  })();
+</script>

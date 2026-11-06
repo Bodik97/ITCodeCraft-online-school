@@ -154,7 +154,10 @@ export default function FormComponent({
                 }
             } else {
                 window.gtag_report_conversion?.();
-                window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+                // Без персональних даних в адресі: телефон і email не мають потрапляти в історію браузера й page_location аналітики
+                const leadParams = new URLSearchParams(window.location.search);
+                leadParams.set('lead', '1');
+                window.history.pushState({}, '', `${window.location.pathname}?${leadParams.toString()}`);
                 if (crmParams.isModalForm) {
                     const modal = document.querySelector('.modal');
                     if (modal) {
@@ -238,7 +241,7 @@ export default function FormComponent({
             {isSubmitting && (
                 <div className="form-submit-spinner flex flex-col items-center justify-center gap-4 py-8">
                     <div className="form-spinner" aria-hidden="true" />
-                    <p className="text-slate-500 text-sm font-medium">{'Надсилання даних...'}</p>
+                    <p className="text-slate-500 text-sm font-medium">{'Надсилаємо заявку…'}</p>
                 </div>
             )}
 

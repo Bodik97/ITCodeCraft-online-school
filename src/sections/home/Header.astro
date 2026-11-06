@@ -1,0 +1,59 @@
+---
+import content from "@/data/main.json";
+
+const navLinks = content.footerSection.navigationLinks;
+---
+
+<header id="site-header" class="h-header">
+  <div class="h-wrap">
+    <div class="h-header-bar">
+      <a href="/" class="h-logo" aria-label="ITCodeCraft — на головну">
+        <b>IT<span>Code</span>Craft</b>
+        <small>IT SCHOOL · ONLINE</small>
+      </a>
+
+      <nav class="h-nav" aria-label="Головне меню">
+        {navLinks.map((link) => <a href={link.href}>{link.name}</a>)}
+      </nav>
+
+      <div class="flex items-center gap-1.5">
+        <button type="button" data-modal-open class="h-btn h-btn-primary hidden h-11 px-5 text-sm sm:inline-flex">
+          {content.navigation.ctaLabel}
+        </button>
+        <button
+          id="mobile-menu-toggle"
+          type="button"
+          class="h-icon-btn lg:hidden"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-label={content.navigation.openMenuLabel}
+        >
+          <svg id="menu-icon-open" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h10"></path>
+          </svg>
+          <svg id="menu-icon-close" class="hidden size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Мобільне меню (скрипт у HomeLayout перемикає .is-open) -->
+    <div id="mobile-menu" class="h-menu">
+      <div>
+        <nav class="h-card flex flex-col gap-1 p-2" aria-label="Мобільне меню">
+          {
+            navLinks.map((link) => (
+              <a href={link.href} class="rounded-2xl px-4 py-3 font-bold text-[var(--h-soft)] hover:bg-[var(--h-surface-2)]">
+                {link.name}
+              </a>
+            ))
+          }
+          <button type="button" data-modal-open class="h-btn h-btn-primary mt-1 w-full">
+            {content.navigation.ctaLabel}
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>

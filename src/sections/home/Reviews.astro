@@ -1,0 +1,58 @@
+---
+import content from "@/data/main.json";
+import SectionHead from "./SectionHead.astro";
+
+const section = content.reviewsSection;
+const brand = `${content.brand.primary}${content.brand.accent}`;
+---
+
+<section id="reviews" class="scroll-mt-28 pt-20 md:pt-28" aria-labelledby="reviews-title">
+  <div class="h-wrap">
+    <SectionHead id="reviews-title" eyebrow="★ 4.9 · рейтинг школи" prefix={section.titlePrefix} highlight={brand} lead={`«${section.quotePrefix} ${section.quoteHighlight}»`}>
+      <div class="hidden gap-2 md:flex">
+        <button type="button" data-scroll-prev aria-label="Попередній відгук" class="h-icon-btn"><span aria-hidden="true">←</span></button>
+        <button type="button" data-scroll-next aria-label="Наступний відгук" class="h-icon-btn"><span aria-hidden="true">→</span></button>
+      </div>
+    </SectionHead>
+  </div>
+
+  <div data-scroller class="h-track mt-6">
+    {
+      section.reviews.map((review) => (
+        <figure class="h-card flex w-[88%] shrink-0 flex-col gap-5 p-6 sm:w-[60%] sm:p-7 lg:w-[40%] xl:w-[32%]">
+          <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            <div class="flex min-w-0 items-center gap-3">
+              <img
+                src={`/assets/reviews/${review.img}.webp`}
+                alt=""
+                width="52"
+                height="52"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                class="size-13 shrink-0 rounded-full object-cover ring-4 ring-[var(--h-surface-2)]"
+              />
+              <figcaption class="flex flex-col">
+                <span class="font-extrabold">{review.name.trim()}</span>
+                <span class="text-sm text-[var(--h-muted)]">{review.role}</span>
+              </figcaption>
+            </div>
+            <span class="text-sm tracking-widest text-[#c27c00]" role="img" aria-label="Оцінка 5 з 5">★★★★★</span>
+          </div>
+          {review.course && <span class="h-chip self-start">Курс: {review.course}</span>}
+          <blockquote class="text-[15px] leading-relaxed text-[var(--h-soft)]">«{review.text}»</blockquote>
+          {review.highlight && (
+            <div class="h-tile mt-auto flex items-start gap-3 p-4">
+              <span class="h-iris flex size-9 shrink-0 items-center justify-center rounded-full text-white" aria-hidden="true">🚀</span>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-[11px] font-bold tracking-widest text-[var(--h-soft)] uppercase">Досягнення дитини</span>
+                <span class="text-sm leading-snug font-bold">{review.highlight}</span>
+              </div>
+            </div>
+          )}
+        </figure>
+      ))
+    }
+  </div>
+  <div data-scroll-pagination class="mt-4 flex items-center justify-center gap-2"></div>
+</section>

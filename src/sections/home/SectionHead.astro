@@ -1,0 +1,22 @@
+---
+/** Заголовок секції: «бейдж» + заголовок із райдужним підкресленням + підзаголовок (опційно — слот праворуч). */
+interface Props {
+  eyebrow?: string;
+  prefix: string;
+  highlight?: string;
+  lead?: string;
+  id?: string;
+}
+const { eyebrow, prefix, highlight, lead, id } = Astro.props;
+---
+
+<div class="h-reveal flex flex-col justify-between gap-5 md:flex-row md:items-end">
+  <div class="flex max-w-[760px] flex-col gap-4">
+    {eyebrow && <p class="h-eyebrow h-eyebrow-plain">{eyebrow}</p>}
+    <h2 id={id} class="h-title">
+      {prefix}{highlight && <> <span class="h-mark">{highlight}</span></>}
+    </h2>
+    {lead && <p class="h-lead max-w-[620px]">{lead}</p>}
+  </div>
+  <slot />
+</div>

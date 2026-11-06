@@ -51,6 +51,10 @@ const modal = data.modal;
     <div class="mt-8 min-h-[302px] xl:min-h-[326px]">
       <UseForm isModalForm={true} formId="modal" />
     </div>
+    <p class="mt-4 text-center text-xs leading-relaxed text-slate-500">
+      Натискаючи кнопку, ви погоджуєтеся з
+      <a href={data.footerSection.privacyPolicy.href} target="_blank" rel="noopener noreferrer" class="font-bold underline">політикою конфіденційності</a>.
+    </p>
   </div>
 </div>
 
@@ -70,6 +74,7 @@ const modal = data.modal;
     const docEl = document.documentElement;
     const lockClass = "is-scroll-locked";
     let scrollLockedByModal = false;
+    let focusTrap = null; // див. src/lib/dialogFocus.ts (window.itccTrapFocus з HomeLayout)
 
     const isModalClosed = () =>
       hiddenModalClasses.every((className) =>
@@ -151,10 +156,17 @@ const modal = data.modal;
         modalRoot.classList.remove("opacity-0");
         modalContent?.classList.remove(...hiddenContentClasses);
       });
+      if (modalContent instanceof HTMLElement && typeof window.itccTrapFocus === "function") {
+        focusTrap = window.itccTrapFocus(modalContent, modalContent.querySelector('input[name="name"]'));
+      }
     };
 
-    const closeModal = () => {
-      if (isModalClosed()) return;
+    // force — закрити навіть якщо класи вже додані ззовні (Form.tsx після успішної відправки)
+    const closeModal = (force = false, restoreFocus = true) => {
+      if (!force && isModalClosed()) return;
+      if (modalRoot.getAttribute("aria-hidden") === "true") return;
+      focusTrap?.release(restoreFocus);
+      focusTrap = null;
       delete window.productName;
       setModalTitle(null);
       modalRoot.classList.add(...hiddenModalClasses);
@@ -176,7 +188,11 @@ const modal = data.modal;
       });
     });
 
-    closeModalButton?.addEventListener("click", closeModal);
+    closeModalButton?.addEventListener("click", () => closeModal());
+
+    // Після успішної заявки модалка закривається повністю (aria-hidden, inert, прокрутка),
+    // фокус переходить у вікно успіху
+    document.addEventListener("itcc:form-success", () => closeModal(true, false));
 
     modalRoot.addEventListener("click", (event) => {
       if (event.target === modalRoot) {

@@ -31,7 +31,8 @@ export function getNameRegex(locale: string | null): RegExp {
             return /^.[a-zA-ZÇçĞğÖöŞşÜü 'ʼ`-]{1,}$/gm;
 
         default:
-            return /^.[a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ 'ʼ`-]{1,}$/gm;
+            // без прапорця g: глобальний regex зберігає lastIndex і через раз відхиляє валідне ім'я
+            return /^.[a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ 'ʼ`-]{1,}$/m;
     }
 }
 
